@@ -1,0 +1,45 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/nav_graph"
+	app:startDestination="@id/inputKeyWordFragment">
+
+	<fragment
+		android:id="@+id/inputKeyWordFragment"
+		android:name="com.example.gourmetsearcher.InputKeyWordFragment"
+		android:label="@string/home"
+		android:launchMode="singleTop"
+		tools:layout="@layout/fragment_input_key_word">
+
+		<action
+			android:id="@+id/action_to_search_location_fragment"
+			app:destination="@id/searchLocationFragment" />
+	</fragment>
+
+	<fragment
+		android:id="@+id/searchLocationFragment"
+		android:name="com.example.gourmetsearcher.SearchLocationFragment"
+		android:label="@string/search_location"
+		tools:layout="@layout/fragment_input_key_word">
+
+		<action
+			android:id="@+id/action_to_result_list_fragment"
+			app:destination="@id/resultListFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/resultListFragment"
+		android:name="com.example.gourmetsearcher.RestaurantListFragment"
+		android:label="検索結果"
+		tools:layout="@layout/fragment_result_list">
+
+		<action
+			android:id="@+id/action_to_restaurant_detail_fragment"
+			app:destination="@id/restaurantDetailFragment" />
+	</fragment>
+
+	<fragment
+		android:id="@+id/restaurantDetailFragment"
+		android:name="com.example.gourmetsearcher.RestaurantDetailFragment"
+		android:label="{restaurantName}"
+		tools:layout="@layout/fragment_restaurant_detail"/>
+</navigation>
