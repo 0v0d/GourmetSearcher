@@ -8,6 +8,21 @@ import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
 
 class RangeListAdapter(private val listener: OnRangeItemClickListener) :
     ListAdapter<String, RangeListViewHolder>(diff_util) {
+    private companion object {
+        //更新されたデータを判定するためのDiffUtil
+        private val diff_util = object : DiffUtil.ItemCallback<String>() {
+            override fun areItemsTheSame(
+                oldText: String,
+                newText: String
+            ): Boolean = oldText == newText
+
+            override fun areContentsTheSame(
+                oldText: String,
+                newText: String
+            ): Boolean = oldText == newText
+        }
+    }
+
     interface OnRangeItemClickListener {
         //RangeListをクリックした時の処理
         fun onRangeItemClick(range: Int)
@@ -28,21 +43,6 @@ class RangeListAdapter(private val listener: OnRangeItemClickListener) :
         holder.itemView.setOnClickListener {
             //positionに1を足してAPIの値と合わせる
             listener.onRangeItemClick(position + 1)
-        }
-    }
-
-    companion object {
-        //更新されたデータを判定するためのDiffUtil
-        val diff_util = object : DiffUtil.ItemCallback<String>() {
-            override fun areItemsTheSame(
-                oldText: String,
-                newText: String
-            ): Boolean = oldText == newText
-
-            override fun areContentsTheSame(
-                oldText: String,
-                newText: String
-            ): Boolean = oldText == newText
         }
     }
 }
