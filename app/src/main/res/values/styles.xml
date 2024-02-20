@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="textCursorStyle">
+		<item name="colorControlActivated">@color/blue</item>
+		<item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
+	</style>
+</resources>

@@ -21,7 +21,13 @@
 		android:name="com.example.gourmetsearcher.SearchLocationFragment"
 		android:label="@string/search_location"
 		tools:layout="@layout/fragment_input_key_word">
+		<argument
+			android:name="inputText"
+			app:argType="string" />
 
+		<argument
+			android:name="range"
+			app:argType="integer" />
 		<action
 			android:id="@+id/action_to_result_list_fragment"
 			app:destination="@id/resultListFragment" />
