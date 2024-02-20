@@ -13,6 +13,13 @@
 		<item>3000m</item>
 	</string-array>
 
+	<string name="retry">リトライ</string>
+	<string name="location_permission_required_title">位置情報パーミッションが必要です</string>
+	<string name="location_permission_required_message">このアプリでは、位置情報を取得するために位置情報パーミッションが必要です</string>
+	<string name="location_error_message">位置情報を取得できませんでした</string>
+	<string name="location_permission_denied_message">位置情報が許可されていません</string>
+
+	<string name="ok_button">OK</string>
 
 
 	<string name="hello_blank_fragment">Hello blank fragment</string>

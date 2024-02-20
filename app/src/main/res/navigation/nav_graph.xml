@@ -30,17 +30,22 @@
 			app:argType="integer" />
 		<action
 			android:id="@+id/action_to_result_list_fragment"
-			app:destination="@id/resultListFragment" />
+			app:destination="@id/resultListFragment"
+			app:popUpTo="@id/inputKeyWordFragment"/>
 	</fragment>
 	<fragment
 		android:id="@+id/resultListFragment"
 		android:name="com.example.gourmetsearcher.RestaurantListFragment"
 		android:label="検索結果"
 		tools:layout="@layout/fragment_result_list">
+		<argument
+			android:name="searchTerms"
+			app:argType="com.example.gourmetsearcher.SearchTerms" />
 
 		<action
 			android:id="@+id/action_to_restaurant_detail_fragment"
-			app:destination="@id/restaurantDetailFragment" />
+			app:destination="@id/restaurantDetailFragment"
+			/>
 	</fragment>
 
 	<fragment
