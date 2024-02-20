@@ -48,6 +48,20 @@ class InputKeyWordFragment : Fragment() {
         setupRecyclerView()
     }
 
+    private fun setupSearchInputClick() {
+        //EditTextに入力があるか監視
+        binding.searchInputEditText.doAfterTextChanged { input ->
+            val inputString = input.toString()
+            //入力があるかどうかを判定
+            val isNotEmpty = viewModel.isInputNotEmpty(inputString)
+            if (isNotEmpty) {
+                inputText = inputString
+            }
+            binding.resultListRecyclerView.isVisible = isNotEmpty
+            binding.selectRangeExplanation.isVisible = isNotEmpty
+        }
+    }
+
     private fun setupRecyclerView() {
         //RecyclerViewのレイアウトを設定
         val layoutManager = LinearLayoutManager(requireContext())
@@ -65,19 +79,6 @@ class InputKeyWordFragment : Fragment() {
         }
     }
 
-    private fun setupSearchInputClick() {
-        //EditTextに入力があるか監視
-        binding.searchInputEditText.doAfterTextChanged { input ->
-            val inputString = input.toString()
-            //入力があるかどうかを判定
-            val isNotEmpty = viewModel.isInputNotEmpty(inputString)
-            if (isNotEmpty) {
-                inputText = inputString
-            }
-            binding.resultListRecyclerView.isVisible = isNotEmpty
-            binding.selectRangeExplanation.isVisible = isNotEmpty
-        }
-    }
 
     //ResultListFragmentに遷移
     private fun navigateToSearchLocationFragment(range: Int) {
