@@ -31,10 +31,8 @@ class SearchLocationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchLocationBinding.inflate(inflater, container, false)
-
-        binding.retryButton.setOnClickListener {
-            viewModel.getLocation(requireContext())
-        }
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         checkLocationPermission(requireContext())
         observeViewModel()
         return binding.root
@@ -120,10 +118,8 @@ class SearchLocationFragment : Fragment() {
         binding.loadingProgressBar.isVisible = false
         binding.retryButton.isVisible = isGranted()
         binding.errorText.isVisible = true
-        binding.errorText.text = if (isGranted()) {
-            getString(R.string.location_error_message)
-        } else {
-            getString(R.string.location_permission_denied_message)
+        if (isGranted()) {
+            binding.errorText.text = getString(R.string.location_error_message)
         }
     }
 
