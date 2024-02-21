@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,7 +108,6 @@ class SearchLocationFragment : Fragment() {
 
     // 検索結果一覧画面に遷移
     private fun navigateToResultListFragment(searchTerms: SearchTerms) {
-        Log.d("SearchLocationFragment", "searchTerms: $searchTerms")
         val action = SearchLocationFragmentDirections.actionToResultListFragment(searchTerms)
         findNavController().navigate(action)
     }
