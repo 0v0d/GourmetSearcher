@@ -18,8 +18,11 @@
 	<string name="location_permission_required_message">このアプリでは、位置情報を取得するために位置情報パーミッションが必要です</string>
 	<string name="location_error_message">位置情報を取得できませんでした</string>
 	<string name="location_permission_denied_message">位置情報が許可されていません</string>
-
 	<string name="ok_button">OK</string>
+
+	<string name="search_result">検索結果</string>
+	<string name="network_error_message">ネットワークエラーが発生しました</string>
+	<string name="empty_result_message">検索結果がありませんでした</string>
 
 
 	<string name="hello_blank_fragment">Hello blank fragment</string>

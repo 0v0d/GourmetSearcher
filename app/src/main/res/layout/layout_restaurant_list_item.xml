@@ -1,0 +1,104 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+
+		<variable
+			name="restaurant"
+			type="com.example.gourmetsearcher.RestaurantData" />
+	</data>
+
+	<androidx.cardview.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="5dp"
+		android:layout_marginTop="5dp"
+		android:layout_marginEnd="5dp"
+		android:layout_marginBottom="5dp"
+		app:cardCornerRadius="8dp">
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="3dp"
+			android:layout_marginTop="3dp"
+			android:layout_marginEnd="3dp"
+			android:layout_marginBottom="3dp">
+
+			<com.google.android.material.imageview.ShapeableImageView
+				android:id="@+id/icon"
+				android:layout_width="85dp"
+				android:layout_height="85dp"
+				android:layout_alignParentStart="true"
+				android:layout_alignParentTop="true"
+				android:layout_marginStart="5dp"
+				android:importantForAccessibility="no"
+				app:imageUrl="@{restaurant.photo.pc.l}"
+				app:layout_constraintStart_toStartOf="parent"
+				app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+				tools:src="@drawable/ic_launcher_foreground" />
+
+			<TextView
+				android:id="@+id/restaurantName"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/icon"
+				android:layout_alignStart="@+id/icon"
+				android:layout_alignParentEnd="true"
+				android:layout_marginTop="10dp"
+				android:text="@{restaurant.name}"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				tools:text="丸亀製麺 あべのキューズモール店" />
+
+			<TextView
+				android:id="@+id/area"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/restaurantName"
+				android:layout_alignStart="@+id/restaurantName"
+				android:layout_alignEnd="@+id/restaurantName"
+				android:text='@{restaurant.smallArea.name +"[" +restaurant.largeArea.name +"]"}'
+				android:textSize="15sp"
+				app:drawableStartCompat="@drawable/ic_address"
+				tools:text="天王寺[大阪]" />
+
+			<TextView
+				android:id="@+id/genre"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/area"
+				android:layout_alignStart="@+id/area"
+				android:layout_alignParentEnd="true"
+				android:text='@{restaurant.genre.name}'
+				android:textSize="15sp"
+				app:drawableStartCompat="@drawable/ic_genre"
+				tools:text="和食" />
+
+			<TextView
+				android:id="@+id/budget"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/genre"
+				android:layout_alignStart="@+id/genre"
+				android:layout_alignEnd="@+id/genre"
+				android:text='@{restaurant.budget.name}'
+				android:textSize="15sp"
+				app:drawableStartCompat="@drawable/ic_budget"
+				tools:text="1501～2000円" />
+
+			<TextView
+				android:id="@+id/access"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/budget"
+				android:layout_alignStart="@+id/budget"
+				android:layout_alignParentEnd="true"
+				android:text='@{restaurant.access}'
+				android:textSize="15sp"
+				app:drawableStartCompat="@drawable/ic_access"
+				tools:text="天王寺駅12号出口より直結｡あべのｷｭｰｽﾞﾓｰﾙ3F" />
+		</RelativeLayout>
+	</androidx.cardview.widget.CardView>
+</layout>

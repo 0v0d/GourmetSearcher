@@ -30,13 +30,14 @@
 			app:argType="integer" />
 		<action
 			android:id="@+id/action_to_result_list_fragment"
-			app:destination="@id/resultListFragment"
-			app:popUpTo="@id/inputKeyWordFragment"/>
+			app:destination="@id/restaurantListFragment"
+			app:popUpTo="@id/inputKeyWordFragment" />
 	</fragment>
+
 	<fragment
-		android:id="@+id/resultListFragment"
+		android:id="@+id/restaurantListFragment"
 		android:name="com.example.gourmetsearcher.RestaurantListFragment"
-		android:label="検索結果"
+		android:label="@string/search_result"
 		tools:layout="@layout/fragment_result_list">
 		<argument
 			android:name="searchTerms"
@@ -44,13 +45,19 @@
 
 		<action
 			android:id="@+id/action_to_restaurant_detail_fragment"
-			app:destination="@id/restaurantDetailFragment"
-			/>
+			app:destination="@id/restaurantDetailFragment" />
 	</fragment>
 
 	<fragment
 		android:id="@+id/restaurantDetailFragment"
 		android:name="com.example.gourmetsearcher.RestaurantDetailFragment"
 		android:label="{restaurantName}"
-		tools:layout="@layout/fragment_restaurant_detail"/>
+		tools:layout="@layout/fragment_restaurant_detail">
+		<argument
+			android:name="restaurantName"
+			app:argType="string" />
+		<argument
+			android:name="restaurantData"
+			app:argType="com.example.gourmetsearcher.RestaurantData" />
+	</fragment>
 </navigation>
