@@ -37,10 +37,11 @@
 				app:imageUrl="@{restaurant.photo.pc.l}"
 				app:layout_constraintStart_toStartOf="parent"
 				app:shapeAppearanceOverlay="@style/roundedCornersImageView"
-				tools:src="@drawable/ic_launcher_foreground" />
+				tools:ignore="ImageContrastCheck"
+				tools:src="@tools:sample/avatars" />
 
 			<TextView
-				android:id="@+id/restaurantName"
+				android:id="@+id/name"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@+id/icon"
@@ -56,9 +57,9 @@
 				android:id="@+id/area"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@+id/restaurantName"
-				android:layout_alignStart="@+id/restaurantName"
-				android:layout_alignEnd="@+id/restaurantName"
+				android:layout_below="@+id/name"
+				android:layout_alignStart="@+id/name"
+				android:layout_alignEnd="@+id/name"
 				android:text='@{restaurant.smallArea.name +"[" +restaurant.largeArea.name +"]"}'
 				android:textSize="15sp"
 				app:drawableStartCompat="@drawable/ic_address"
