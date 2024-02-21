@@ -23,7 +23,12 @@
 	<string name="search_result">検索結果</string>
 	<string name="network_error_message">ネットワークエラーが発生しました</string>
 	<string name="empty_result_message">検索結果がありませんでした</string>
-
-
-	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="genre">ジャンル</string>
+	<string name="budget">予算</string>
+	<string name="closed_days">休業日</string>
+	<string name="opening_hours">営業時間</string>
+	<string name="address">住所</string>
+	<string name="access">アクセス</string>
+	<string name="map_button_description">Mapを開く</string>
+	<string name="hot_pepper">HotPepperへ</string>
 </resources>
