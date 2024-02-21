@@ -69,7 +69,7 @@ class InputKeyWordFragment : Fragment() {
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), layoutManager.orientation)
 
-        val rangeList = resources.getStringArray(R.array.rangeArray).toList()
+        val rangeList = resources.getStringArray(R.array.range_array).toList()
         adapter.submitList(rangeList)
 
         binding.resultListRecyclerView.also {
