@@ -1,14 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".RestaurantListFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+	<data>
 
-</FrameLayout>
+		<variable
+			name="inputText"
+			type="String" />
+
+		<variable
+			name="viewModel"
+			type="com.example.gourmetsearcher.RestaurantListViewModel" />
+	</data>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".view.ResultListFragment">
+
+		<TextView
+			android:id="@+id/errorTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:textStyle="bold"
+			android:visibility="invisible" />
+
+		<com.google.android.material.button.MaterialButton
+			android:id="@+id/retryButton"
+			style="@style/outlinedButtonStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/errorTextView"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="10dp"
+			android:text="@string/retry"
+			android:onClickListener="@{() -> viewModel.retrySearch()}"
+			android:visibility="invisible" />
+
+		<ProgressBar
+			android:id="@+id/loadingProgressBar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:indeterminate="true"
+			android:indeterminateTint="@color/blue"
+			android:indeterminateTintMode="src_in" />
+
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/resultListRecyclerView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_alignParentStart="true"
+			android:layout_alignParentTop="true"
+			tools:itemCount="7"
+			tools:listitem="@layout/layout_restaurant_list_item" />
+	</RelativeLayout>
+</layout>
