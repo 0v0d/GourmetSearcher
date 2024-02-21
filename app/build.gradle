@@ -1,7 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    //APIキーを隠すためのプラグイン
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -32,6 +36,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
+        buildConfig true
         dataBinding true
         viewBinding true
     }
@@ -57,4 +62,12 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.13'
     //位置情報取得ライブラリ
     implementation 'com.google.android.gms:play-services-location:21.1.0'
+    // APIとの通信用のライブラリ
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    // Jsonパーサライブラリ
+    implementation 'com.squareup.moshi:moshi-kotlin:1.12.0'
+    // MoshiのConverterを使うためのJsonパースライブラリ
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    //画像表示ライブラリ
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
