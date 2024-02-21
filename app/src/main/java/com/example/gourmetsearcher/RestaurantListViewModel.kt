@@ -1,6 +1,5 @@
 package com.example.gourmetsearcher
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,7 +39,6 @@ class RestaurantListViewModel(private val repository: HotpepperRepository) : Vie
 
         if (response == null) {
             handleError(SearchState.NETWORK_ERROR)
-            Log.d("error",response.toString())
             return
         }
         val isNotNullOrEmpty = !response.body()?.results?.shops.isNullOrEmpty()
