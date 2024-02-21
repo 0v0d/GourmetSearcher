@@ -3,9 +3,9 @@
 	<string name="home">ホーム</string>
 
 	<string name="search_location">現在地取得</string>
-	<string name="searchInput_hint">キーワードを入力</string>
-	<string name="selectRangeExplanation">検索半径を選択して検索</string>
-	<string-array name="rangeArray">
+	<string name="search_input_hint">キーワードを入力</string>
+	<string name="select_range_explanation">検索半径を選択して検索</string>
+	<string-array name="range_array">
 		<item>300m</item>
 		<item>500m</item>
 		<item>1000m</item>
