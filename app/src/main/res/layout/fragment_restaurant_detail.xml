@@ -1,14 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".RestaurantDetailFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+	<data>
 
-</FrameLayout>
+		<variable
+			name="viewModel"
+			type="com.example.gourmetsearcher.RestaurantDetailViewModel" />
+
+		<variable
+			name="restaurant"
+			type="com.example.gourmetsearcher.RestaurantData" />
+	</data>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<ScrollView
+			android:id="@+id/scroll"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<ImageView
+					android:id="@+id/image"
+					android:layout_width="match_parent"
+					android:layout_height="200dp"
+					android:importantForAccessibility="no"
+					android:scaleType="centerCrop"
+					app:imageUrl="@{restaurant.photo.pc.l}"
+					tools:src="@tools:sample/avatars" />
+
+				<TextView
+					android:id="@+id/genreTitle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/image"
+					android:layout_alignStart="@+id/image"
+					android:layout_marginStart="10dp"
+					android:layout_marginTop="20dp"
+					android:text="@string/genre"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:drawableStartCompat="@drawable/ic_genre" />
+
+				<TextView
+					android:id="@+id/genre"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignTop="@+id/genreTitle"
+					android:layout_alignParentEnd="true"
+					android:layout_marginStart="20dp"
+					android:layout_marginEnd="10dp"
+					android:layout_toEndOf="@+id/genreTitle"
+					android:text="@{restaurant.genre.name}"
+					android:textSize="18sp"
+					tools:text="和食" />
+
+				<TextView
+					android:id="@+id/addressTitle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignStart="@+id/genreTitle"
+					android:layout_alignTop="@+id/address"
+					android:text="@string/address"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:drawableStartCompat="@drawable/ic_address" />
+
+				<TextView
+					android:id="@+id/address"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignStart="@+id/genre"
+					android:layout_alignTop="@+id/mapButton"
+					android:layout_marginTop="0dp"
+					android:layout_marginEnd="5dp"
+					android:layout_toStartOf="@+id/mapButton"
+					android:text="@{restaurant.address}"
+					android:textSize="18sp"
+					tools:text="大阪府大阪市中央区心斎橋筋２－６－１８　心斎橋早川ビルＢ１" />
+
+				<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+					android:id="@+id/mapButton"
+					style="@style/Widget.MaterialComponents.Button"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/genre"
+					android:layout_alignEnd="@+id/genre"
+					android:layout_marginTop="10dp"
+					android:contentDescription="@string/map_button_description"
+					android:onClickListener="@{() -> viewModel.openMap(restaurant.address)}"
+					android:strokeColor="@color/black"
+					app:icon="@drawable/ic_map"
+					app:iconSize="30dp"
+					app:strokeColor="@color/grey"
+					app:strokeWidth="1dp" />
+
+				<TextView
+					android:id="@+id/accessTitle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignStart="@+id/genreTitle"
+					android:layout_alignTop="@+id/access"
+					android:text="@string/access"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:drawableStartCompat="@drawable/ic_access" />
+
+				<TextView
+					android:id="@+id/access"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/address"
+					android:layout_alignStart="@+id/address"
+					android:layout_alignEnd="@+id/genre"
+					android:layout_marginTop="15dp"
+					android:text="@{restaurant.access}"
+					android:textSize="18sp"
+					tools:text="南海難波(南海)駅東出口より徒歩約5分/大阪メトロ御堂筋線なんば(大阪メトロ)駅３出口より徒歩約10分" />
+
+				<TextView
+					android:id="@+id/budgetTitle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignStart="@+id/genreTitle"
+					android:layout_alignTop="@+id/budget"
+					android:layout_marginTop="0dp"
+					android:text="@string/budget"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:drawableStartCompat="@drawable/ic_budget" />
+
+				<TextView
+					android:id="@+id/budget"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/access"
+					android:layout_alignStart="@+id/access"
+					android:layout_alignEnd="@+id/access"
+					android:layout_marginTop="10dp"
+					android:layout_marginEnd="0dp"
+					android:text="@{restaurant.budget.name}"
+					android:textSize="18sp"
+					tools:text="4001000～50000000円" />
+
+				<TextView
+					android:id="@+id/openTitle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignStart="@+id/genreTitle"
+					android:layout_alignTop="@+id/open"
+					android:text="@string/opening_hours"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:drawableStartCompat="@drawable/ic_opening_hours" />
+
+				<TextView
+					android:id="@+id/open"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/budgetTitle"
+					android:layout_alignStart="@+id/budget"
+					android:layout_alignEnd="@+id/genre"
+					android:layout_marginTop="10dp"
+					android:text="@{restaurant.open}"
+					android:textSize="18sp"
+					tools:text="月～金: 17:00～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:30）土: 12:00～14:30 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:30）日: 12:00～14:30 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 22:00 ドリンクL.O. 22:30）祝日: 17:00～23:00 （料理L.O. 22:00 ドリンクL.O. 22:30）祝前日: 17:00～翌0:00 （料理L.O. 23:30 ドリンクL.O. 23:30）" />
+
+				<TextView
+					android:id="@+id/closeTitle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignStart="@+id/genreTitle"
+					android:layout_alignTop="@+id/close"
+					android:text="@string/closed_days"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					app:drawableStartCompat="@drawable/ic_closed_days" />
+
+				<TextView
+					android:id="@+id/close"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/open"
+					android:layout_alignStart="@+id/open"
+					android:layout_alignEnd="@+id/genre"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="60dp"
+					android:text="@{restaurant.close}"
+					android:textSize="18sp"
+					tools:text="年に一回ほどスタッフ研修の為定休日がございます。毎年大晦日と元旦はお休みいただいております。" />
+			</RelativeLayout>
+		</ScrollView>
+
+		<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+			android:id="@+id/url"
+			style="@style/Widget.MaterialComponents.Button.Icon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentBottom="true"
+			android:layout_marginEnd="15dp"
+			android:layout_marginBottom="10dp"
+			android:onClickListener="@{() -> viewModel.openUrl(restaurant.url.pc)}"
+			android:text="@string/hot_pepper"
+			android:textSize="18sp"
+			app:icon="@drawable/ic_reservation"
+			app:iconGravity="textStart"
+			app:iconSize="30dp"
+			app:strokeColor="@color/grey"
+			app:strokeWidth="1dp" />
+	</RelativeLayout>
+</layout>
