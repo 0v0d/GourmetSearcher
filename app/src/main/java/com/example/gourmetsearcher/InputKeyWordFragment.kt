@@ -15,7 +15,7 @@ import com.example.gourmetsearcher.databinding.FragmentInputKeyWordBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 //userの入力を受け付けるキーワード入力画面
-@AndroidEntryPoint
+
 class InputKeyWordFragment : Fragment() {
     private var _binding: FragmentInputKeyWordBinding? = null
     private val binding get() = _binding!!
