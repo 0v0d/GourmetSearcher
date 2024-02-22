@@ -3,8 +3,10 @@ package com.example.gourmetsearcher
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.net.URLEncoder
 
+@HiltViewModel
 class RestaurantDetailViewModel : ViewModel(){
     private val _url = MutableLiveData<String>()
     val url: LiveData<String> get() = _url
