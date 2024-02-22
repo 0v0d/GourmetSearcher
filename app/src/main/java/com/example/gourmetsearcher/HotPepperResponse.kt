@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class HotpepperResponse(
+data class HotPepperResponse(
     @Json(name = "results")
     val results: Results
 ) : Parcelable
