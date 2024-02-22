@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.OnCompleteListener
+import dagger.hilt.android.lifecycle.HiltViewModel
 
+@HiltViewModel
 class SearchLocationViewModel : ViewModel() {
     private val _locationData = MutableLiveData<LastLocation>()
     val locationData: LiveData<LastLocation> get() = _locationData
