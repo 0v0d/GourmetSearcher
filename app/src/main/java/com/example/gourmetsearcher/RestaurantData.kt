@@ -79,5 +79,5 @@ data class PhotoData(
 @Parcelize
 data class PCData(
     @Json(name = "l")
-    val l : String,
+    val l: String,
 ) : Parcelable

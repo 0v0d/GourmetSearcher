@@ -6,30 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gourmetsearcher.databinding.FragmentResultListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
     private var _binding: FragmentResultListBinding? = null
     private val binding get() = _binding!!
     private val args: RestaurantListFragmentArgs by navArgs()
     private val adapter by lazy {
-        RestaurantListAdapter(restaurantItemClickListener)
+        RestaurantListAdapter(restaurantItemClick)
     }
-    private val repository = HotpepperRepository()
-    private val viewModel: RestaurantListViewModel by lazy {
-        RestaurantListViewModel(repository)
-    }
+    private val viewModel: RestaurantListViewModel by viewModels()
 
-    private val restaurantItemClickListener =
-        object : RestaurantListAdapter.OnRestaurantItemClickListener {
-            override fun onRestaurantItemClick(restaurantData: RestaurantData) {
-                navigateToRestaurantDetailFragment(restaurantData)
-            }
-        }
+    private val restaurantItemClick = { it: RestaurantData ->
+        navigateToRestaurantDetailFragment(it)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +97,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     private fun navigateToRestaurantDetailFragment(restaurant: RestaurantData) {
-        val action =RestaurantListFragmentDirections.actionToRestaurantDetailFragment(
+        val action = RestaurantListFragmentDirections.actionToRestaurantDetailFragment(
             restaurant.name,
             restaurant
         )

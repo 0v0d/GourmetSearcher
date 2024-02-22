@@ -5,13 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import javax.inject.Inject
 
-class RestaurantListViewModel(private val repository: HotpepperRepository) : ViewModel() {
-    private val _restaurantData = MutableLiveData<HotpepperResponse>()
+@HiltViewModel
+class RestaurantListViewModel @Inject constructor(
+    private val repository: HotPepperRepository) :
+    ViewModel() {
+    private val _restaurantData = MutableLiveData<HotPepperResponse>()
     val restaurantData: LiveData<List<RestaurantData>> = _restaurantData.map { it.results.shops }
 
     private val _searchState = MutableLiveData<SearchState>()
@@ -26,7 +31,7 @@ class RestaurantListViewModel(private val repository: HotpepperRepository) : Vie
             } catch (e: Exception) {
                 // 例外処理
                 _searchState.postValue(SearchState.EMPTY_RESULT)
-                _restaurantData.postValue(HotpepperResponse(Results(emptyList())))
+                _restaurantData.postValue(HotPepperResponse(Results(emptyList())))
             }
         }
     }
@@ -34,7 +39,7 @@ class RestaurantListViewModel(private val repository: HotpepperRepository) : Vie
     private suspend fun performSearch(searchTerms: SearchTerms) {
         _searchState.postValue(SearchState.LOADING)
         val response = withContext(Dispatchers.IO) {
-            repository.getRestaurantData(searchTerms)
+            repository.searchHotPepperRepository(searchTerms)
         }
 
         if (response == null) {
@@ -52,10 +57,10 @@ class RestaurantListViewModel(private val repository: HotpepperRepository) : Vie
 
     private fun handleError(state: SearchState) {
         _searchState.postValue(state)
-        _restaurantData.postValue(HotpepperResponse(Results(emptyList())))
+        _restaurantData.postValue(HotPepperResponse(Results(emptyList())))
     }
 
-    private fun handleSuccessfulResponse(response: Response<HotpepperResponse>) {
+    private fun handleSuccessfulResponse(response: Response<HotPepperResponse>) {
         _restaurantData.postValue(response.body())
         _searchState.postValue(SearchState.NONE)
     }
