@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
 
 class RangeListAdapter(private val listener: OnRangeItemClickListener) :
-    ListAdapter<String, RangeListViewHolder>(diff_util) {
+    ListAdapter<String, RangeListViewHolder>(rangeListDiffCallback) {
     private companion object {
         //更新されたデータを判定するためのDiffUtil
-        private val diff_util = object : DiffUtil.ItemCallback<String>() {
+        private val rangeListDiffCallback = object : DiffUtil.ItemCallback<String>() {
             override fun areItemsTheSame(
                 oldText: String,
                 newText: String
