@@ -19,6 +19,7 @@
 	<string name="location_error_message">位置情報を取得できませんでした</string>
 	<string name="location_permission_denied_message">位置情報が許可されていません</string>
 	<string name="ok_button">OK</string>
+	<string name="hot_pepper_url">https://webservice.recruit.co.jp/hotpepper/</string>
 
 	<string name="search_result">検索結果</string>
 	<string name="network_error_message">ネットワークエラーが発生しました</string>
