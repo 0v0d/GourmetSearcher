@@ -1,7 +1,6 @@
 package com.example.gourmetsearcher
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 // キーワード入力画面のViewModel
 

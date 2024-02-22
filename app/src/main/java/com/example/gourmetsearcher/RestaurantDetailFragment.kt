@@ -10,8 +10,6 @@ import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.gourmetsearcher.databinding.FragmentRestaurantDetailBinding
-import dagger.hilt.android.AndroidEntryPoint
-
 
 class RestaurantDetailFragment : Fragment() {
     private var _binding: FragmentRestaurantDetailBinding? = null

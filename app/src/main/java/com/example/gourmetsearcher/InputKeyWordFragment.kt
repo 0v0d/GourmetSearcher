@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gourmetsearcher.databinding.FragmentInputKeyWordBinding
-import dagger.hilt.android.AndroidEntryPoint
 
 //userの入力を受け付けるキーワード入力画面
 
