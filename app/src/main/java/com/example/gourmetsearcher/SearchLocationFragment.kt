@@ -17,7 +17,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.gourmetsearcher.databinding.FragmentSearchLocationBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchLocationFragment : Fragment() {
     private val viewModel: SearchLocationViewModel by viewModels()
     private var _binding: FragmentSearchLocationBinding? = null
