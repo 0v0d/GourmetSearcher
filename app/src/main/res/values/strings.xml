@@ -25,5 +25,6 @@
 	<string name="empty_result_message">検索結果がありませんでした</string>
 
 
-	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="hot_pepper_url">https://webservice.recruit.co.jp/hotpepper/</string>
+	<string name="hello_blank_fragment">Hello Blank Fragment</string>
 </resources>
