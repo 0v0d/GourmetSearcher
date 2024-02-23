@@ -30,7 +30,7 @@
 				android:layout_height="match_parent"
 				android:background="@android:color/transparent"
 				android:hint="@string/search_input_hint"
-				android:imeOptions="actionDone"
+				android:imeOptions="actionSearch"
 				android:inputType="text"
 				android:textSize="15sp" />
 		</com.google.android.material.textfield.TextInputLayout>
