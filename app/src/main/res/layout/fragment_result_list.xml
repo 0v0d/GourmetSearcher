@@ -10,7 +10,7 @@
 
 		<variable
 			name="viewModel"
-			type="com.example.gourmetsearcher.RestaurantListViewModel" />
+			type="com.example.gourmetsearcher.viewmodel.RestaurantListViewModel" />
 	</data>
 
 	<RelativeLayout

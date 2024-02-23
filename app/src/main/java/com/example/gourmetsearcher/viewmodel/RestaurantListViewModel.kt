@@ -1,10 +1,16 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.example.gourmetsearcher.repository.HotPepperRepository
+import com.example.gourmetsearcher.state.SearchState
+import com.example.gourmetsearcher.model.SearchTerms
+import com.example.gourmetsearcher.model.HotPepperResponse
+import com.example.gourmetsearcher.model.RestaurantData
+import com.example.gourmetsearcher.model.Results
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
-    private val repository: HotPepperRepository) :
+    private val repository: HotPepperRepository
+) :
     ViewModel() {
     private val _restaurantData = MutableLiveData<HotPepperResponse>()
     val restaurantData: LiveData<List<RestaurantData>> = _restaurantData.map { it.results.shops }

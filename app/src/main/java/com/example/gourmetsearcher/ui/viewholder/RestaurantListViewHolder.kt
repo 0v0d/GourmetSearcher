@@ -1,7 +1,8 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.ui.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gourmetsearcher.databinding.LayoutRestaurantListItemBinding
+import com.example.gourmetsearcher.model.RestaurantData
 
 class RestaurantListViewHolder(
     private val binding: LayoutRestaurantListItemBinding,

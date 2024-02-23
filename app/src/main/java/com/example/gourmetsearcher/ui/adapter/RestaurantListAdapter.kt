@@ -1,10 +1,12 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRestaurantListItemBinding
+import com.example.gourmetsearcher.model.RestaurantData
+import com.example.gourmetsearcher.ui.viewholder.RestaurantListViewHolder
 
 class RestaurantListAdapter(private val onRestaurantItemClick: (RestaurantData) -> Unit) :
     ListAdapter<RestaurantData, RestaurantListViewHolder>(restaurantDataDiffCallback) {

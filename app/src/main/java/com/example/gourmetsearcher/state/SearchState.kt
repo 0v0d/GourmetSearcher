@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.state
 
 enum class SearchState {
     NONE,

@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.viewmodel
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.databinding.FragmentInputKeyWordBinding
+import com.example.gourmetsearcher.ui.adapter.RangeListAdapter
 
 //userの入力を受け付けるキーワード入力画面
 

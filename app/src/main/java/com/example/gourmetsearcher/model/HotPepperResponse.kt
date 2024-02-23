@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

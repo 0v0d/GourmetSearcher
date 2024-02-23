@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.utils
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

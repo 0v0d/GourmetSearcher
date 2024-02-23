@@ -6,7 +6,7 @@
 
 	<fragment
 		android:id="@+id/inputKeyWordFragment"
-		android:name="com.example.gourmetsearcher.InputKeyWordFragment"
+		android:name="com.example.gourmetsearcher.viewmodel.InputKeyWordFragment"
 		android:label="@string/home"
 		android:launchMode="singleTop"
 		tools:layout="@layout/fragment_input_key_word">
@@ -18,7 +18,7 @@
 
 	<fragment
 		android:id="@+id/searchLocationFragment"
-		android:name="com.example.gourmetsearcher.SearchLocationFragment"
+		android:name="com.example.gourmetsearcher.view.SearchLocationFragment"
 		android:label="@string/search_location"
 		tools:layout="@layout/fragment_input_key_word">
 		<argument
@@ -36,12 +36,12 @@
 
 	<fragment
 		android:id="@+id/restaurantListFragment"
-		android:name="com.example.gourmetsearcher.RestaurantListFragment"
+		android:name="com.example.gourmetsearcher.view.RestaurantListFragment"
 		android:label="@string/search_result"
 		tools:layout="@layout/fragment_result_list">
 		<argument
 			android:name="searchTerms"
-			app:argType="com.example.gourmetsearcher.SearchTerms" />
+			app:argType="com.example.gourmetsearcher.model.SearchTerms" />
 
 		<action
 			android:id="@+id/action_to_restaurant_detail_fragment"
@@ -50,7 +50,7 @@
 
 	<fragment
 		android:id="@+id/restaurantDetailFragment"
-		android:name="com.example.gourmetsearcher.RestaurantDetailFragment"
+		android:name="com.example.gourmetsearcher.view.RestaurantDetailFragment"
 		android:label="{restaurantName}"
 		tools:layout="@layout/fragment_restaurant_detail">
 		<argument
@@ -58,6 +58,6 @@
 			app:argType="string" />
 		<argument
 			android:name="restaurantData"
-			app:argType="com.example.gourmetsearcher.RestaurantData" />
+			app:argType="com.example.gourmetsearcher.model.RestaurantData" />
 	</fragment>
 </navigation>

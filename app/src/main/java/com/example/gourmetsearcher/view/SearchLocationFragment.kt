@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.view
 
 import android.Manifest
 import android.content.Context
@@ -15,7 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.gourmetsearcher.R
+import com.example.gourmetsearcher.model.SearchTerms
 import com.example.gourmetsearcher.databinding.FragmentSearchLocationBinding
+import com.example.gourmetsearcher.viewmodel.SearchLocationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SearchLocationFragment : Fragment() {

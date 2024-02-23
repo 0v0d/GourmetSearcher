@@ -1,6 +1,8 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.di
 
 import android.content.Context
+import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
+import com.example.gourmetsearcher.R
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

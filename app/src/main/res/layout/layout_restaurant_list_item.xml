@@ -6,7 +6,7 @@
 
 		<variable
 			name="restaurant"
-			type="com.example.gourmetsearcher.RestaurantData" />
+			type="com.example.gourmetsearcher.model.RestaurantData" />
 	</data>
 
 	<androidx.cardview.widget.CardView

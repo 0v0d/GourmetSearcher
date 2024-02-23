@@ -5,7 +5,7 @@
 
 		<variable
 			name="viewModel"
-			type="com.example.gourmetsearcher.SearchLocationViewModel" />
+			type="com.example.gourmetsearcher.viewmodel.SearchLocationViewModel" />
 	</data>
 
 	<RelativeLayout

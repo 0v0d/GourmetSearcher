@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.gourmetsearcher.databinding.FragmentRestaurantDetailBinding
+import com.example.gourmetsearcher.viewmodel.RestaurantDetailViewModel
 
 class RestaurantDetailFragment : Fragment() {
     private var _binding: FragmentRestaurantDetailBinding? = null

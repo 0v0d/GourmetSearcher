@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gourmetsearcher.R
+import com.example.gourmetsearcher.state.SearchState
 import com.example.gourmetsearcher.databinding.FragmentResultListBinding
+import com.example.gourmetsearcher.model.RestaurantData
+import com.example.gourmetsearcher.ui.adapter.RestaurantListAdapter
+import com.example.gourmetsearcher.viewmodel.RestaurantListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

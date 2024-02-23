@@ -1,10 +1,11 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.viewmodel
 
 import android.content.Context
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.gourmetsearcher.model.LastLocation
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.OnCompleteListener
 

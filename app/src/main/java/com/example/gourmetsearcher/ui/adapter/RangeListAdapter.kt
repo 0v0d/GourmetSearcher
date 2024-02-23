@@ -1,10 +1,11 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
+import com.example.gourmetsearcher.ui.viewholder.RangeListViewHolder
 
 class RangeListAdapter(private val listener: OnRangeItemClickListener) :
     ListAdapter<String, RangeListViewHolder>(rangeListDiffCallback) {

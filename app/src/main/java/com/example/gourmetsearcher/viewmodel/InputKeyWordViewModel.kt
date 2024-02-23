@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher
+package com.example.gourmetsearcher.viewmodel
 
 import androidx.lifecycle.ViewModel
 
