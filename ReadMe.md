@@ -47,7 +47,7 @@ Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 - Gradle Plugin 7.0.4
 - minSdk：32
 - targetSdk：34
-- 
+
 ### 開発言語
 
 - Kotlin 1.9.22
