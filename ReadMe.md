@@ -13,17 +13,21 @@ GourmetSearchApp
 
 <img src="docs/app.gif" width="320">
 
+### APIKeyについて
+本アプリは[ホットペッパーのグルメサーチAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を使用しています。
+ご利用の際には[こちら](https://webservice.recruit.co.jp/register/)にメールアドレスを登録していただく必要がございます。
+登録していただくと、メールにてAPIKeyが送信されますので、そちらを以下のようにしていただくことで、ご利用可能になります。
+- APIKeyはプロジェクトのルートディレクトリにある local.properties ファイルに
+
+```properties
+API_KEY="YOUR_API_KEY"
+```
+の形式で、APIキーを設定して下さい。
+
 ### 不具合及び使用上の注意
 
 - 仮想端末を使用する際に、GPSが取得できないという不具合があります。</br>
 (実機端末では、不具合なく動作します。)
-- APIKeyはプロジェクトのルートディレクトリにある local.properties ファイルに
-
-```properties
-api_key=YOUR_API_KEY
-```
-
-の形式で、APIキーを設定して下さい。
 
 ### 動作対象端末・OS
 
@@ -43,7 +47,7 @@ Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 - Gradle Plugin 7.0.4
 - minSdk：32
 - targetSdk：34
-- 
+
 ### 開発言語
 
 - Kotlin 1.9.22
