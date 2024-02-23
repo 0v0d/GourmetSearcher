@@ -2,8 +2,7 @@ package com.example.gourmetsearcher.viewmodel
 
 import androidx.lifecycle.ViewModel
 
-// キーワード入力画面のViewModel
-
+//検索画面のViewModel
 class InputKeyWordViewModel : ViewModel() {
 
     // 入力されたキーワードが空でないかを判定する
