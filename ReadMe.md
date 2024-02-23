@@ -13,15 +13,20 @@ GourmetSearchApp
 
 <img src="docs/app.gif" width="320">
 
-### 不具合及び使用上の注意
-
-- 仮想端末を使用する際に、GPSが取得できないという不具合があります。</br>
-(実機端末では、不具合なく動作します。)
+### APIキーについて
+本アプリは[ホットペッパーのグルメサーチAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を使用しています。
+ご利用の際には[こちら](https://webservice.recruit.co.jp/register/)にメールアドレスを登録していただく必要がございます。
+登録していただくと、メールにてAPIKeyが送信されますので、そちらを以下のようにしていただくことで、ご利用可能になります。
 - APIKeyはプロジェクトのルートディレクトリにある local.properties ファイルに
 
 ```properties
 api_key=YOUR_API_KEY
 ```
+
+### 不具合及び使用上の注意
+
+- 仮想端末を使用する際に、GPSが取得できないという不具合があります。</br>
+(実機端末では、不具合なく動作します。)
 
 の形式で、APIキーを設定して下さい。
 
