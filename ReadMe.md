@@ -22,6 +22,7 @@ GourmetSearchApp
 ```properties
 API_KEY="YOUR_API_KEY"
 ```
+としてください。
 
 ### 不具合及び使用上の注意
 
