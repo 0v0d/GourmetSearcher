@@ -6,7 +6,7 @@
 
 	<fragment
 		android:id="@+id/inputKeyWordFragment"
-		android:name="com.example.gourmetsearcher.viewmodel.InputKeyWordFragment"
+		android:name="com.example.gourmetsearcher.view.InputKeyWordFragment"
 		android:label="@string/home"
 		android:launchMode="singleTop"
 		tools:layout="@layout/fragment_input_key_word">
