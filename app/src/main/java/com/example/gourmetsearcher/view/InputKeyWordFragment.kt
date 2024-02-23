@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.viewmodel
+package com.example.gourmetsearcher.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,27 +14,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.databinding.FragmentInputKeyWordBinding
 import com.example.gourmetsearcher.ui.adapter.RangeListAdapter
+import com.example.gourmetsearcher.viewmodel.InputKeyWordViewModel
 
-//userの入力を受け付けるキーワード入力画面
-
+//検索画面
 class InputKeyWordFragment : Fragment() {
     private var _binding: FragmentInputKeyWordBinding? = null
     private val binding get() = _binding!!
     private val viewModel: InputKeyWordViewModel by viewModels()
-
-    //RangeListをクリックした時の処理を変数に格納
-    private val rangeItemClickListener =
-        object : RangeListAdapter.OnRangeItemClickListener {
-            override fun onRangeItemClick(range: Int) {
-                navigateToSearchLocationFragment(range)
-            }
-        }
-
-    private val adapter by lazy {
-        RangeListAdapter(rangeItemClickListener)
-    }
-
     private var inputText = ""
+    private val adapter by lazy {
+        RangeListAdapter(rangeItemClick)
+    }
+    //RangeListをクリックした時の処理を変数に格納
+    private val rangeItemClick = { it: Int ->
+        navigateToSearchLocationFragment(it)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,7 +76,6 @@ class InputKeyWordFragment : Fragment() {
         }
     }
 
-
     //ResultListFragmentに遷移
     private fun navigateToSearchLocationFragment(range: Int) {
         val action =
@@ -101,6 +94,7 @@ class InputKeyWordFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        //メモリリークを防ぐためにadapterを解放
         binding.resultListRecyclerView.adapter = null
         _binding = null
     }
