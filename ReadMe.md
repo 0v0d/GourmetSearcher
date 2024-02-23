@@ -6,6 +6,13 @@ GourmetSearchApp
 
 ### [プロジェクトのリポジトリ (GitHub)](https://github.com/0v0d/GourmetSearchApp)
 
+
+## アプリ仕様
+
+現在位置付近のレストランをキーワードで検索できるAndroidアプリです。
+
+<img src="docs/app.gif" width="320">
+
 ### 不具合及び使用上の注意
 
 - 仮想端末を使用する際に、GPSが取得できないという不具合があります。</br>
@@ -26,12 +33,17 @@ Android 14
 
 ## 開発環境
 
-Android Studio Hedgehog 2023.1.1
+Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 
 - コンパイルSDKバージョン: 34
 - 最小SDKバージョン: 32
 - ターゲットSDKバージョン: 34
-
+- Java：VERSION_1_8
+- Gradle：8.2
+- Gradle Plugin 7.0.4
+- minSdk：32
+- targetSdk：34
+- 
 ### 開発言語
 
 - Kotlin 1.9.22
