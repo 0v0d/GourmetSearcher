@@ -26,7 +26,7 @@ class RangeListAdapter(private val onRangeItemClick:  (Int) -> Unit) :
     }
 
     private companion object {
-        //更新されたデータを判定するためのDiffUtil
+        //更新されたデータを判定する
         private val rangeListDiffCallback = object : DiffUtil.ItemCallback<String>() {
             override fun areItemsTheSame(
                 oldText: String,
