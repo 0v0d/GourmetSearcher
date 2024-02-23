@@ -56,8 +56,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
 
-    // メモリリーク検出ライブラリ（debugビルドのみ有効）
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.13'
     //位置情報取得ライブラリ
     implementation 'com.google.android.gms:play-services-location:21.1.0'
     // APIとの通信用のライブラリ
