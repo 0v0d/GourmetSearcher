@@ -7,8 +7,24 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
 import com.example.gourmetsearcher.ui.viewholder.RangeListViewHolder
 
-class RangeListAdapter(private val listener: OnRangeItemClickListener) :
+class RangeListAdapter(private val onRangeItemClick:  (Int) -> Unit) :
     ListAdapter<String, RangeListViewHolder>(rangeListDiffCallback) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RangeListViewHolder {
+        val view = LayoutRangeListItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return RangeListViewHolder(view, onRangeItemClick)
+    }
+
+    override fun onBindViewHolder(holder: RangeListViewHolder, position: Int) {
+        val item = getItem(position)
+        //RangeListViewHolderに値をバインド
+        holder.bind(item)
+    }
+
     private companion object {
         //更新されたデータを判定するためのDiffUtil
         private val rangeListDiffCallback = object : DiffUtil.ItemCallback<String>() {
@@ -21,29 +37,6 @@ class RangeListAdapter(private val listener: OnRangeItemClickListener) :
                 oldText: String,
                 newText: String
             ): Boolean = oldText == newText
-        }
-    }
-
-    interface OnRangeItemClickListener {
-        //RangeListをクリックした時の処理
-        fun onRangeItemClick(range: Int)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RangeListViewHolder {
-        val view = LayoutRangeListItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return RangeListViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: RangeListViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
-        holder.itemView.setOnClickListener {
-            //positionに1を足してAPIの値と合わせる
-            listener.onRangeItemClick(position + 1)
         }
     }
 }
