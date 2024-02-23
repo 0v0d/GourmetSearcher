@@ -13,7 +13,7 @@ GourmetSearchApp
 
 <img src="docs/app.gif" width="320">
 
-### APIキーについて
+### APIKeyについて
 本アプリは[ホットペッパーのグルメサーチAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を使用しています。
 ご利用の際には[こちら](https://webservice.recruit.co.jp/register/)にメールアドレスを登録していただく必要がございます。
 登録していただくと、メールにてAPIKeyが送信されますので、そちらを以下のようにしていただくことで、ご利用可能になります。
