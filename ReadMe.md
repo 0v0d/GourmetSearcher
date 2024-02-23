@@ -20,7 +20,7 @@ GourmetSearchApp
 - APIKeyはプロジェクトのルートディレクトリにある local.properties ファイルに
 
 ```properties
-api_key=YOUR_API_KEY
+API_KEY="YOUR_API_KEY"
 ```
 
 ### 不具合及び使用上の注意
