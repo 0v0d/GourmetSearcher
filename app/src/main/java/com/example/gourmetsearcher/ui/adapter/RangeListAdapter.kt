@@ -7,8 +7,9 @@ import androidx.viewbinding.ViewBinding
 import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
 import com.example.gourmetsearcher.ui.viewholder.RangeListViewHolder
 
+
 class RangeListAdapter(onRangeItemClick: (Int) -> Unit) :
-    BaseListAdapter<String, RangeListViewHolder, Int>(rangeListDiffCallback, onRangeItemClick) {
+    BaseListAdapter<Int, RangeListViewHolder>(rangeListDiffCallback, onRangeItemClick) {
     override fun createViewBinding(parent: ViewGroup): LayoutRangeListItemBinding {
         return LayoutRangeListItemBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -22,29 +23,25 @@ class RangeListAdapter(onRangeItemClick: (Int) -> Unit) :
         onItemClicked: (Int) -> Unit
     ): RangeListViewHolder {
         val binding = viewBinding as LayoutRangeListItemBinding
-        return RangeListViewHolder(binding , onItemClicked)
+        return RangeListViewHolder(binding, onItemClicked)
     }
 
-    override fun bind(holder: RangeListViewHolder, item: String) {
+    override fun bind(holder: RangeListViewHolder, item: Int) {
         holder.bind(item)
-    }
-
-    override fun onViewRecycled(holder: RangeListViewHolder) {
-        holder.unbind()
     }
 
     private companion object {
         // 更新されたデータを判定する
-        private val rangeListDiffCallback = object : DiffUtil.ItemCallback<String>() {
+        private val rangeListDiffCallback = object : DiffUtil.ItemCallback<Int>() {
             override fun areItemsTheSame(
-                oldText: String,
-                newText: String
-            ): Boolean = oldText == newText
+                oldValue: Int,
+                newValue: Int
+            ): Boolean = oldValue == newValue
 
             override fun areContentsTheSame(
-                oldText: String,
-                newText: String
-            ): Boolean = oldText == newText
+                oldValue: Int,
+                newValue: Int
+            ): Boolean = oldValue == newValue
         }
     }
 }
