@@ -9,7 +9,7 @@ import com.example.gourmetsearcher.model.RestaurantData
 import com.example.gourmetsearcher.ui.viewholder.RestaurantListViewHolder
 
 class RestaurantListAdapter(onRestaurantItemClick: (RestaurantData) -> Unit) :
-    BaseListAdapter<RestaurantData, RestaurantListViewHolder, RestaurantData>(
+    BaseListAdapter<RestaurantData, RestaurantListViewHolder>(
         restaurantDataDiffCallback,
         onRestaurantItemClick
     ) {
