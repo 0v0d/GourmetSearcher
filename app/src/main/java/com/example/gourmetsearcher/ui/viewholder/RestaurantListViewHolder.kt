@@ -11,6 +11,7 @@ class RestaurantListViewHolder(
     RecyclerView.ViewHolder(binding.root) {
     fun bind(item: RestaurantData) {
         binding.restaurant = item
+        // レストランリストをクリックした時の処理
         binding.root.setOnClickListener {
             onRestaurantItemClick(item)
         }
