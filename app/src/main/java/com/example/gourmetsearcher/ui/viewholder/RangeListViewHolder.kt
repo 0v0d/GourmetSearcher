@@ -9,18 +9,13 @@ class RangeListViewHolder(
     private val onRangeItemClick: (Int) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     //rangeTextViewに値をバインド
-    fun bind(range: String) {
-        binding.range = range
+    fun bind(range: Int) {
+        binding.range  = range
         binding.root.setOnClickListener {
             //APIの引数に合わせるために+1する
             val apiRange = layoutPosition + 1
             //RangeListをクリックした時の処理
             onRangeItemClick(apiRange)
         }
-    }
-
-    //バインドを解除
-    fun unbind() {
-        binding.range = null
     }
 }

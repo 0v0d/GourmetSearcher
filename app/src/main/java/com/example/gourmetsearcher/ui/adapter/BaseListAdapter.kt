@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder, I>(
+abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>(
     diffCallback: DiffUtil.ItemCallback<T>,
-    private val onItemClicked: (I) -> Unit
+    private val onItemClicked: (T) -> Unit
 ) : ListAdapter<T, VH>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -17,7 +17,7 @@ abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder, I>(
     }
 
     abstract fun createViewBinding(parent: ViewGroup): ViewBinding
-    abstract fun createViewHolder(viewBinding: ViewBinding, onItemClicked: (I) -> Unit): VH
+    abstract fun createViewHolder(viewBinding: ViewBinding, onItemClicked: (T) -> Unit): VH
     override fun onBindViewHolder(holder: VH, position: Int) {
         val item = getItem(position)
         bind(holder, item)
