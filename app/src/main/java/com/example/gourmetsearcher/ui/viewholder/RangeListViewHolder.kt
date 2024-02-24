@@ -1,7 +1,6 @@
 package com.example.gourmetsearcher.ui.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
 
 //RangeListを表示するためのViewHolder
