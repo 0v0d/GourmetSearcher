@@ -5,12 +5,14 @@
 	<string name="search_location">現在地取得</string>
 	<string name="search_input_hint">キーワードを入力</string>
 	<string name="select_range_explanation">検索半径を選択して検索</string>
+	<string name="meter">m</string>
+	<string name="key_word_clear">キーワードをクリア</string>
 	<string-array name="range_array">
-		<item>300m</item>
-		<item>500m</item>
-		<item>1000m</item>
-		<item>2000m</item>
-		<item>3000m</item>
+		<item>300</item>
+		<item>500</item>
+		<item>1000</item>
+		<item>2000</item>
+		<item>3000</item>
 	</string-array>
 
 	<string name="retry">リトライ</string>
