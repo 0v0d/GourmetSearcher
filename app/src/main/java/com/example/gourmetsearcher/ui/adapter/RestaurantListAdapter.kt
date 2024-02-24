@@ -3,24 +3,33 @@ package com.example.gourmetsearcher.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.viewbinding.ViewBinding
 import com.example.gourmetsearcher.databinding.LayoutRestaurantListItemBinding
 import com.example.gourmetsearcher.model.RestaurantData
 import com.example.gourmetsearcher.ui.viewholder.RestaurantListViewHolder
 
-class RestaurantListAdapter(private val onRestaurantItemClick: (RestaurantData) -> Unit) :
-    ListAdapter<RestaurantData, RestaurantListViewHolder>(restaurantDataDiffCallback) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantListViewHolder {
-        val view = LayoutRestaurantListItemBinding.inflate(
+class RestaurantListAdapter(onRestaurantItemClick: (RestaurantData) -> Unit) :
+    BaseListAdapter<RestaurantData, RestaurantListViewHolder, RestaurantData>(
+        restaurantDataDiffCallback,
+        onRestaurantItemClick
+    ) {
+    override fun createViewBinding(parent: ViewGroup): ViewBinding {
+        return LayoutRestaurantListItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return RestaurantListViewHolder(view, onRestaurantItemClick)
     }
 
-    override fun onBindViewHolder(holder: RestaurantListViewHolder, position: Int) {
-        val item = getItem(position)
+    override fun createViewHolder(
+        viewBinding: ViewBinding,
+        onItemClicked: (RestaurantData) -> Unit
+    ): RestaurantListViewHolder {
+        val binding = viewBinding as LayoutRestaurantListItemBinding
+        return RestaurantListViewHolder(binding, onItemClicked)
+    }
+
+    override fun bind(holder: RestaurantListViewHolder, item: RestaurantData) {
         holder.bind(item)
     }
 
@@ -31,17 +40,17 @@ class RestaurantListAdapter(private val onRestaurantItemClick: (RestaurantData) 
     private companion object {
         private val restaurantDataDiffCallback = object : DiffUtil.ItemCallback<RestaurantData>() {
             override fun areItemsTheSame(
-                oldRepositoryData: RestaurantData,
-                newRepositoryData: RestaurantData
+                oldRestaurantData: RestaurantData,
+                newRestaurantData: RestaurantData
             ): Boolean {
-                return oldRepositoryData.id == newRepositoryData.id
+                return oldRestaurantData.id == newRestaurantData.id
             }
 
             override fun areContentsTheSame(
-                oldRepositoryData: RestaurantData,
-                newRepositoryData: RestaurantData
+                oldRestaurantData: RestaurantData,
+                newRestaurantData: RestaurantData
             ): Boolean {
-                return oldRepositoryData == newRepositoryData
+                return oldRestaurantData == newRestaurantData
             }
         }
     }
