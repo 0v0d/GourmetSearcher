@@ -10,7 +10,8 @@
 
 	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:padding="16dp">
 
 		<ProgressBar
 			android:id="@+id/loadingProgressBar"
@@ -22,7 +23,7 @@
 			android:indeterminateTintMode="src_in" />
 
 		<TextView
-			android:id="@+id/errorText"
+			android:id="@+id/permissionDeniedTextView"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
@@ -30,16 +31,41 @@
 			android:textStyle="bold"
 			android:visibility="invisible" />
 
-		<com.google.android.material.button.MaterialButton
-			android:id="@+id/retryButton"
-			style="@style/outlinedButtonStyle"
+		<TextView
+			android:id="@+id/locationErrorTextView"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/errorText"
+			android:layout_below="@id/permissionDeniedTextView"
 			android:layout_centerInParent="true"
-			android:layout_marginTop="10dp"
-			android:onClickListener="@{() -> viewModel.getLocation(context)}"
-			android:text="@string/retry"
+			android:layout_marginTop="8dp"
+			android:text="@string/location_error_message"
+			android:textStyle="bold"
 			android:visibility="invisible" />
+
+		<LinearLayout
+			android:id="@+id/errorButtonLayout"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/locationErrorTextView"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="16dp"
+			android:orientation="horizontal">
+
+			<com.google.android.material.button.MaterialButton
+				android:id="@+id/retryButton"
+				style="@style/outlinedButtonStyle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="8dp"
+				android:onClickListener="@{() -> viewModel.getLocation()}"
+				android:text="@string/retry" />
+
+			<com.google.android.material.button.MaterialButton
+				android:id="@+id/redirectSettingButton"
+				style="@style/outlinedButtonStyle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/setting" />
+		</LinearLayout>
 	</RelativeLayout>
 </layout>
