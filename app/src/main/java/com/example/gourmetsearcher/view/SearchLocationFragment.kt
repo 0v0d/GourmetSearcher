@@ -2,8 +2,10 @@ package com.example.gourmetsearcher.view
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +18,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.gourmetsearcher.R
-import com.example.gourmetsearcher.model.SearchTerms
 import com.example.gourmetsearcher.databinding.FragmentSearchLocationBinding
+import com.example.gourmetsearcher.model.SearchTerms
+import com.example.gourmetsearcher.viewmodel.LocationSearchState
 import com.example.gourmetsearcher.viewmodel.SearchLocationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -26,6 +29,19 @@ class SearchLocationFragment : Fragment() {
     private var _binding: FragmentSearchLocationBinding? = null
     private val binding get() = _binding!!
     private val args: SearchLocationFragmentArgs by navArgs()
+    // パーミッションのリクエスト結果を追跡するための変数
+    private val locationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { hasPermission ->
+            // パーミッションの結果に対する処理
+            val isGranted =
+                hasPermission[Manifest.permission.ACCESS_COARSE_LOCATION] == true ||
+                        hasPermission[Manifest.permission.ACCESS_FINE_LOCATION] == true
+            if (isGranted) {
+                viewModel.getLocation(requireContext())
+            } else {
+                handleLocationPermissionCancel()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,91 +53,111 @@ class SearchLocationFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         checkLocationPermission(requireContext())
         observeViewModel()
+
+        binding.redirectSettingButton.setOnClickListener {
+            openLocationSetting()
+        }
         return binding.root
     }
 
     private fun checkLocationPermission(context: Context) {
-        if (!isGranted()) {
-            // パーミッションがない場合は、リクエスト
-            requestPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (!isLocationPermissionGranted()) {
+            requestLocationPermission()
         } else {
-            // パーミッションがある場合は、位置情報取得
             viewModel.getLocation(context)
         }
     }
 
-    private fun isGranted(): Boolean {
+    private fun isLocationPermissionGranted(): Boolean {
+        val isFineGranted = isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
+        val isCoarseGranted = isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+        return isCoarseGranted || isFineGranted
+    }
+
+    private fun isPermissionGranted(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            permission
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    // パーミッションリクエストの結果を受け取る
-    private val requestPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { hasPermission ->
-            if (hasPermission) {
-                // リクエスト許可時の処理
-                viewModel.getLocation(requireContext())
-            } else {
-                // リクエスト拒否時の処理
-                handleLocationPermissionCancel()
-            }
-        }
+    private fun requestLocationPermission() {
+        val permissions = arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        locationPermissionRequest.launch(permissions)
+    }
 
     private fun handleLocationPermissionCancel() {
-        val isShowPermissionRationale = ActivityCompat.shouldShowRequestPermissionRationale(
-            requireActivity(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-        if (isShowPermissionRationale) {
-            showPermissionExplanationDialog(requireContext())
+        if (shouldShowLocationPermissionRationale()) {
+            showPermissionExplanationDialog()
         } else {
             showError()
         }
     }
 
-    // パーミッションの説明ダイアログを表示
-    private fun showPermissionExplanationDialog(context: Context) {
-        MaterialAlertDialogBuilder(context, R.style.PermissionExplanationDialog)
+    private fun shouldShowLocationPermissionRationale(): Boolean {
+        return ActivityCompat.shouldShowRequestPermissionRationale(
+            requireActivity(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    }
+
+    private fun showPermissionExplanationDialog() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.PermissionExplanationDialog)
             .setTitle(R.string.location_permission_required_title)
             .setMessage(R.string.location_permission_required_message)
-            .setPositiveButton(R.string.ok_button) { _, _ ->
-                requestPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-            }
+            .setPositiveButton(R.string.ok_button) { _, _ -> requestLocationPermission() }
             .create()
             .show()
     }
 
     private fun observeViewModel() {
-        // ViewModelのlocationDataを監視し、UIを更新
         viewModel.locationData.observe(viewLifecycleOwner) { locationData ->
-            // UIの更新処理
-            val searchTerms = SearchTerms(args.inputText, locationData, args.range)
-            navigateToResultListFragment(searchTerms)
+            navigateToResultListFragment(SearchTerms(args.inputText, locationData, args.range))
         }
 
-        // ViewModelのerrorStateを監視し、エラーがあればUIを更新
-        viewModel.errorState.observe(viewLifecycleOwner) { isError ->
-            if (isError) {
-                showError()
+        viewModel.searchState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                LocationSearchState.LOADING -> {
+                    showLoading()
+                }
+
+                LocationSearchState.SUCCESS -> {
+                    binding.loadingProgressBar.isVisible = false
+                }
+
+                else -> {
+                    showError()
+                }
             }
         }
     }
 
-    // 検索結果一覧画面に遷移
     private fun navigateToResultListFragment(searchTerms: SearchTerms) {
         val action = SearchLocationFragmentDirections.actionToResultListFragment(searchTerms)
         findNavController().navigate(action)
     }
 
+    private fun openLocationSetting() {
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
     private fun showError() {
-        binding.loadingProgressBar.isVisible = false
-        binding.retryButton.isVisible = isGranted()
-        binding.errorText.isVisible = true
-        if (isGranted()) {
-            binding.errorText.text = getString(R.string.location_error_message)
+        with(binding) {
+            loadingProgressBar.isVisible = false
+            errorButtonLayout.isVisible = true
+            locationErrorTextView.isVisible = isLocationPermissionGranted()
+            permissionDeniedTextView.isVisible = !isLocationPermissionGranted()
         }
+    }
+
+    private fun showLoading() {
+        binding.loadingProgressBar.isVisible = true
+        binding.errorButtonLayout.isVisible = false
     }
 
     override fun onDestroyView() {
