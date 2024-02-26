@@ -26,6 +26,8 @@ class SearchLocationViewModel @Inject constructor(
     private val _searchState = MutableLiveData<LocationSearchState>()
     val searchState: LiveData<LocationSearchState> get() = _searchState
 
+    private val _openLocationSettingEvent = MutableLiveData<Unit>()
+    val openLocationSettingEvent: LiveData<Unit> get() = _openLocationSettingEvent
     fun getLocation() {
         try {
             _searchState.value = LocationSearchState.LOADING
@@ -52,5 +54,9 @@ class SearchLocationViewModel @Inject constructor(
         //val locationData = LastLocation(34.7010289,135.4955003)//デバッグ用の仮の座標
         val locationData = LastLocation(location.latitude, location.longitude)
         _locationData.value = locationData
+    }
+
+    fun onOpenLocationSettingClicked() {
+        _openLocationSettingEvent.value = Unit
     }
 }

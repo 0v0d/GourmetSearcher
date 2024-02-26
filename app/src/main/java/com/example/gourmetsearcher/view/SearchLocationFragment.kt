@@ -1,7 +1,6 @@
 package com.example.gourmetsearcher.view
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -23,12 +22,15 @@ import com.example.gourmetsearcher.model.SearchTerms
 import com.example.gourmetsearcher.viewmodel.LocationSearchState
 import com.example.gourmetsearcher.viewmodel.SearchLocationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchLocationFragment : Fragment() {
     private val viewModel: SearchLocationViewModel by viewModels()
     private var _binding: FragmentSearchLocationBinding? = null
     private val binding get() = _binding!!
     private val args: SearchLocationFragmentArgs by navArgs()
+
     // パーミッションのリクエスト結果を追跡するための変数
     private val locationPermissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { hasPermission ->
@@ -37,7 +39,7 @@ class SearchLocationFragment : Fragment() {
                 hasPermission[Manifest.permission.ACCESS_COARSE_LOCATION] == true ||
                         hasPermission[Manifest.permission.ACCESS_FINE_LOCATION] == true
             if (isGranted) {
-                viewModel.getLocation(requireContext())
+                viewModel.getLocation()
             } else {
                 handleLocationPermissionCancel()
             }
@@ -51,20 +53,16 @@ class SearchLocationFragment : Fragment() {
         _binding = FragmentSearchLocationBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        checkLocationPermission(requireContext())
+        checkLocationPermission()
         observeViewModel()
-
-        binding.redirectSettingButton.setOnClickListener {
-            openLocationSetting()
-        }
         return binding.root
     }
 
-    private fun checkLocationPermission(context: Context) {
+    private fun checkLocationPermission() {
         if (!isLocationPermissionGranted()) {
             requestLocationPermission()
         } else {
-            viewModel.getLocation(context)
+            viewModel.getLocation()
         }
     }
 
@@ -124,14 +122,14 @@ class SearchLocationFragment : Fragment() {
                     showLoading()
                 }
 
-                LocationSearchState.SUCCESS -> {
-                    binding.loadingProgressBar.isVisible = false
-                }
-
                 else -> {
                     showError()
                 }
             }
+        }
+
+        viewModel.openLocationSettingEvent.observe(viewLifecycleOwner) {
+            openLocationSetting()
         }
     }
 
