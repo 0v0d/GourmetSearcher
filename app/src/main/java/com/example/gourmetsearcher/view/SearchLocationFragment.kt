@@ -59,9 +59,11 @@ class SearchLocationFragment : Fragment() {
     }
 
     private fun checkLocationPermission() {
+        // 位置情報のパーミッションが許可されていない場合はリクエストする
         if (!isLocationPermissionGranted()) {
             requestLocationPermission()
         } else {
+            // 位置情報の取得を開始
             viewModel.getLocation()
         }
     }
@@ -69,6 +71,7 @@ class SearchLocationFragment : Fragment() {
     private fun isLocationPermissionGranted(): Boolean {
         val isFineGranted = isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
         val isCoarseGranted = isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+        // どちらかのパーミッションが許可されていればtrueを返す
         return isCoarseGranted || isFineGranted
     }
 
@@ -88,13 +91,16 @@ class SearchLocationFragment : Fragment() {
     }
 
     private fun handleLocationPermissionCancel() {
+        // パーミッションが許可されなかった場合の処理
         if (shouldShowLocationPermissionRationale()) {
+            // パーミッションの説明ダイアログを表示
             showPermissionExplanationDialog()
         } else {
             showError()
         }
     }
 
+    // パーミッションの説明ダイアログを表示するかどうかを返す
     private fun shouldShowLocationPermissionRationale(): Boolean {
         return ActivityCompat.shouldShowRequestPermissionRationale(
             requireActivity(),
@@ -128,6 +134,7 @@ class SearchLocationFragment : Fragment() {
             }
         }
 
+        // 位置情報の設定画面を開くイベントを監視
         viewModel.openLocationSettingEvent.observe(viewLifecycleOwner) {
             openLocationSetting()
         }
@@ -145,7 +152,7 @@ class SearchLocationFragment : Fragment() {
     }
 
     private fun showError() {
-        with(binding) {
+        binding.apply {
             loadingProgressBar.isVisible = false
             errorButtonLayout.isVisible = true
             locationErrorTextView.isVisible = isLocationPermissionGranted()
