@@ -2,7 +2,7 @@
 
 ## アプリ名
 
-GourmetSearchApp
+GourmetSearcher
 
 ### [プロジェクトのリポジトリ (GitHub)](https://github.com/0v0d/GourmetSearcher)
 
