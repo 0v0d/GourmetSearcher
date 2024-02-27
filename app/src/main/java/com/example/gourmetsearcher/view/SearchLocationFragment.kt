@@ -19,7 +19,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.databinding.FragmentSearchLocationBinding
 import com.example.gourmetsearcher.model.SearchTerms
-import com.example.gourmetsearcher.viewmodel.LocationSearchState
+import com.example.gourmetsearcher.state.LocationSearchState
+
 import com.example.gourmetsearcher.viewmodel.SearchLocationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,11 +34,10 @@ class SearchLocationFragment : Fragment() {
 
     // パーミッションのリクエスト結果を追跡するための変数
     private val locationPermissionRequest =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { hasPermission ->
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { it ->
             // パーミッションの結果に対する処理
-            val isGranted =
-                hasPermission[Manifest.permission.ACCESS_COARSE_LOCATION] == true ||
-                        hasPermission[Manifest.permission.ACCESS_FINE_LOCATION] == true
+            val isGranted = it[Manifest.permission.ACCESS_COARSE_LOCATION] == true ||
+                    it[Manifest.permission.ACCESS_FINE_LOCATION] == true
             if (isGranted) {
                 viewModel.getLocation()
             } else {
@@ -113,12 +113,12 @@ class SearchLocationFragment : Fragment() {
             loadingProgressBar.isVisible = false
             errorButtonLayout.isVisible = true
             locationErrorTextView.isVisible = true
-            locationErrorTextView.text =errorText()
+            locationErrorTextView.text = errorText()
         }
     }
 
     private fun errorText(): String {
-       return getString(
+        return getString(
             if (isLocationPermissionGranted()) {
                 R.string.location_error_message
             } else {

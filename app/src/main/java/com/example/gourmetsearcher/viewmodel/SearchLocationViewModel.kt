@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gourmetsearcher.di.LocationProvider
 import com.example.gourmetsearcher.model.CurrentLocation
+import com.example.gourmetsearcher.state.LocationSearchState
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnCompleteListener
@@ -15,11 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-enum class LocationSearchState {
-    LOADING,
-    ERROR,
-}
 
 @HiltViewModel
 class SearchLocationViewModel @Inject constructor(
