@@ -108,6 +108,25 @@ class SearchLocationFragment : Fragment() {
         )
     }
 
+    private fun showError() {
+        binding.apply {
+            loadingProgressBar.isVisible = false
+            errorButtonLayout.isVisible = true
+            locationErrorTextView.isVisible = true
+            locationErrorTextView.text =errorText()
+        }
+    }
+
+    private fun errorText(): String {
+       return getString(
+            if (isLocationPermissionGranted()) {
+                R.string.location_error_message
+            } else {
+                R.string.location_permission_denied_message
+            }
+        )
+    }
+
     private fun showPermissionExplanationDialog() {
         MaterialAlertDialogBuilder(requireContext(), R.style.PermissionExplanationDialog)
             .setTitle(R.string.location_permission_required_title)
@@ -118,25 +137,33 @@ class SearchLocationFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        // 位置情報の取得結果を監視
         viewModel.locationData.observe(viewLifecycleOwner) { locationData ->
             navigateToResultListFragment(SearchTerms(args.inputText, locationData, args.range))
         }
 
+        //位置情報の取得状態を監視
         viewModel.searchState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 LocationSearchState.LOADING -> {
                     showLoading()
                 }
-
+                // 位置情報の取得に失敗した場合の処理
                 else -> {
                     showError()
                 }
             }
         }
 
+
         // 位置情報の設定画面を開くイベントを監視
         viewModel.openLocationSettingEvent.observe(viewLifecycleOwner) {
             openLocationSetting()
+        }
+
+        viewModel.retryEvent.observe(viewLifecycleOwner) {
+            showLoading()
+            checkLocationPermission()
         }
     }
 
@@ -146,23 +173,17 @@ class SearchLocationFragment : Fragment() {
     }
 
     private fun openLocationSetting() {
+        //新たなタスクで位置情報の設定画面を開く
         val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
 
-    private fun showError() {
-        binding.apply {
-            loadingProgressBar.isVisible = false
-            errorButtonLayout.isVisible = true
-            locationErrorTextView.isVisible = isLocationPermissionGranted()
-            permissionDeniedTextView.isVisible = !isLocationPermissionGranted()
-        }
-    }
 
     private fun showLoading() {
         binding.loadingProgressBar.isVisible = true
         binding.errorButtonLayout.isVisible = false
+        binding.locationErrorTextView.isVisible = false
     }
 
     override fun onDestroyView() {
