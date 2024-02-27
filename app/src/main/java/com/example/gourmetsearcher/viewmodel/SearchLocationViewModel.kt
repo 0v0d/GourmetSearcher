@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gourmetsearcher.di.LocationProvider
-import com.example.gourmetsearcher.model.LastLocation
+import com.example.gourmetsearcher.model.CurrentLocation
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnCompleteListener
@@ -25,8 +25,8 @@ enum class LocationSearchState {
 class SearchLocationViewModel @Inject constructor(
     private val locationProvider: LocationProvider,
 ) : ViewModel() {
-    private val _locationData = MutableLiveData<LastLocation>()
-    val locationData: LiveData<LastLocation> get() = _locationData
+    private val _locationData = MutableLiveData<CurrentLocation>()
+    val locationData: LiveData<CurrentLocation> get() = _locationData
 
     private val _searchState = MutableLiveData<LocationSearchState>()
     val searchState: LiveData<LocationSearchState> get() = _searchState
@@ -70,7 +70,7 @@ class SearchLocationViewModel @Inject constructor(
 
     private fun handleLocationSuccess(location: Location) {
         //val locationData = LastLocation(34.7010289,135.4955003)//デバッグ用の仮の座標
-        val locationData = LastLocation(location.latitude, location.longitude)
+        val locationData = CurrentLocation(location.latitude, location.longitude)
         Log.d("SearchLocationViewModel", "locationData: $locationData")
         _locationData.value = locationData
     }
