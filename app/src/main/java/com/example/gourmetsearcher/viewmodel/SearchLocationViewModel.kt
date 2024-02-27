@@ -1,7 +1,6 @@
 package com.example.gourmetsearcher.viewmodel
 
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -65,9 +64,8 @@ class SearchLocationViewModel @Inject constructor(
     }
 
     private fun handleLocationSuccess(location: Location) {
-        val locationData = CurrentLocation(34.7010289,135.4955003)//デバッグ用の仮の座標
-        //val locationData = CurrentLocation(location.latitude, location.longitude)
-        Log.d("SearchLocationViewModel", "locationData: $locationData")
+        // val locationData = CurrentLocation(34.7010289,135.4955003)//デバッグ用の仮の座標
+        val locationData = CurrentLocation(location.latitude, location.longitude)
         _locationData.value = locationData
     }
 
