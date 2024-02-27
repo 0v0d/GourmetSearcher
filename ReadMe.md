@@ -4,14 +4,14 @@
 
 GourmetSearchApp
 
-### [プロジェクトのリポジトリ (GitHub)](https://github.com/0v0d/GourmetSearchApp)
+### [プロジェクトのリポジトリ (GitHub)](https://github.com/0v0d/GourmetSearcher)
 
 
 ## アプリ仕様
 
 現在位置付近のレストランをキーワードで検索できるAndroidアプリです。
 
-<img src="docs/app.gif" width="320">
+<img src="docs/app.gif" width="314" alt="アプリのデモ動画">
 
 ### APIKeyについて
 本アプリは[ホットペッパーのグルメサーチAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を使用しています。
