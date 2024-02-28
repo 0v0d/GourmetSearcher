@@ -37,8 +37,7 @@ data class RestaurantData(
     val open: String,
     @Json(name = "close")
     val close: String,
-
-    ) : Parcelable
+) : Parcelable
 
 @Parcelize
 data class LargeAreaData(

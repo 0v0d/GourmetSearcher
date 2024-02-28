@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.example.gourmetsearcher.repository.HotPepperRepository
-import com.example.gourmetsearcher.state.SearchState
-import com.example.gourmetsearcher.model.SearchTerms
 import com.example.gourmetsearcher.model.HotPepperResponse
 import com.example.gourmetsearcher.model.RestaurantData
 import com.example.gourmetsearcher.model.Results
+import com.example.gourmetsearcher.model.SearchTerms
+import com.example.gourmetsearcher.repository.HotPepperRepository
+import com.example.gourmetsearcher.state.SearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
