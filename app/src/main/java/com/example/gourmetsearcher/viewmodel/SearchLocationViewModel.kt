@@ -5,20 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gourmetsearcher.di.LocationProvider
 import com.example.gourmetsearcher.model.CurrentLocation
+import com.example.gourmetsearcher.repository.SearchLocationRepository
 import com.example.gourmetsearcher.state.LocationSearchState
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnCompleteListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchLocationViewModel @Inject constructor(
-    private val locationProvider: LocationProvider,
+    private val locationRepository: SearchLocationRepository,
 ) : ViewModel() {
     private val _locationData = MutableLiveData<CurrentLocation>()
     val locationData: LiveData<CurrentLocation> get() = _locationData
@@ -31,40 +29,30 @@ class SearchLocationViewModel @Inject constructor(
 
     private val _retryEvent = MutableLiveData<Unit>()
     val retryEvent: LiveData<Unit> get() = _retryEvent
+
     fun getLocation() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                searchLocation()
+                performSearch()
             } catch (e: SecurityException) {
                 _searchState.postValue(LocationSearchState.ERROR)
             }
         }
     }
 
-    private fun searchLocation() {
-        _searchState.postValue(LocationSearchState.LOADING)
-        val fusedLocationClient = locationProvider.getFusedLocationProviderClient()
-        fusedLocationClient.getCurrentLocation(
-            Priority.PRIORITY_LOW_POWER,
-            CancellationTokenSource().token
-        )
-            .addOnCompleteListener(locationCompleteListener)
-    }
-
-    private val locationCompleteListener = OnCompleteListener { task ->
-        try {
-            if (task.isSuccessful && task.result != null) {
-                handleLocationSuccess(task.result)
-            } else {
-                _searchState.value = LocationSearchState.ERROR
-            }
-        } catch (e: Exception) {
-            _searchState.value = LocationSearchState.ERROR
+    private suspend fun performSearch() {
+        val location =  withContext(Dispatchers.IO) {
+            locationRepository.getLocation()
+        }
+        if (location != null) {
+            handleLocationSuccess(location)
+        } else {
+            _searchState.postValue(LocationSearchState.ERROR)
         }
     }
 
     private fun handleLocationSuccess(location: Location) {
-        // val locationData = CurrentLocation(34.7010289,135.4955003)//デバッグ用の仮の座標
+        //val locationData = CurrentLocation(34.7010289,135.4955003)//デバッグ用の仮の座標
         val locationData = CurrentLocation(location.latitude, location.longitude)
         _locationData.value = locationData
     }
