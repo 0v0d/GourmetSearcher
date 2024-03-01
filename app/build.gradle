@@ -63,7 +63,7 @@ dependencies {
     // APIとの通信用のライブラリ
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     // Jsonパーサライブラリ
-    implementation 'com.squareup.moshi:moshi-kotlin:1.12.0'
+    implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
     // MoshiのConverterを使うためのJsonパースライブラリ
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     //画像表示ライブラリ

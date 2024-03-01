@@ -22,7 +22,6 @@
 			android:indeterminateTint="@color/blue"
 			android:indeterminateTintMode="src_in" />
 
-		
 		<TextView
 			android:id="@+id/locationErrorTextView"
 			android:layout_width="wrap_content"
