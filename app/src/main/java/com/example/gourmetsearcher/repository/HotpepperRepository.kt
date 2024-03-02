@@ -1,8 +1,8 @@
 package com.example.gourmetsearcher.repository
 
 import com.example.gourmetsearcher.BuildConfig
-import com.example.gourmetsearcher.model.SearchTerms
 import com.example.gourmetsearcher.model.HotPepperResponse
+import com.example.gourmetsearcher.model.SearchTerms
 import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
 import retrofit2.Response
 import javax.inject.Inject

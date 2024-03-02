@@ -11,9 +11,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gourmetsearcher.R
-import com.example.gourmetsearcher.state.SearchState
 import com.example.gourmetsearcher.databinding.FragmentResultListBinding
 import com.example.gourmetsearcher.model.RestaurantData
+import com.example.gourmetsearcher.state.SearchState
 import com.example.gourmetsearcher.ui.adapter.RestaurantListAdapter
 import com.example.gourmetsearcher.viewmodel.RestaurantListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,7 +64,7 @@ class RestaurantListFragment : Fragment() {
         when (state) {
             SearchState.EMPTY_RESULT -> showError(state, R.string.empty_result_message)
             SearchState.NETWORK_ERROR -> showError(state, R.string.network_error_message)
-            SearchState.NONE -> invisibleError()
+            SearchState.DONE -> invisibleError()
             SearchState.LOADING -> showLoading()
         }
     }
