@@ -21,9 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
     private val repository: HotPepperRepository
-) :
-    ViewModel() {
-    private val _restaurantData = MutableLiveData<HotPepperResponse>()
+) : ViewModel() {
+    private val _restaurantData = MutableLiveData(HotPepperResponse(Results(emptyList())))
     val restaurantData: LiveData<List<RestaurantData>> = _restaurantData.map { it.results.shops }
 
     private val _searchState = MutableLiveData<SearchState>()
@@ -31,49 +30,45 @@ class RestaurantListViewModel @Inject constructor(
     private lateinit var searchTerm: SearchTerms
 
     fun searchRestaurants(searchTerms: SearchTerms) {
+        _searchState.value = SearchState.LOADING
         viewModelScope.launch {
             try {
                 searchTerm = searchTerms
                 performSearch(searchTerms)
             } catch (e: Exception) {
-                // 例外処理
                 _searchState.postValue(SearchState.EMPTY_RESULT)
-                _restaurantData.postValue(HotPepperResponse(Results(emptyList())))
             }
         }
     }
 
     private suspend fun performSearch(searchTerms: SearchTerms) {
-        _searchState.postValue(SearchState.LOADING)
         val response = withContext(Dispatchers.IO) {
             repository.searchHotPepperRepository(searchTerms)
         }
+        handleResponse(response)
+    }
 
-        if (response == null) {
-            handleError(SearchState.NETWORK_ERROR)
+    private fun handleResponse(response: Response<HotPepperResponse>?) {
+        if (response?.body() == null) {
+            _searchState.postValue(SearchState.NETWORK_ERROR)
             return
         }
-        val isNotNullOrEmpty = !response.body()?.results?.shops.isNullOrEmpty()
 
-        if (isNotNullOrEmpty && response.isSuccessful) {
-            handleSuccessfulResponse(response)
-        } else {
-            handleError(SearchState.EMPTY_RESULT)
+        val isResultEmpty = response.body()?.results?.shops?.isEmpty() ?: true
+
+        if (response.isSuccessful && !isResultEmpty) {
+            _searchState.postValue(SearchState.DONE)
+            _restaurantData.postValue(response.body())
+            return
         }
-    }
-
-    private fun handleError(state: SearchState) {
-        _searchState.postValue(state)
-        _restaurantData.postValue(HotPepperResponse(Results(emptyList())))
-    }
-
-    private fun handleSuccessfulResponse(response: Response<HotPepperResponse>) {
-        _restaurantData.postValue(response.body())
-        _searchState.postValue(SearchState.NONE)
+        _searchState.postValue(SearchState.EMPTY_RESULT)
     }
 
     fun retrySearch() {
-        _searchState.postValue(SearchState.LOADING)
+        if (searchTerm.keyword.isEmpty()) {
+            return
+        }
+        _searchState.value = SearchState.LOADING
         searchRestaurants(searchTerm)
     }
 }
