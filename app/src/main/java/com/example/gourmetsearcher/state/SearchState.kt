@@ -1,7 +1,7 @@
 package com.example.gourmetsearcher.state
 
 enum class SearchState {
-    NONE,
+    DONE,
     NETWORK_ERROR,
     EMPTY_RESULT,
     LOADING
