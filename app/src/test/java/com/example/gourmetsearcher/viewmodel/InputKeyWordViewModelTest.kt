@@ -38,7 +38,7 @@ class InputKeyWordViewModelTest {
     }
 
     @After
-    fun cleanup() {
+    fun cleanUp() {
         viewModel.historyList.removeObserver(observer)
     }
 
@@ -69,4 +69,3 @@ class InputKeyWordViewModelTest {
         verify(mockRepository, times(2)).getHistoryList()
     }
 }
-
