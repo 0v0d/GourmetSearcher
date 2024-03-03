@@ -3,8 +3,11 @@ package com.example.gourmetsearcher.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
+import org.junit.After
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -28,20 +31,27 @@ class InputKeyWordViewModelTest {
 
     private lateinit var viewModel: InputKeyWordViewModel
 
-    @org.junit.Test
-    fun testIsNotInputEmpty() {
+    @Before
+    fun setUp() {
         viewModel = InputKeyWordViewModel(mockRepository)
+        viewModel.historyList.observeForever(observer)
+    }
+
+    @After
+    fun cleanup() {
+        viewModel.historyList.removeObserver(observer)
+    }
+
+    @Test
+    fun testIsNotInputEmpty() {
         assert(viewModel.isNotInputEmpty("test"))
         assert(!viewModel.isNotInputEmpty(""))
     }
 
-    @org.junit.Test
+    @Test
     fun testSaveAndGetHistoryItem() {
         val testItem = "test"
         `when`(mockRepository.getHistoryList()).thenReturn(listOf(testItem))
-
-        viewModel = InputKeyWordViewModel(mockRepository)
-        viewModel.historyList.observeForever(observer)
 
         viewModel.saveHistoryItem(testItem)
 
@@ -52,13 +62,11 @@ class InputKeyWordViewModelTest {
         assertTrue(historyList?.contains(testItem) ?: false)
     }
 
-
-    @org.junit.Test
+    @Test
     fun testClearHistory() {
-        viewModel = InputKeyWordViewModel(mockRepository)
-        viewModel.historyList.observeForever(observer)
         viewModel.clearHistory()
         verify(mockRepository, times(1)).clearHistory()
         verify(mockRepository, times(2)).getHistoryList()
     }
 }
+
