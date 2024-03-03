@@ -10,7 +10,7 @@
 			type="com.example.gourmetsearcher.viewmodel.InputKeyWordViewModel" />
 	</data>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
@@ -46,49 +46,58 @@
 			</com.google.android.material.textfield.TextInputLayout>
 		</com.google.android.material.card.MaterialCardView>
 
-		<TextView
-			android:id="@+id/selectRangeExplanation"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
-			android:text="@string/select_range_explanation"
-			android:textSize="18sp"
-			android:visibility="invisible"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
 
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/searchListRecyclerView"
+		<ScrollView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="5dp"
-			android:visibility="invisible"
-			app:layout_constraintTop_toBottomOf="@+id/selectRangeExplanation"
-			tools:listitem="@layout/layout_range_list_item"
-			tools:itemCount="5" />
+			android:layout_height="match_parent"
+			android:layout_below="@+id/materialCardView">
 
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@+id/keyWordListRecyclerView"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="5dp"
-			app:layout_constraintTop_toBottomOf="@+id/selectRangeExplanation"
-			tools:itemCount="5"
-			tools:listitem="@layout/layout_key_word_history_list_item" />
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
 
-		<com.google.android.material.button.MaterialButton
-			android:id="@+id/keyWordClearButton"
-			style="@style/outlinedButtonStyle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="5dp"
-			android:layout_marginStart="5dp"
-			android:layout_marginEnd="5dp"
-			android:text="@string/key_word_clear"
-			android:onClickListener="@{() -> viewModel.clearHistory()}"
-			app:layout_constraintStart_toStartOf="@+id/keyWordListRecyclerView"
-			app:layout_constraintTop_toBottomOf="@+id/keyWordListRecyclerView"
-			tools:ignore="VisualLintButtonSize" />
-	</androidx.constraintlayout.widget.ConstraintLayout>
+				<TextView
+					android:id="@+id/selectRangeExplanation"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerHorizontal="true"
+					android:layout_marginStart="5dp"
+					android:text="@string/select_range_explanation"
+					android:textSize="18sp"
+					android:visibility="invisible" />
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/searchListRecyclerView"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/selectRangeExplanation"
+					android:layout_marginTop="5dp"
+					android:visibility="invisible"
+					tools:itemCount="5"
+					tools:listitem="@layout/layout_range_list_item" />
+
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/keyWordListRecyclerView"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					tools:itemCount="5"
+					tools:listitem="@layout/layout_key_word_history_list_item" />
+
+				<com.google.android.material.button.MaterialButton
+					android:id="@+id/keyWordClearButton"
+					style="@style/outlinedButtonStyle"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/keyWordListRecyclerView"
+					android:layout_marginStart="5dp"
+					android:layout_marginTop="5dp"
+					android:layout_marginEnd="5dp"
+					android:onClickListener="@{() -> viewModel.clearHistory()}"
+					android:text="@string/key_word_clear"
+					app:layout_constraintStart_toStartOf="@+id/keyWordListRecyclerView"
+					app:layout_constraintTop_toBottomOf="@+id/keyWordListRecyclerView"
+					tools:ignore="VisualLintButtonSize" />
+			</RelativeLayout>
+		</ScrollView>
+	</RelativeLayout>
 </layout>
