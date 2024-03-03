@@ -18,8 +18,9 @@ import com.example.gourmetsearcher.repository.HotPepperRepository
 import com.example.gourmetsearcher.state.SearchState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import okhttp3.ResponseBody
 import org.junit.After
@@ -76,7 +77,7 @@ class RestaurantListViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
-        Dispatchers.setMain(Dispatchers.Unconfined)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         viewModel = RestaurantListViewModel(repository)
         viewModel.restaurantData.observeForever(restaurantDataObserver)
         viewModel.searchState.observeForever(searchStateObserver)
@@ -89,63 +90,53 @@ class RestaurantListViewModelTest {
     }
 
     @Test
-    fun `searchRestaurants should update searchState and restaurantData on successful response`() {
-        val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-
-        `when`(repository.searchHotPepperRepository(searchTerms))
-            .thenReturn(Response.success(response))
-
-        viewModel.searchRestaurants(searchTerms)
-
-        verify(searchStateObserver).onChanged(SearchState.LOADING)
-        verify(restaurantDataObserver).onChanged(response.results.shops)
-        verify(searchStateObserver).onChanged(SearchState.DONE)
-    }
+    fun `searchRestaurants should update searchState and restaurantData on successful response`() =
+        runTest {
+            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
+            `when`(repository.searchHotPepperRepository(searchTerms))
+                .thenReturn(Response.success(response))
+            viewModel.searchRestaurants(searchTerms)
+            verify(searchStateObserver).onChanged(SearchState.LOADING)
+            verify(restaurantDataObserver).onChanged(response.results.shops)
+            verify(searchStateObserver).onChanged(SearchState.DONE)
+        }
 
     @Test
-    fun `searchRestaurants should update searchState and restaurantData on network error`() {
-        val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-        val response = Response.error<HotPepperResponse>(500, ResponseBody.create(null, ""))
-
-        `when`(repository.searchHotPepperRepository(searchTerms))
-            .thenReturn(response)
-
-        viewModel.searchRestaurants(searchTerms)
-
-        verify(searchStateObserver).onChanged(SearchState.LOADING)
-        verify(restaurantDataObserver).onChanged(response.body()?.results?.shops ?: emptyList())
-        verify(searchStateObserver).onChanged(SearchState.NETWORK_ERROR)
-    }
-
-    @Test
-    fun `searchRestaurants should update searchState and restaurantData on empty response`() {
-        val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-        val response = HotPepperResponse(Results(emptyList()))
-        `when`(repository.searchHotPepperRepository(searchTerms))
-            .thenReturn(Response.success(response))
-
-        viewModel.searchRestaurants(searchTerms)
-
-        verify(searchStateObserver).onChanged(SearchState.LOADING)
-        verify(restaurantDataObserver).onChanged(response.results.shops)
-        verify(searchStateObserver).onChanged(SearchState.EMPTY_RESULT)
-    }
-
-    @Test
-    fun `retrySearch should call searchRestaurants with the previous search terms`() {
-        // Arrange
-        val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-        val response = Response.success(HotPepperResponse(Results(emptyList())))
-        runBlocking {
+    fun `searchRestaurants should update searchState and restaurantData on network error`() =
+        runTest {
+            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
+            val response = Response.error<HotPepperResponse>(500, ResponseBody.create(null, ""))
             `when`(repository.searchHotPepperRepository(searchTerms))
                 .thenReturn(response)
+            viewModel.searchRestaurants(searchTerms)
+            verify(searchStateObserver).onChanged(SearchState.LOADING)
+            verify(restaurantDataObserver).onChanged(response.body()?.results?.shops ?: emptyList())
+            verify(searchStateObserver).onChanged(SearchState.NETWORK_ERROR)
+        }
 
+    @Test
+    fun `searchRestaurants should update searchState and restaurantData on empty response`() =
+        runTest {
+            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
+            val response = HotPepperResponse(Results(emptyList()))
+            `when`(repository.searchHotPepperRepository(searchTerms))
+                .thenReturn(Response.success(response))
+            viewModel.searchRestaurants(searchTerms)
+            verify(searchStateObserver).onChanged(SearchState.LOADING)
+            verify(restaurantDataObserver).onChanged(response.results.shops)
+            verify(searchStateObserver).onChanged(SearchState.EMPTY_RESULT)
+        }
+
+    @Test
+    fun `retrySearch should call searchRestaurants with the previous search terms`() =
+        runTest {
+            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
+            val response = Response.success(HotPepperResponse(Results(emptyList())))
+            `when`(repository.searchHotPepperRepository(searchTerms))
+                .thenReturn(response)
             viewModel.searchRestaurants(searchTerms)
             assertEquals(response.body()?.results?.shops, viewModel.restaurantData.value)
-
             viewModel.retrySearch()
-
             assertEquals(response.body()?.results?.shops, viewModel.restaurantData.value)
         }
-    }
 }
