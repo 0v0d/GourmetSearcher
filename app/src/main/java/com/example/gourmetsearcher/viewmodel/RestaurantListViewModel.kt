@@ -18,17 +18,27 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
+/**
+ * レストラン検索画面のViewModel
+ * @param repository レストラン情報を取得するRepository
+ */
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
     private val repository: HotPepperRepository
 ) : ViewModel() {
     private val _restaurantData = MutableLiveData(HotPepperResponse(Results(emptyList())))
+    /** レストラン情報 */
     val restaurantData: LiveData<List<RestaurantData>> = _restaurantData.map { it.results.shops }
 
     private val _searchState = MutableLiveData<SearchState>()
+    /** 検索状態 */
     val searchState: LiveData<SearchState> = _searchState
     private lateinit var searchTerm: SearchTerms
 
+    /**
+     * レストラン検索
+     * @param searchTerms 検索条件
+     */
     fun searchRestaurants(searchTerms: SearchTerms) {
         _searchState.value = SearchState.LOADING
         viewModelScope.launch {
@@ -41,6 +51,10 @@ class RestaurantListViewModel @Inject constructor(
         }
     }
 
+    /**
+     * APIから検索結果を取得する
+     * @param searchTerms 検索条件
+     */
     private suspend fun performSearch(searchTerms: SearchTerms) {
         val response = withContext(Dispatchers.IO) {
             repository.searchHotPepperRepository(searchTerms)
@@ -48,6 +62,10 @@ class RestaurantListViewModel @Inject constructor(
         handleResponse(response)
     }
 
+    /**
+     * レスポンスの処理
+     * @param response HotPepperResponseAPIからのレスポンス
+     */
     private fun handleResponse(response: Response<HotPepperResponse>?) {
         if (response?.body() == null) {
             _searchState.postValue(SearchState.NETWORK_ERROR)
@@ -64,6 +82,10 @@ class RestaurantListViewModel @Inject constructor(
         _searchState.postValue(SearchState.EMPTY_RESULT)
     }
 
+    /**
+     * 検索結果が空でないかを返す
+     * @return true: 検索結果が空でない, false: 検索結果が空
+     */
     fun retrySearch() {
         if (searchTerm.keyword.isEmpty()) {
             return

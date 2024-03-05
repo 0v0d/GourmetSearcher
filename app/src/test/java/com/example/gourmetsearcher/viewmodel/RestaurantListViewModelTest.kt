@@ -60,8 +60,6 @@ class RestaurantListViewModelTest {
                     "Station",
                     LargeAreaData("Large Area"),
                     SmallAreaData("Small Area"),
-                    0.0,
-                    0.0,
                     GenreData("Genre"),
                     BudgetData("Budget"),
                     "Access",
@@ -89,8 +87,14 @@ class RestaurantListViewModelTest {
         Dispatchers.resetMain()
     }
 
+    /**
+     * ホットペッパーグルメAPIからのレスポンスが成功した場合のテスト
+     * 検索状態がLOADINGからDONEに変わること
+     * レストラン情報が更新されること
+     * 検索状態がDONEに変わること
+     */
     @Test
-    fun `searchRestaurants should update searchState and restaurantData on successful response`() =
+    fun searchHotPepperRepositorySuccess() =
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
             `when`(repository.searchHotPepperRepository(searchTerms))
@@ -101,8 +105,14 @@ class RestaurantListViewModelTest {
             verify(searchStateObserver).onChanged(SearchState.DONE)
         }
 
+    /**
+     * ホットペッパーグルメAPIからのレスポンスが失敗した場合のテスト
+     * 検索状態がLOADINGからNETWORK_ERRORに変わること
+     * レストラン情報が更新されること
+     * 検索状態がNETWORK_ERRORに変わること
+     */
     @Test
-    fun `searchRestaurants should update searchState and restaurantData on network error`() =
+    fun searchHotPepperRepositoryNetWorkErrorResponse() =
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
             val response = Response.error<HotPepperResponse>(500, ResponseBody.create(null, ""))
@@ -114,8 +124,14 @@ class RestaurantListViewModelTest {
             verify(searchStateObserver).onChanged(SearchState.NETWORK_ERROR)
         }
 
+    /**
+     * ホットペッパーグルメAPIからのレスポンスが空の場合のテスト
+     * 検索状態がLOADINGからEMPTY_RESULTに変わること
+     * レストラン情報が更新されること
+     * 検索状態がEMPTY_RESULTに変わること
+     */
     @Test
-    fun `searchRestaurants should update searchState and restaurantData on empty response`() =
+    fun searchHotPepperRepositoryEmptyResponse() =
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
             val response = HotPepperResponse(Results(emptyList()))
@@ -127,8 +143,11 @@ class RestaurantListViewModelTest {
             verify(searchStateObserver).onChanged(SearchState.EMPTY_RESULT)
         }
 
+    /**
+     * ホットペッパーグルメAPIからのレスポンスがnullの場合のテスト
+     */
     @Test
-    fun `retrySearch should call searchRestaurants with the previous search terms`() =
+    fun searchHotPepperRepositoryRetrySearch() =
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
             val response = Response.success(HotPepperResponse(Results(emptyList())))
