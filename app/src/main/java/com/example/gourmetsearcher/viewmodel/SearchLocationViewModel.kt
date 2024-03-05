@@ -14,53 +14,71 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/**
+ * 現在地を取得するためのViewModel
+ * @param locationRepository 現在地を取得するためのリポジトリ
+ */
 @HiltViewModel
 class SearchLocationViewModel @Inject constructor(
     private val locationRepository: SearchLocationRepository,
 ) : ViewModel() {
     private val _locationData = MutableLiveData<CurrentLocation>()
+    /** 現在地のデータ */
     val locationData: LiveData<CurrentLocation> get() = _locationData
 
-    private val _searchState = MutableLiveData<LocationSearchState>()
-    val searchState: LiveData<LocationSearchState> get() = _searchState
-
     private val _openLocationSettingEvent = MutableLiveData<Unit>()
+    /**現在地取得に失敗した場合に設定画面を開くためのイベント*/
     val openLocationSettingEvent: LiveData<Unit> get() = _openLocationSettingEvent
 
     private val _retryEvent = MutableLiveData<Unit>()
+    /** 現在地取得に失敗した場合にリトライするためのイベント*/
     val retryEvent: LiveData<Unit> get() = _retryEvent
 
+    /**
+     *現在地取得の状態
+     * LOADING: 現在地取得中
+     * ERROR: 現在地取得失敗
+     */
+    private val _searchState = MutableLiveData(LocationSearchState.LOADING)
+    val searchState: LiveData<LocationSearchState> get() = _searchState
+
+    /** 現在地を取得する*/
     fun getLocation() {
         viewModelScope.launch {
             try {
                 performSearch()
             } catch (e: SecurityException) {
                 _searchState.postValue(LocationSearchState.ERROR)
+            } catch (e: Exception) {
+                _searchState.postValue(LocationSearchState.ERROR)
             }
         }
     }
 
     private suspend fun performSearch() {
-        val location =  withContext(Dispatchers.IO) {
+        val location = withContext(Dispatchers.IO) {
             locationRepository.getLocation()
         }
         if (location != null) {
             handleLocationSuccess(location)
-        } else {
-            _searchState.postValue(LocationSearchState.ERROR)
+            return
         }
+        _searchState.postValue(LocationSearchState.ERROR)
     }
 
+    /** 現在地取得に成功した場合の処理*/
     private fun handleLocationSuccess(location: Location) {
         //val locationData = CurrentLocation(34.7010289,135.4955003)//デバッグ用の仮の座標
         val locationData = CurrentLocation(location.latitude, location.longitude)
         _locationData.value = locationData
     }
 
+    /** 現在地取得に失敗した場合に設定画面を開くための処理*/
     fun onOpenLocationSettingClicked() {
         _openLocationSettingEvent.value = Unit
     }
 
+    /** 現在地取得に失敗した場合のリトライ処理*/
     fun onRetryClicked() {
         _retryEvent.value = Unit
     }

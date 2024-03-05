@@ -11,38 +11,57 @@ import javax.inject.Inject
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 
+/**
+ * 現在の位置情報を取得するRepository
+ * @param locationProvider 位置情報を取得するためのクライアント
+ */
 class SearchLocationRepository @Inject constructor(
     private val locationProvider: FusedLocationProviderClient,
 ) {
+    /**
+     * 現在の位置情報を取得
+     * @return 現在の位置情報 or null
+     */
     suspend fun getLocation(): Location? {
         return try {
-            // 20秒以内に位置情報を取得できなかった場合はnullを返す
+            /** 20秒以内に位置情報を取得できなかった場合はnullを返す*/
             withTimeoutOrNull(20000L) {
                 fetchLocation()
             }
         } catch (e: Exception) {
             logError("${e.message}")
+            println(e.message)
             null
         }
     }
 
-    private suspend fun fetchLocation(): Location? = suspendCancellableCoroutine { continuation ->
-        try {
-            locationProvider.getCurrentLocation(
-                Priority.PRIORITY_LOW_POWER,
-                null
-            ).addOnCompleteListener { task ->
-                handleCompletion(task, continuation)
+    /**
+     * 位置情報を取得
+     * @return 位置情報 or null
+     */
+    private suspend fun fetchLocation(): Location? =
+        suspendCancellableCoroutine { continuation ->
+            try {
+                locationProvider.getCurrentLocation(
+                    Priority.PRIORITY_LOW_POWER,
+                    null
+                ).addOnCompleteListener { task ->
+                    handleCompletion(task, continuation)
+                }
+            } catch (e: SecurityException) {
+                logError(" ${e.message}")
+                continuation.resume(null)
+            } catch (e: Exception) {
+                logError("${e.message} ")
+                continuation.resume(null)
             }
-        } catch (e: SecurityException) {
-            logError(" ${e.message}")
-            continuation.resume(null)
-        } catch (e: Exception) {
-            logError("${e.message} ")
-            continuation.resume(null)
         }
-    }
 
+    /**
+     * Taskの完了結果を処理
+     * @param task Task<Location>
+     * @param continuation Continuation<Location?>
+     */
     private fun handleCompletion(
         task: Task<Location>,
         continuation: Continuation<Location?>
@@ -56,6 +75,10 @@ class SearchLocationRepository @Inject constructor(
         }
     }
 
+    /**
+     * エラーログを出力
+     * @param message String
+     */
     private fun logError(message: String) {
         Log.e("LocationError", message)
     }

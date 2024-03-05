@@ -1,12 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     //APIキーを隠すためのプラグイン
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -40,6 +40,9 @@ android {
         buildConfig true
         dataBinding true
         viewBinding true
+    }
+    hilt {
+        enableAggregatingTask = true
     }
 }
 
@@ -75,5 +78,6 @@ dependencies {
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
 }
 kapt {
+    // エラータイプの修正を有効化
     correctErrorTypes true
 }

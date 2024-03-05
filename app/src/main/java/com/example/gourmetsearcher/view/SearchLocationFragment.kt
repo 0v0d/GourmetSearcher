@@ -24,17 +24,21 @@ import com.example.gourmetsearcher.viewmodel.SearchLocationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * 検索画面のフラグメント
+ * - 位置情報の取得やパーミッションの処理を行う
+ */
 @AndroidEntryPoint
 class SearchLocationFragment : Fragment() {
     private val viewModel: SearchLocationViewModel by viewModels()
     private var _binding: FragmentSearchLocationBinding? = null
     private val binding get() = _binding!!
+    /** ナビゲーションの引数を取得するための変数 */
     private val args: SearchLocationFragmentArgs by navArgs()
 
-    // パーミッションのリクエスト結果を追跡するための変数
+    /** パーミッションのリクエスト結果を追跡するための変数 */
     private val locationPermissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-            // パーミッションの結果に対する処理
             val isGranted = it[Manifest.permission.ACCESS_COARSE_LOCATION] == true ||
                     it[Manifest.permission.ACCESS_FINE_LOCATION] == true
             if (isGranted) {
@@ -53,27 +57,40 @@ class SearchLocationFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         checkLocationPermission()
-        observeViewModel()
+        observeLocationData()
+        observeSearchState()
+        observerRetryEvent()
+        observerOpenLocationSettingEvent()
         return binding.root
     }
 
+    /**
+     * パーミッションが許可されていない場合はリクエストする
+     * 許可されている場合は位置情報の取得を開始する
+     */
     private fun checkLocationPermission() {
-        // 位置情報のパーミッションが許可されていない場合はリクエストする
         if (!isLocationPermissionGranted()) {
             requestLocationPermission()
         } else {
-            // 位置情報の取得を開始
             viewModel.getLocation()
         }
     }
 
+    /**
+     * どちらかの位置情報パーミッションが許可されているかを返す
+     * @return 許可されている場合はtrue
+     */
     private fun isLocationPermissionGranted(): Boolean {
         val isFineGranted = isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
         val isCoarseGranted = isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
-        // どちらかのパーミッションが許可されていればtrueを返す
         return isCoarseGranted || isFineGranted
     }
 
+    /**
+     * パーミッションが許可されているかを返す*
+     * @param permission 許可を確認したいパーミッション
+     * @return 許可されている場合はtrue
+     */
     private fun isPermissionGranted(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
@@ -81,6 +98,7 @@ class SearchLocationFragment : Fragment() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    /** 位置情報のパーミッションをリクエストする */
     private fun requestLocationPermission() {
         val permissions = arrayOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -89,17 +107,19 @@ class SearchLocationFragment : Fragment() {
         locationPermissionRequest.launch(permissions)
     }
 
+    /** パーミッションが許可されなかった場合の処理 */
     private fun handleLocationPermissionCancel() {
-        // パーミッションが許可されなかった場合の処理
         if (shouldShowLocationPermissionRationale()) {
-            // パーミッションの説明ダイアログを表示
             showPermissionExplanationDialog()
         } else {
             showError()
         }
     }
 
-    // パーミッションの説明ダイアログを表示するかどうかを返す
+    /**
+     * パーミッションの説明ダイアログを表示するかどうかを返す
+     * @return パーミッションの説明ダイアログを表示する場合はtrue
+     */
     private fun shouldShowLocationPermissionRationale(): Boolean {
         return ActivityCompat.shouldShowRequestPermissionRationale(
             requireActivity(),
@@ -107,6 +127,7 @@ class SearchLocationFragment : Fragment() {
         )
     }
 
+    /** エラーを表示する */
     private fun showError() {
         binding.apply {
             loadingProgressBar.isVisible = false
@@ -116,6 +137,10 @@ class SearchLocationFragment : Fragment() {
         }
     }
 
+    /**
+     * 許可内容に応じたエラーメッセージを返す
+     * @return エラーメッセージ
+     */
     private fun errorText(): String {
         return getString(
             if (isLocationPermissionGranted()) {
@@ -126,6 +151,7 @@ class SearchLocationFragment : Fragment() {
         )
     }
 
+    /**  パーミッションの説明ダイアログを表示する */
     private fun showPermissionExplanationDialog() {
         MaterialAlertDialogBuilder(requireContext(), R.style.PermissionExplanationDialog)
             .setTitle(R.string.location_permission_required_title)
@@ -135,12 +161,23 @@ class SearchLocationFragment : Fragment() {
             .show()
     }
 
-    private fun observeViewModel() {
-        // 位置情報の取得結果を監視
-        viewModel.locationData.observe(viewLifecycleOwner) { locationData ->
-            navigateToResultListFragment(SearchTerms(args.inputText, locationData, args.range))
+    /** 位置情報の設定画面を開くイベントを監視 */
+    private fun observerOpenLocationSettingEvent() {
+        viewModel.openLocationSettingEvent.observe(viewLifecycleOwner) {
+            openLocationSetting()
         }
+    }
 
+    /** リトライイベントを監視 */
+    private fun observerRetryEvent() {
+        viewModel.retryEvent.observe(viewLifecycleOwner) {
+            showLoading()
+            checkLocationPermission()
+        }
+    }
+
+    /** 位置情報の取得状態を監視 */
+    private fun observeSearchState() {
         //位置情報の取得状態を監視
         viewModel.searchState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -153,32 +190,34 @@ class SearchLocationFragment : Fragment() {
                 }
             }
         }
+    }
 
 
-        // 位置情報の設定画面を開くイベントを監視
-        viewModel.openLocationSettingEvent.observe(viewLifecycleOwner) {
-            openLocationSetting()
-        }
-
-        viewModel.retryEvent.observe(viewLifecycleOwner) {
-            showLoading()
-            checkLocationPermission()
+    /** 位置情報の取得状態を監視 */
+    private fun observeLocationData() {
+        viewModel.locationData.observe(viewLifecycleOwner) { locationData ->
+            navigateToResultListFragment(SearchTerms(args.inputText, locationData, args.range))
         }
     }
 
+    /**
+     * 結果一覧画面を開く
+     * @param searchTerms 検索条件
+     */
     private fun navigateToResultListFragment(searchTerms: SearchTerms) {
         val action = SearchLocationFragmentDirections.actionToResultListFragment(searchTerms)
         findNavController().navigate(action)
     }
 
+    /** 新たなタスクで位置情報の設定画面を開く */
     private fun openLocationSetting() {
-        //新たなタスクで位置情報の設定画面を開く
+
         val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
 
-
+    /** 読み込み中のUIを表示する */
     private fun showLoading() {
         binding.loadingProgressBar.isVisible = true
         binding.errorButtonLayout.isVisible = false
