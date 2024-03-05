@@ -59,6 +59,7 @@ class SearchLocationViewModelTest {
         Dispatchers.resetMain()
     }
 
+    /** 位置情報の取得に成功した場合のテスト */
     @Test
     fun getLocation_success() = runTest {
         val location = CurrentLocation(34.7010289, 135.4955003)
@@ -80,7 +81,7 @@ class SearchLocationViewModelTest {
         assertEquals(location, viewModel.locationData.value)
     }
 
-
+    /** セキュリティ例外が発生した場合のテスト */
     @Test
     fun getLocation_securityException() = runBlocking {
         `when`(locationRepository.getLocation()).thenThrow(SecurityException())
@@ -98,12 +99,32 @@ class SearchLocationViewModelTest {
         assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
     }
 
+    /** nullポインタ例外が発生した場合のテスト */
+    @Test
+    fun getLocation_nullPointerException() = runBlocking {
+        `when`(locationRepository.getLocation()).thenThrow(NullPointerException())
+
+        val latch = CountDownLatch(1)
+        viewModel.searchState.observeForever {
+            if (it == LocationSearchState.ERROR) {
+                latch.countDown()
+            }
+        }
+
+        viewModel.getLocation()
+
+        latch.await(2, TimeUnit.SECONDS)
+        assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
+    }
+
+    /** 設定ボタンを押した時のテスト */
     @Test
     fun onOpenLocationSettingClicked() = runTest {
         viewModel.onOpenLocationSettingClicked()
         assertNotNull(viewModel.openLocationSettingEvent.value)
     }
 
+    /** リトライボタンを押した時のテスト */
     @Test
     fun onRetryClicked() = runTest {
         viewModel.onRetryClicked()
