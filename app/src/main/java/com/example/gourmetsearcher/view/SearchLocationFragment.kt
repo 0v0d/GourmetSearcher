@@ -211,9 +211,8 @@ class SearchLocationFragment : Fragment() {
 
     /** 新たなタスクで位置情報の設定画面を開く */
     private fun openLocationSetting() {
-
         val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 
