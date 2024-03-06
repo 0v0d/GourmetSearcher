@@ -69,7 +69,6 @@ class SearchLocationViewModel @Inject constructor(
 
     /** 現在地取得に成功した場合の処理*/
     private fun handleLocationSuccess(location: Location) {
-        //val locationData = CurrentLocation(34.7010289,135.4955003)//デバッグ用の仮の座標
         val locationData = CurrentLocation(location.latitude, location.longitude)
         _locationData.value = locationData
     }
