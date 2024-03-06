@@ -8,7 +8,7 @@ import com.example.gourmetsearcher.model.RestaurantData
  * レストランリストのViewHolder
  * @param binding ViewHolderのViewBinding
  * @param onRestaurantItemClick レストランリストをクリックした時の処理
- * */
+ */
 class RestaurantListViewHolder(
     private val binding: LayoutRestaurantListItemBinding,
     private val onRestaurantItemClick: (RestaurantData) -> Unit
