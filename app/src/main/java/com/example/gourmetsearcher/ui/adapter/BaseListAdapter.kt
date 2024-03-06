@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-/** RecyclerView.Adapterの共通処理をまとめた抽象クラス
+/**
+ * RecyclerView.Adapterの共通処理をまとめた抽象クラス
  * @param T リストの要素の型
  * @param VH ViewHolderの型
  * @param diffCallback リストの差分を計算するためのコールバック

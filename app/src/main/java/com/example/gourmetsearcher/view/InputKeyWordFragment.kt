@@ -18,8 +18,8 @@ import com.example.gourmetsearcher.ui.adapter.RangeListAdapter
 import com.example.gourmetsearcher.viewmodel.InputKeyWordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+/** キーワード入力画面 */
 @AndroidEntryPoint
-//検索画面
 class InputKeyWordFragment : Fragment() {
     private var _binding: FragmentInputKeyWordBinding? = null
     private val binding get() = _binding!!
@@ -29,16 +29,16 @@ class InputKeyWordFragment : Fragment() {
         RangeListAdapter(rangeItemClick)
     }
 
-    //RangeListをクリックした時の処理を変数に格納
-    private val rangeItemClick = { it: Int ->
-        navigateToSearchLocationFragment(it)
+    /** 範囲のリストをクリックした時の処理 */
+    private val rangeItemClick = { range: Int ->
+        navigateToSearchLocationFragment(range)
     }
 
     private val keyWordHistoryAdapter by lazy {
         KeyWordHistoryAdapter(inputKeyWordHistoryItemClick)
     }
 
-    //履歴をクリックした時の処理
+    /** キーワード履歴のリストのアイテムをクリックしたときの処理 */
     private val inputKeyWordHistoryItemClick = { it: String ->
         binding.searchInputEditText.setText(it)
     }
@@ -52,11 +52,16 @@ class InputKeyWordFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        observeHistoryList()
+        return binding.root
+    }
+
+    /** キーワード履歴を監視する */
+    private fun observeHistoryList() {
         viewModel.historyList.observe(viewLifecycleOwner) {
             keyWordHistoryAdapter.submitList(it.reversed())
             binding.keyWordClearButton.isVisible = it.isNotEmpty()
         }
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,25 +71,27 @@ class InputKeyWordFragment : Fragment() {
         setUpKeyWordHistoryRecyclerView()
     }
 
+    /** searchTermEditTextに入力があるか監視する */
     private fun setupSearchInputClick() {
-        //EditTextに入力があるか監視
+        /** EditTextに入力があるか監視する */
         binding.searchInputEditText.doAfterTextChanged { input ->
             val inputString = input.toString()
-            //入力があるかどうかを判定
+
+            /** 入力があるかどうか */
             val isNotEmpty = viewModel.isNotInputEmpty(inputString)
             if (isNotEmpty) {
                 inputText = inputString
             }
             binding.keyWordListRecyclerView.isVisible = !isNotEmpty
-            binding.keyWordClearButton.isVisible =!isNotEmpty
+            binding.keyWordClearButton.isVisible = !isNotEmpty
 
             binding.searchListRecyclerView.isVisible = isNotEmpty
             binding.selectRangeExplanation.isVisible = isNotEmpty
         }
     }
 
+    /** 範囲のリストを設定する */
     private fun setUpRangeListRecyclerView() {
-        // RangeListのRecyclerView用のLayoutManager
         val rangeLayoutManager = LinearLayoutManager(requireContext())
         val rangeDividerItemDecoration =
             DividerItemDecoration(requireContext(), rangeLayoutManager.orientation)
@@ -98,6 +105,8 @@ class InputKeyWordFragment : Fragment() {
             it.adapter = rangeListAdapter
         }
     }
+
+    /** キーワード履歴のリストを設定する */
     private fun setUpKeyWordHistoryRecyclerView() {
         val historyLayoutManager = LinearLayoutManager(requireContext())
         val historyDividerItemDecoration =
@@ -109,7 +118,9 @@ class InputKeyWordFragment : Fragment() {
         }
     }
 
-    //ResultListFragmentに遷移
+    /** 位置情報検索画面に遷移する
+     *  @param range 範囲
+     */
     private fun navigateToSearchLocationFragment(range: Int) {
         viewModel.saveHistoryItem(inputText)
         val action =
@@ -121,8 +132,8 @@ class InputKeyWordFragment : Fragment() {
         clearKeywordInputText()
     }
 
+    /** キーワード入力をクリアする */
     private fun clearKeywordInputText() {
-        //EditTextの入力をクリア
         binding.searchInputEditText.text?.clear()
         binding.keyWordClearButton.isVisible = false
         binding.keyWordListRecyclerView.isVisible = false
@@ -130,7 +141,7 @@ class InputKeyWordFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        //メモリリークを防ぐためにadapterを解放
+        /** メモリリークを防ぐためにRecyclerViewのアダプターを解放する */
         binding.searchListRecyclerView.adapter = null
         binding.keyWordListRecyclerView.adapter = null
         _binding = null
