@@ -27,11 +27,11 @@ class SearchLocationViewModel @Inject constructor(
     val locationData: LiveData<CurrentLocation> get() = _locationData
 
     private val _openLocationSettingEvent = MutableLiveData<Unit>()
-    /**現在地取得に失敗した場合に設定画面を開くためのイベント*/
+    /**現在地取得に失敗した場合に設定画面を開くためのイベント */
     val openLocationSettingEvent: LiveData<Unit> get() = _openLocationSettingEvent
 
     private val _retryEvent = MutableLiveData<Unit>()
-    /** 現在地取得に失敗した場合にリトライするためのイベント*/
+    /** 現在地取得に失敗した場合にリトライするためのイベント */
     val retryEvent: LiveData<Unit> get() = _retryEvent
 
     /**
@@ -42,7 +42,7 @@ class SearchLocationViewModel @Inject constructor(
     private val _searchState = MutableLiveData(LocationSearchState.LOADING)
     val searchState: LiveData<LocationSearchState> get() = _searchState
 
-    /** 現在地を取得する*/
+    /** 現在地を取得する */
     fun getLocation() {
         viewModelScope.launch {
             try {
@@ -55,6 +55,7 @@ class SearchLocationViewModel @Inject constructor(
         }
     }
 
+    /** 現在地を取得するための処理 */
     private suspend fun performSearch() {
         val location = withContext(Dispatchers.IO) {
             locationRepository.getLocation()
@@ -73,12 +74,12 @@ class SearchLocationViewModel @Inject constructor(
         _locationData.value = locationData
     }
 
-    /** 現在地取得に失敗した場合に設定画面を開くための処理*/
+    /** 現在地取得に失敗した場合に設定画面を開くための処理 */
     fun onOpenLocationSettingClicked() {
         _openLocationSettingEvent.value = Unit
     }
 
-    /** 現在地取得に失敗した場合のリトライ処理*/
+    /** 現在地取得に失敗した場合のリトライ処理 */
     fun onRetryClicked() {
         _retryEvent.value = Unit
     }
