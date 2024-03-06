@@ -24,10 +24,7 @@ import com.example.gourmetsearcher.viewmodel.SearchLocationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * 検索画面のフラグメント
- * - 位置情報の取得やパーミッションの処理を行う
- */
+/** 位置情報検索画面 */
 @AndroidEntryPoint
 class SearchLocationFragment : Fragment() {
     private val viewModel: SearchLocationViewModel by viewModels()
