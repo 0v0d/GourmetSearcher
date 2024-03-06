@@ -21,4 +21,9 @@
 		<item name="cornerFamily">rounded</item>
 		<item name="cornerSize">24%</item>
 	</style>
+
+	<style name="restaurantDetailTextStyle">
+		<item name="android:textSize">18sp</item>
+	</style>
+
 </resources>
