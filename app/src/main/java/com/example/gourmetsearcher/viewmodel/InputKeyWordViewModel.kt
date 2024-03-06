@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /**
  *  キーワード入力画面のViewModel
  *  @param keyWordHistoryRepository キーワード履歴のリポジトリ
  */
+@HiltViewModel
 class InputKeyWordViewModel @Inject constructor(
     private val keyWordHistoryRepository: KeyWordHistoryRepository
 ) :
