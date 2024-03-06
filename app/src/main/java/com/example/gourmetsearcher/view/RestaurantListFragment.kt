@@ -18,16 +18,20 @@ import com.example.gourmetsearcher.ui.adapter.RestaurantListAdapter
 import com.example.gourmetsearcher.viewmodel.RestaurantListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+/** レストラン検索結果画面 */
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
+    private val viewModel: RestaurantListViewModel by viewModels()
     private var _binding: FragmentResultListBinding? = null
     private val binding get() = _binding!!
+
+    /** ナビゲーションの引数を取得するための変数 */
     private val args: RestaurantListFragmentArgs by navArgs()
     private val adapter by lazy {
         RestaurantListAdapter(restaurantItemClick)
     }
-    private val viewModel: RestaurantListViewModel by viewModels()
 
+    /** レストランリストをクリックした時の処理 */
     private val restaurantItemClick = { it: RestaurantData ->
         navigateToRestaurantDetailFragment(it)
     }
@@ -54,12 +58,25 @@ class RestaurantListFragment : Fragment() {
         setUpResultListRecyclerView()
     }
 
+    /** searchStateの変化を監視する */
     private fun observeSearchState() {
         viewModel.searchState.observe(viewLifecycleOwner) {
             switchSearchState(it)
         }
     }
 
+    /** 検索結果のリストを監視する */
+    private fun observeResultList() {
+        viewModel.restaurantData.observe(viewLifecycleOwner) { resultList ->
+            binding.loadingProgressBar.isVisible = false
+            adapter.submitList(resultList)
+        }
+    }
+
+    /**
+     * searchStateによって表示を変える
+     * @param state 検索状態
+     */
     private fun switchSearchState(state: SearchState) {
         when (state) {
             SearchState.EMPTY_RESULT -> showError(state, R.string.empty_result_message)
@@ -69,6 +86,11 @@ class RestaurantListFragment : Fragment() {
         }
     }
 
+    /**
+     * エラーを表示する
+     * @param state 検索状態
+     * @param messageResId エラーメッセージ
+     */
     private fun showError(state: SearchState, messageResId: Int) {
         binding.resultListRecyclerView.isVisible = false
         binding.loadingProgressBar.isVisible = false
@@ -77,30 +99,31 @@ class RestaurantListFragment : Fragment() {
         binding.retryButton.isVisible = (state == SearchState.NETWORK_ERROR)
     }
 
+    /** エラーを非表示にする */
     private fun invisibleError() {
         binding.resultListRecyclerView.isVisible = true
         binding.errorTextView.isVisible = false
         binding.retryButton.isVisible = false
     }
 
+    /** ローディングを表示する */
     private fun showLoading() {
         invisibleError()
         binding.loadingProgressBar.isVisible = true
     }
 
-    private fun observeResultList() {
-        viewModel.restaurantData.observe(viewLifecycleOwner) { resultList ->
-            binding.loadingProgressBar.isVisible = false
-            adapter.submitList(resultList)
-        }
-    }
 
+    /** 検索結果のリストを表示する */
     private fun setUpResultListRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.resultListRecyclerView.layoutManager = layoutManager
         binding.resultListRecyclerView.adapter = adapter
     }
 
+    /**
+     * レストラン詳細画面に遷移する
+     * @param restaurant 選択されたレストラン
+     */
     private fun navigateToRestaurantDetailFragment(restaurant: RestaurantData) {
         val action = RestaurantListFragmentDirections.actionToRestaurantDetailFragment(
             restaurant.name,
