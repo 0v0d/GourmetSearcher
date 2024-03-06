@@ -7,11 +7,21 @@ import androidx.viewbinding.ViewBinding
 import com.example.gourmetsearcher.databinding.LayoutKeyWordHistoryListItemBinding
 import com.example.gourmetsearcher.ui.viewholder.KeyWordHistoryViewHolder
 
+/**
+ * キーワード履歴のリストのAdapter
+ * @param onKeyWordHistoryItemClick キーワード履歴のリストのアイテムをクリックしたときの処理
+ */
 class KeyWordHistoryAdapter(onKeyWordHistoryItemClick: (String) -> Unit) :
     BaseListAdapter<String, KeyWordHistoryViewHolder>(
         keyWordHistoryDiffCallback,
         onKeyWordHistoryItemClick
     ) {
+
+    /**
+     * キーワード履歴のリストのアイテムのViewBindingを生成する
+     * @param parent 親View
+     * @return キーワード履歴のリストのアイテムのViewBinding
+     */
     override fun createViewBinding(parent: ViewGroup): LayoutKeyWordHistoryListItemBinding {
         return LayoutKeyWordHistoryListItemBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -20,6 +30,12 @@ class KeyWordHistoryAdapter(onKeyWordHistoryItemClick: (String) -> Unit) :
         )
     }
 
+    /**
+     * キーワード履歴のリストのViewHolderを生成する
+     * @param viewBinding キーワード履歴のリストのアイテムのViewBinding
+     * @param onItemClicked キーワード履歴のリストのアイテムをクリックしたときの処理
+     * @return キーワード履歴のリストのViewHolder
+     */
     override fun createViewHolder(
         viewBinding: ViewBinding,
         onItemClicked: (String) -> Unit
@@ -28,12 +44,17 @@ class KeyWordHistoryAdapter(onKeyWordHistoryItemClick: (String) -> Unit) :
         return KeyWordHistoryViewHolder(binding, onItemClicked)
     }
 
+    /**
+     * キーワード履歴のリストのアイテムをバインドする
+     * @param holder キーワード履歴のリストのViewHolder
+     * @param item キーワード履歴のリストのアイテム
+     */
     override fun bind(holder: KeyWordHistoryViewHolder, item: String) {
         holder.bind(item)
     }
 
     private companion object {
-        // 更新されたデータを判定する
+        /** キーワード履歴のリストのDiffCallback */
         private val keyWordHistoryDiffCallback = object : DiffUtil.ItemCallback<String>() {
             override fun areItemsTheSame(
                 oldValue: String,

@@ -42,12 +42,14 @@ class InputKeyWordViewModelTest {
         viewModel.historyList.removeObserver(observer)
     }
 
+    /** 入力が空でないことを確認する */
     @Test
     fun testIsNotInputEmpty() {
         assert(viewModel.isNotInputEmpty("test"))
         assert(!viewModel.isNotInputEmpty(""))
     }
 
+    /** 履歴リストの保存と取得を確認する */
     @Test
     fun testSaveAndGetHistoryItem() {
         val testItem = "test"
@@ -62,6 +64,7 @@ class InputKeyWordViewModelTest {
         assertTrue(historyList?.contains(testItem) ?: false)
     }
 
+    /** 履歴リストのクリアを確認する */
     @Test
     fun testClearHistory() {
         viewModel.clearHistory()
@@ -69,4 +72,3 @@ class InputKeyWordViewModelTest {
         verify(mockRepository, times(2)).getHistoryList()
     }
 }
-
