@@ -36,4 +36,5 @@
 	<string name="hot_pepper">HotPepperへ</string>
     <string name="setting">設定</string>
 	<string name="map_url">geo:0:0?q=</string>
+    <string name="restaurant_name">店舗名</string>
 </resources>
