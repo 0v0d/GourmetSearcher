@@ -38,16 +38,22 @@ class RestaurantDetailViewModelTest {
         viewModel.url.removeObserver(urlObserver)
     }
 
+    /**
+     * openMapでsearchAddressにエンコードされた住所がセットされること
+     */
     @Test
-    fun `openMap encodes address and updates url LiveData`() {
+    fun openMap_encodesAddress() {
         val address = "123 Main St"
         viewModel.openMap(address)
-        val expectedUrl = "geo:0:0?q=" + URLEncoder.encode(address, "UTF-8")
-        assertEquals(expectedUrl, viewModel.url.value)
+        val expectedUrl = URLEncoder.encode(address, "UTF-8")
+        assertEquals(expectedUrl, viewModel.searchAddress.value)
     }
 
+    /**
+     * openUrlでurlがセットされること
+     */
     @Test
-    fun `openUrl updates url LiveData`() {
+    fun openUrl_openUrl() {
         val htmlUrl = "https://example.com"
 
         viewModel.openUrl(htmlUrl)
