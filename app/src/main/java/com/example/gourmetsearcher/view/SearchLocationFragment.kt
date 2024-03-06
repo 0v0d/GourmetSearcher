@@ -153,7 +153,7 @@ class SearchLocationFragment : Fragment() {
 
     /**  パーミッションの説明ダイアログを表示する */
     private fun showPermissionExplanationDialog() {
-        MaterialAlertDialogBuilder(requireContext(), R.style.PermissionExplanationDialog)
+        MaterialAlertDialogBuilder(requireContext(), R.style.permissionExplanationDialog)
             .setTitle(R.string.location_permission_required_title)
             .setMessage(R.string.location_permission_required_message)
             .setPositiveButton(R.string.ok_button) { _, _ -> requestLocationPermission() }

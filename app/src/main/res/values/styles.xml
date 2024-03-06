@@ -10,7 +10,7 @@
 		<item name="strokeColor">@color/grey</item>
 	</style>
 
-	<style name="PermissionExplanationDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+	<style name="permissionExplanationDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
 		<item name="buttonBarPositiveButtonStyle">@style/positiveButtonStyle</item>
 	</style>
 	<style name="positiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
