@@ -16,12 +16,12 @@ class InputKeyWordViewModel @Inject constructor(
     private val keyWordHistoryRepository: KeyWordHistoryRepository
 ) :
     ViewModel() {
-    private val _historyList = MutableLiveData<List<String>>()
+    private val _historyListData = MutableLiveData<List<String>>()
 
-    /** 履歴リスト */
-    val historyList: LiveData<List<String>> get() = _historyList
+    /** キーワード履歴リストデータ */
+    val historyListData: LiveData<List<String>> get() = _historyListData
 
-    /** 初期化で履歴リストを取得する */
+    /** 初期化でキーワード履歴リストを取得する */
     init {
         loadHistory()
     }
@@ -43,7 +43,7 @@ class InputKeyWordViewModel @Inject constructor(
 
     /** 履歴リストを取得する */
     private fun loadHistory() {
-        _historyList.value = keyWordHistoryRepository.getHistoryList()
+        _historyListData.value = keyWordHistoryRepository.getHistoryList()
     }
 
     /**

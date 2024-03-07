@@ -59,7 +59,7 @@ class InputKeyWordFragment : Fragment() {
 
     /** キーワード履歴を監視する */
     private fun observeHistoryList() {
-        viewModel.historyList.observe(viewLifecycleOwner) {
+        viewModel.historyListData.observe(viewLifecycleOwner) {
             keyWordHistoryAdapter.submitList(it.reversed())
             binding.keyWordClearButton.isVisible = it.isNotEmpty()
         }
