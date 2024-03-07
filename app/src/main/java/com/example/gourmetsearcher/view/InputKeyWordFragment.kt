@@ -85,7 +85,7 @@ class InputKeyWordFragment : Fragment() {
             binding.keyWordListRecyclerView.isVisible = !isNotEmpty
             binding.keyWordClearButton.isVisible = !isNotEmpty
 
-            binding.searchListRecyclerView.isVisible = isNotEmpty
+            binding.rangeListRecyclerView.isVisible = isNotEmpty
             binding.selectRangeExplanation.isVisible = isNotEmpty
         }
     }
@@ -99,7 +99,7 @@ class InputKeyWordFragment : Fragment() {
         val rangeList = resources.getStringArray(R.array.range_array)
         rangeListAdapter.submitList(rangeList.map { it.toInt() })
 
-        binding.searchListRecyclerView.also {
+        binding.rangeListRecyclerView.also {
             it.layoutManager = rangeLayoutManager
             it.addItemDecoration(rangeDividerItemDecoration)
             it.adapter = rangeListAdapter
@@ -142,7 +142,7 @@ class InputKeyWordFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         /** メモリリークを防ぐためにRecyclerViewのアダプターを解放する */
-        binding.searchListRecyclerView.adapter = null
+        binding.rangeListRecyclerView.adapter = null
         binding.keyWordListRecyclerView.adapter = null
         _binding = null
     }
