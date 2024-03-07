@@ -46,7 +46,7 @@ Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 - 最小SDKバージョン: 32
 - ターゲットSDKバージョン: 34
 - Java：VERSION_1_8
-- Gradle：8.2
+- Gradle：8.6
 - Gradle Plugin 7.0.4
 - minSdk：32
 - targetSdk：34
