@@ -50,8 +50,8 @@ class InputKeyWordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInputKeyWordBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.searchParameters.viewModel = viewModel
+        binding.searchParameters.lifecycleOwner = viewLifecycleOwner
 
         observeHistoryList()
         return binding.root
@@ -61,9 +61,7 @@ class InputKeyWordFragment : Fragment() {
     private fun observeHistoryList() {
         viewModel.historyListData.observe(viewLifecycleOwner) {
             keyWordHistoryAdapter.submitList(it.reversed())
-            if(it.isEmpty()){
-                binding.keyWordClearButton.isVisible = false
-            }
+            binding.searchParameters.keyWordClearButton.isVisible = it.isNotEmpty()
         }
     }
 
@@ -85,11 +83,8 @@ class InputKeyWordFragment : Fragment() {
             if (isNotEmpty) {
                 inputText = inputString
             }
-            binding.keyWordListRecyclerView.isVisible = !isNotEmpty
-            binding.keyWordClearButton.isVisible = !isNotEmpty
-
-            binding.rangeListRecyclerView.isVisible = isNotEmpty
-            binding.selectRangeExplanation.isVisible = isNotEmpty
+            binding.searchParameters.keyWordListLayout.isVisible = !isNotEmpty
+            binding.searchParameters.rangeListLayout.isVisible = isNotEmpty
         }
     }
 
@@ -102,7 +97,7 @@ class InputKeyWordFragment : Fragment() {
         val rangeList = resources.getStringArray(R.array.range_array)
         rangeListAdapter.submitList(rangeList.map { it.toInt() })
 
-        binding.rangeListRecyclerView.also {
+        binding.searchParameters.rangeListRecyclerView.also {
             it.layoutManager = rangeLayoutManager
             it.addItemDecoration(rangeDividerItemDecoration)
             it.adapter = rangeListAdapter
@@ -114,7 +109,7 @@ class InputKeyWordFragment : Fragment() {
         val historyLayoutManager = LinearLayoutManager(requireContext())
         val historyDividerItemDecoration =
             DividerItemDecoration(requireContext(), historyLayoutManager.orientation)
-        binding.keyWordListRecyclerView.also {
+        binding.searchParameters.keyWordListRecyclerView.also {
             it.layoutManager = historyLayoutManager
             it.addItemDecoration(historyDividerItemDecoration)
             it.adapter = keyWordHistoryAdapter
@@ -138,15 +133,15 @@ class InputKeyWordFragment : Fragment() {
     /** キーワード入力をクリアする */
     private fun clearKeywordInputText() {
         binding.searchInputEditText.text?.clear()
-        binding.keyWordClearButton.isVisible = false
-        binding.keyWordListRecyclerView.isVisible = false
+        binding.searchParameters.keyWordClearButton.isVisible = false
+        binding.searchParameters.keyWordListRecyclerView.isVisible = false
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         /** メモリリークを防ぐためにRecyclerViewのアダプターを解放する */
-        binding.rangeListRecyclerView.adapter = null
-        binding.keyWordListRecyclerView.adapter = null
+        binding.searchParameters.rangeListRecyclerView.adapter = null
+        binding.searchParameters.keyWordListRecyclerView.adapter = null
         _binding = null
     }
 }
