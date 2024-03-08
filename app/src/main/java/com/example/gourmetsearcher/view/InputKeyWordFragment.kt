@@ -61,7 +61,9 @@ class InputKeyWordFragment : Fragment() {
     private fun observeHistoryList() {
         viewModel.historyListData.observe(viewLifecycleOwner) {
             keyWordHistoryAdapter.submitList(it.reversed())
-            binding.keyWordClearButton.isVisible = it.isNotEmpty()
+            if(it.isEmpty()){
+                binding.keyWordClearButton.isVisible = false
+            }
         }
     }
 
