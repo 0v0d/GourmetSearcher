@@ -13,7 +13,11 @@
 
 		<action
 			android:id="@+id/action_to_search_location_fragment"
-			app:destination="@id/searchLocationFragment" />
+			app:destination="@id/searchLocationFragment"
+			app:enterAnim="@anim/nav_slide_enter_anim"
+			app:exitAnim="@anim/nav_slide_exit_anim"
+			app:popEnterAnim="@anim/nav_pop_slide_enter_anim"
+			app:popExitAnim="@anim/nav_pop_slide_exit_anim" />
 	</fragment>
 
 	<fragment
@@ -31,6 +35,10 @@
 		<action
 			android:id="@+id/action_to_result_list_fragment"
 			app:destination="@id/restaurantListFragment"
+			app:enterAnim="@anim/nav_slide_enter_anim"
+			app:exitAnim="@anim/nav_slide_exit_anim"
+			app:popEnterAnim="@anim/nav_pop_slide_enter_anim"
+			app:popExitAnim="@anim/nav_pop_slide_exit_anim"
 			app:popUpTo="@id/inputKeyWordFragment" />
 	</fragment>
 
@@ -45,7 +53,11 @@
 
 		<action
 			android:id="@+id/action_to_restaurant_detail_fragment"
-			app:destination="@id/restaurantDetailFragment" />
+			app:destination="@id/restaurantDetailFragment"
+			app:enterAnim="@anim/nav_slide_enter_anim"
+			app:exitAnim="@anim/nav_slide_exit_anim"
+			app:popEnterAnim="@anim/nav_pop_slide_enter_anim"
+			app:popExitAnim="@anim/nav_pop_slide_exit_anim" />
 	</fragment>
 
 	<fragment
