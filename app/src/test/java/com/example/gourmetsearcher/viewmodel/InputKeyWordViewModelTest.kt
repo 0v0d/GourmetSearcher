@@ -34,12 +34,12 @@ class InputKeyWordViewModelTest {
     @Before
     fun setUp() {
         viewModel = InputKeyWordViewModel(mockRepository)
-        viewModel.historyList.observeForever(observer)
+        viewModel.historyListData.observeForever(observer)
     }
 
     @After
     fun cleanup() {
-        viewModel.historyList.removeObserver(observer)
+        viewModel.historyListData.removeObserver(observer)
     }
 
     /** 入力が空でないことを確認する */
@@ -60,7 +60,7 @@ class InputKeyWordViewModelTest {
         verify(mockRepository, times(1)).saveHistoryItem(testItem)
         verify(mockRepository, times(2)).getHistoryList()
 
-        val historyList = viewModel.historyList.value
+        val historyList = viewModel.historyListData.value
         assertTrue(historyList?.contains(testItem) ?: false)
     }
 
