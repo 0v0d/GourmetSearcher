@@ -4,6 +4,7 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
+
 		<variable
 			name="restaurant"
 			type="com.example.gourmetsearcher.model.RestaurantData" />
@@ -211,5 +212,6 @@
 			app:layout_constraintStart_toStartOf="@+id/nameTextView"
 			app:layout_constraintTop_toTopOf="@+id/closeTitleTextView"
 			tools:text="なし" />
+
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
