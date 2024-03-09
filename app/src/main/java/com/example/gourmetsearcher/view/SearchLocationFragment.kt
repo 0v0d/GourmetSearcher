@@ -30,6 +30,7 @@ class SearchLocationFragment : Fragment() {
     private val viewModel: SearchLocationViewModel by viewModels()
     private var _binding: FragmentSearchLocationBinding? = null
     private val binding get() = _binding!!
+
     /** ナビゲーションの引数を取得するための変数 */
     private val args: SearchLocationFragmentArgs by navArgs()
 
@@ -126,12 +127,11 @@ class SearchLocationFragment : Fragment() {
 
     /** エラーを表示する */
     private fun showError() {
-        binding.apply {
-            loadingProgressBar.isVisible = false
-            errorButtonLayout.isVisible = true
-            locationErrorTextView.isVisible = true
-            locationErrorTextView.text = errorText()
-        }
+        binding.loadingProgressBar.isVisible = false
+        binding.retryButton.isVisible = true
+        binding.redirectSettingButton.isVisible = true
+        binding.locationErrorTextView.isVisible = true
+        binding.locationErrorTextView.text = errorText()
     }
 
     /**
@@ -216,7 +216,8 @@ class SearchLocationFragment : Fragment() {
     /** 読み込み中のUIを表示する */
     private fun showLoading() {
         binding.loadingProgressBar.isVisible = true
-        binding.errorButtonLayout.isVisible = false
+        binding.redirectSettingButton.isVisible = false
+        binding.retryButton.isVisible = false
         binding.locationErrorTextView.isVisible = false
     }
 
