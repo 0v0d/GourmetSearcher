@@ -28,6 +28,6 @@ class RestaurantListViewHolder(
     /** ViewHolderのバインドを解除する */
     fun unbind() {
         binding.restaurant = null
-        binding.icon.setImageDrawable(null)
+        binding.restaurantListItemLayout.icon.setImageDrawable(null)
     }
 }
