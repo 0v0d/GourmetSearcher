@@ -18,87 +18,13 @@
 		android:layout_marginBottom="5dp"
 		app:cardCornerRadius="8dp">
 
-		<androidx.constraintlayout.widget.ConstraintLayout
+		<include
+			android:id="@+id/restaurantListItemLayout"
+			layout="@layout/layout_restaurant_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginStart="3dp"
-			android:layout_marginTop="3dp"
-			android:layout_marginEnd="3dp"
-			android:layout_marginBottom="3dp">
+			android:layout_margin="5dp"
+			app:restaurant="@{restaurant}" />
 
-			<com.google.android.material.imageview.ShapeableImageView
-				android:id="@+id/icon"
-				android:layout_width="85dp"
-				android:layout_height="85dp"
-				android:layout_marginStart="5dp"
-				android:importantForAccessibility="no"
-				app:imageUrl="@{restaurant.photo.pc.l}"
-				app:shapeAppearanceOverlay="@style/roundedCornersImageView"
-				tools:ignore="ImageContrastCheck"
-				tools:src="@tools:sample/avatars"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent" />
-
-			<TextView
-				android:id="@+id/nameTextView"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="10dp"
-				android:text="@{restaurant.name}"
-				android:textSize="18sp"
-				android:textStyle="bold"
-				tools:text="丸亀製麺 あべのキューズモール店"
-				app:layout_constraintStart_toStartOf="@+id/icon"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/icon" />
-
-			<TextView
-				android:id="@+id/area"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:text='@{restaurant.smallArea.name +"[" +restaurant.largeArea.name +"]"}'
-				android:textSize="15sp"
-				app:drawableStartCompat="@drawable/ic_address"
-				tools:text="天王寺[大阪]"
-				app:layout_constraintStart_toStartOf="@+id/nameTextView"
-				app:layout_constraintEnd_toEndOf="@+id/nameTextView"
-				app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
-
-			<TextView
-				android:id="@+id/genreTextView"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:text='@{restaurant.genre.name}'
-				android:textSize="15sp"
-				app:drawableStartCompat="@drawable/ic_genre"
-				tools:text="和食"
-				app:layout_constraintStart_toStartOf="@+id/area"
-				app:layout_constraintEnd_toEndOf="@+id/area"
-				app:layout_constraintTop_toBottomOf="@+id/area" />
-
-			<TextView
-				android:id="@+id/budgetTextView"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:text='@{restaurant.budget.name}'
-				android:textSize="15sp"
-				app:drawableStartCompat="@drawable/ic_budget"
-				tools:text="1501～2000円"
-				app:layout_constraintStart_toStartOf="@+id/genreTextView"
-				app:layout_constraintEnd_toEndOf="@+id/genreTextView"
-				app:layout_constraintTop_toBottomOf="@+id/genreTextView" />
-
-			<TextView
-				android:id="@+id/accessTextView"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:text='@{restaurant.access}'
-				android:textSize="15sp"
-				app:drawableStartCompat="@drawable/ic_access"
-				tools:text="天王寺駅12号出口より直結｡あべのｷｭｰｽﾞﾓｰﾙ3F"
-				app:layout_constraintStart_toStartOf="@+id/budgetTextView"
-				app:layout_constraintEnd_toEndOf="@+id/budgetTextView"
-				app:layout_constraintTop_toBottomOf="@+id/budgetTextView" />
-		</androidx.constraintlayout.widget.ConstraintLayout>
 	</androidx.cardview.widget.CardView>
 </layout>
