@@ -52,5 +52,6 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			app:strokeColor="@color/grey"
 			app:strokeWidth="1dp" />
+
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
