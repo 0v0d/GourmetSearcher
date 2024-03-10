@@ -1,0 +1,113 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+
+		<variable
+			name="restaurant"
+			type="com.example.gourmetsearcher.model.RestaurantData" />
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginStart="3dp"
+		android:layout_marginTop="3dp"
+		android:layout_marginEnd="3dp"
+		android:layout_marginBottom="3dp">
+
+		<com.google.android.material.imageview.ShapeableImageView
+			android:id="@+id/icon"
+			android:layout_width="150dp"
+			android:layout_height="150dp"
+			android:layout_marginStart="5dp"
+			android:importantForAccessibility="no"
+			app:imageUrl="@{restaurant.photo.pc.l}"
+
+			app:layout_constraintEnd_toStartOf="@+id/infoLayout"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintVertical_bias="0.0"
+			app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+			tools:ignore="ImageContrastCheck"
+			tools:src="@tools:sample/avatars" />
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/infoLayout"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/icon"
+			app:layout_constraintTop_toTopOf="parent">
+
+			<TextView
+				android:id="@+id/nameTextView"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="10dp"
+				android:layout_marginTop="5dp"
+				android:text="@{restaurant.name}"
+				android:textSize="23sp"
+				android:textStyle="bold"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				tools:text="丸亀製麺 あべのキューズモール店" />
+
+			<TextView
+				android:id="@+id/areaTextView"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:text='@{restaurant.smallArea.name +"[" +restaurant.largeArea.name +"]"}'
+				android:textSize="20sp"
+				app:drawableStartCompat="@drawable/ic_address"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="@+id/nameTextView"
+				app:layout_constraintTop_toBottomOf="@+id/nameTextView"
+				tools:text="天王寺[大阪]" />
+
+			<TextView
+				android:id="@+id/genreTextView"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:text='@{restaurant.genre.name}'
+				android:textSize="20sp"
+				app:drawableStartCompat="@drawable/ic_genre"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="@+id/nameTextView"
+				app:layout_constraintTop_toBottomOf="@+id/areaTextView"
+				tools:text="和食" />
+
+			<TextView
+				android:id="@+id/budgetTextView"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:text='@{restaurant.budget.name}'
+				android:textSize="20sp"
+				app:drawableStartCompat="@drawable/ic_budget"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="@+id/nameTextView"
+				app:layout_constraintTop_toBottomOf="@+id/genreTextView"
+				tools:text="1501～2000円" />
+
+			<TextView
+				android:id="@+id/accessTextView"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:text='@{restaurant.access}'
+				android:textSize="20sp"
+				app:drawableStartCompat="@drawable/ic_access"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="@+id/nameTextView"
+				app:layout_constraintTop_toBottomOf="@+id/budgetTextView"
+				tools:text="天王寺駅12号出口より直結｡あべのｷｭｰｽﾞﾓｰﾙ3F" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

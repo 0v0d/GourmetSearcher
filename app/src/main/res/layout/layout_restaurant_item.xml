@@ -44,7 +44,7 @@
 			tools:text="丸亀製麺 あべのキューズモール店" />
 
 		<TextView
-			android:id="@+id/area"
+			android:id="@+id/areaTextView"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:text='@{restaurant.smallArea.name +"[" +restaurant.largeArea.name +"]"}'
@@ -62,9 +62,9 @@
 			android:text='@{restaurant.genre.name}'
 			android:textSize="15sp"
 			app:drawableStartCompat="@drawable/ic_genre"
-			app:layout_constraintEnd_toEndOf="@+id/area"
-			app:layout_constraintStart_toStartOf="@+id/area"
-			app:layout_constraintTop_toBottomOf="@+id/area"
+			app:layout_constraintEnd_toEndOf="@+id/areaTextView"
+			app:layout_constraintStart_toStartOf="@+id/nameTextView"
+			app:layout_constraintTop_toBottomOf="@+id/areaTextView"
 			tools:text="和食" />
 
 		<TextView
@@ -75,7 +75,7 @@
 			android:textSize="15sp"
 			app:drawableStartCompat="@drawable/ic_budget"
 			app:layout_constraintEnd_toEndOf="@+id/genreTextView"
-			app:layout_constraintStart_toStartOf="@+id/genreTextView"
+			app:layout_constraintStart_toStartOf="@+id/nameTextView"
 			app:layout_constraintTop_toBottomOf="@+id/genreTextView"
 			tools:text="1501～2000円" />
 
@@ -87,7 +87,7 @@
 			android:textSize="15sp"
 			app:drawableStartCompat="@drawable/ic_access"
 			app:layout_constraintEnd_toEndOf="@+id/budgetTextView"
-			app:layout_constraintStart_toStartOf="@+id/budgetTextView"
+			app:layout_constraintStart_toStartOf="@+id/nameTextView"
 			app:layout_constraintTop_toBottomOf="@+id/budgetTextView"
 			tools:text="天王寺駅12号出口より直結｡あべのｷｭｰｽﾞﾓｰﾙ3F" />
 	</androidx.constraintlayout.widget.ConstraintLayout>

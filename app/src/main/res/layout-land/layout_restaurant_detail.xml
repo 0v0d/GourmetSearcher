@@ -16,18 +16,20 @@
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="336dp">
 
 		<ImageView
 			android:id="@+id/restaurantImageView"
-			android:layout_width="0dp"
+			android:layout_width="200dp"
 			android:layout_height="200dp"
+			android:layout_marginStart="5dp"
+			android:layout_marginTop="5dp"
 			android:importantForAccessibility="no"
 			android:scaleType="centerCrop"
 			app:imageUrl="@{restaurant.photo.pc.l}"
-			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
+			tools:ignore="ImageContrastCheck"
 			tools:src="@tools:sample/avatars" />
 
 		<TextView
@@ -35,13 +37,12 @@
 			style="@style/restaurantDetailTextStyle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginStart="5dp"
-			android:layout_marginTop="20dp"
+			android:layout_marginStart="10dp"
 			android:text="@string/restaurant_name"
 			android:textStyle="bold"
 			app:drawableStartCompat="@drawable/ic_restaurant_name"
-			app:layout_constraintStart_toStartOf="@+id/restaurantImageView"
-			app:layout_constraintTop_toBottomOf="@+id/restaurantImageView" />
+			app:layout_constraintStart_toEndOf="@+id/restaurantImageView"
+			app:layout_constraintTop_toTopOf="@+id/restaurantImageView" />
 
 		<TextView
 			android:id="@+id/nameTextView"
@@ -85,7 +86,7 @@
 			style="@style/restaurantDetailTextStyle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
+			android:layout_marginTop="20dp"
 			android:text="@string/address"
 			android:textStyle="bold"
 			app:drawableStartCompat="@drawable/ic_address"
@@ -115,6 +116,8 @@
 			android:strokeColor="@color/black"
 			app:icon="@drawable/ic_map"
 			app:iconSize="30dp"
+
+			app:layout_constraintBottom_toBottomOf="@+id/addressTextView"
 			app:layout_constraintEnd_toEndOf="@+id/nameTextView"
 			app:layout_constraintTop_toTopOf="@+id/addressTitleTextView"
 			app:strokeColor="@color/grey"
@@ -125,11 +128,12 @@
 			style="@style/restaurantDetailTextStyle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
 			android:text="@string/access"
 			android:textStyle="bold"
 			app:drawableStartCompat="@drawable/ic_access"
 			app:layout_constraintStart_toStartOf="@+id/nameTitleTextView"
-			app:layout_constraintTop_toBottomOf="@+id/mapButton" />
+			app:layout_constraintTop_toBottomOf="@+id/addressTextView" />
 
 		<TextView
 			android:id="@+id/accessTextView"
