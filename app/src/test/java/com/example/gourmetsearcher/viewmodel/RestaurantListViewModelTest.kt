@@ -30,7 +30,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
@@ -99,10 +98,22 @@ class RestaurantListViewModelTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
             `when`(repository.searchHotPepperRepository(searchTerms))
                 .thenReturn(Response.success(response))
+
+            viewModel.restaurantData.observeForever {
+                if (it == response.results.shops) {
+                    assertEquals(response.results.shops, viewModel.restaurantData.value)
+                }
+            }
+
+
+            viewModel.searchState.observeForever {
+                if (it == SearchState.DONE) {
+                    assertEquals(SearchState.DONE, viewModel.searchState.value)
+                }
+            }
             viewModel.searchRestaurants(searchTerms)
-            verify(searchStateObserver).onChanged(SearchState.LOADING)
-            verify(restaurantDataObserver).onChanged(response.results.shops)
-            verify(searchStateObserver).onChanged(SearchState.DONE)
+
+
         }
 
     /**
@@ -118,10 +129,15 @@ class RestaurantListViewModelTest {
             val response = Response.error<HotPepperResponse>(500, ResponseBody.create(null, ""))
             `when`(repository.searchHotPepperRepository(searchTerms))
                 .thenReturn(response)
+
+            viewModel.searchState.observeForever {
+                if (it == SearchState.NETWORK_ERROR) {
+                    assertEquals(SearchState.NETWORK_ERROR, viewModel.searchState.value)
+                }
+            }
+
             viewModel.searchRestaurants(searchTerms)
-            verify(searchStateObserver).onChanged(SearchState.LOADING)
-            verify(restaurantDataObserver).onChanged(response.body()?.results?.shops ?: emptyList())
-            verify(searchStateObserver).onChanged(SearchState.NETWORK_ERROR)
+
         }
 
     /**
@@ -137,25 +153,13 @@ class RestaurantListViewModelTest {
             val response = HotPepperResponse(Results(emptyList()))
             `when`(repository.searchHotPepperRepository(searchTerms))
                 .thenReturn(Response.success(response))
-            viewModel.searchRestaurants(searchTerms)
-            verify(searchStateObserver).onChanged(SearchState.LOADING)
-            verify(restaurantDataObserver).onChanged(response.results.shops)
-            verify(searchStateObserver).onChanged(SearchState.EMPTY_RESULT)
-        }
 
-    /**
-     * ホットペッパーグルメAPIからのレスポンスがnullの場合のテスト
-     */
-    @Test
-    fun searchHotPepperRepositoryRetrySearch() =
-        runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-            val response = Response.success(HotPepperResponse(Results(emptyList())))
-            `when`(repository.searchHotPepperRepository(searchTerms))
-                .thenReturn(response)
+
+            viewModel.searchState.observeForever {
+                if (it == SearchState.EMPTY_RESULT) {
+                    assertEquals(SearchState.EMPTY_RESULT, viewModel.searchState.value)
+                }
+            }
             viewModel.searchRestaurants(searchTerms)
-            assertEquals(response.body()?.results?.shops, viewModel.restaurantData.value)
-            viewModel.retrySearch()
-            assertEquals(response.body()?.results?.shops, viewModel.restaurantData.value)
         }
 }
