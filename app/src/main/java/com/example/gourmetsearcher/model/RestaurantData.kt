@@ -1,6 +1,7 @@
 package com.example.gourmetsearcher.model
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
@@ -20,6 +21,7 @@ import kotlinx.parcelize.Parcelize
  * @param open 営業時間（開店）
  * @param close 営業時間（閉店）
  */
+@Keep
 @Parcelize
 data class RestaurantData(
     @Json(name = "id")
@@ -55,6 +57,7 @@ data class RestaurantData(
  * @param name 大エリア名
  * - 東京
  */
+@Keep
 @Parcelize
 data class LargeAreaData(
     @Json(name = "name")
@@ -66,6 +69,7 @@ data class LargeAreaData(
  * @param name 小エリア名
  * -銀座5～8丁目
  */
+@Keep
 @Parcelize
 data class SmallAreaData(
     @Json(name = "name")
@@ -77,6 +81,7 @@ data class SmallAreaData(
  * @param name ジャンル名
  * - 居酒屋
  */
+@Keep
 @Parcelize
 data class GenreData(
     @Json(name = "name")
@@ -88,6 +93,7 @@ data class GenreData(
  * @param name 予算
  * - 3000円
  */
+@Keep
 @Parcelize
 data class BudgetData(
     @Json(name = "name")
@@ -98,6 +104,7 @@ data class BudgetData(
  * 店舗URL情報を保持するデータクラス
  * @param pc PCサイトURL
  */
+@Keep
 @Parcelize
 data class Urls(
     @Json(name = "pc")
@@ -108,6 +115,7 @@ data class Urls(
  * 写真情報を保持するデータクラス
  * @param pc
  */
+@Keep
 @Parcelize
 data class PhotoData(
     @Json(name = "pc")
@@ -118,6 +126,7 @@ data class PhotoData(
  * 店舗トップ写真URL情報を保持するデータクラス
  * @param l 店舗トップ写真(大）画像URL
  */
+@Keep
 @Parcelize
 data class PCData(
     @Json(name = "l")

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Keep
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.example.gourmetsearcher.viewmodel.InputKeyWordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /** キーワード入力画面 */
+@Keep
 @AndroidEntryPoint
 class InputKeyWordFragment : Fragment() {
     private var _binding: FragmentInputKeyWordBinding? = null

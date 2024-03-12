@@ -1,5 +1,6 @@
 package com.example.gourmetsearcher.model
 
+import androidx.annotation.Keep
 import java.io.Serializable
 
 /**
@@ -7,6 +8,7 @@ import java.io.Serializable
  * @param lat 緯度
  * @param lng 経度
  */
+@Keep
 data class CurrentLocation(
     val lat: Double,
     val lng: Double

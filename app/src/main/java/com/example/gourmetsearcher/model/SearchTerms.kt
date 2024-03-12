@@ -1,5 +1,6 @@
 package com.example.gourmetsearcher.model
 
+import androidx.annotation.Keep
 import java.io.Serializable
 
 /**
@@ -8,6 +9,7 @@ import java.io.Serializable
  * @param location 現在地
  * @param range 範囲
  */
+@Keep
 data class SearchTerms(
     val keyword: String,
     val location: CurrentLocation,
