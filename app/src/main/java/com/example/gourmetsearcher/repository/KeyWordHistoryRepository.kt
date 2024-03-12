@@ -49,7 +49,7 @@ class KeyWordHistoryRepository(private val context: Context) {
      * 検索履歴をクリアする
      */
     fun clearHistory() {
-        // 全てのキーを削除
+        /** 全てのキーを削除 */
         getHistoryList().forEach { sharedPrefs.edit().remove(it).apply() }
         sharedPrefs.edit().remove("historyList").apply()
     }

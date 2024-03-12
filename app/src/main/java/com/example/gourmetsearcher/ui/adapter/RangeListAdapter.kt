@@ -16,6 +16,7 @@ class RangeListAdapter(onRangeItemClick: (Int) -> Unit) :
         rangeListDiffCallback,
         onRangeItemClick
     ) {
+        
     /**
      * ViewHolderのViewBindingを生成する
      * @param parent 親View

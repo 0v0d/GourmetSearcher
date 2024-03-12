@@ -13,6 +13,7 @@ class RestaurantListViewHolder(
     private val binding: LayoutRestaurantListItemBinding,
     private val onRestaurantItemClick: (RestaurantData) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
+    
     /**
      * ViewHolderにデータをバインドする
      * @param item レストラン情報
