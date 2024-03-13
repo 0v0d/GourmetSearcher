@@ -19,7 +19,7 @@ class InputKeyWordViewModel @Inject constructor(
     private val _historyListData = MutableLiveData<List<String>>()
 
     /** キーワード履歴リストデータ */
-    val historyListData: LiveData<List<String>> get() = _historyListData
+    val historyListData: LiveData<List<String>> = _historyListData
 
     /** 初期化でキーワード履歴リストを取得する */
     init {

@@ -10,12 +10,12 @@ class RestaurantDetailViewModel : ViewModel() {
     private val _url = MutableLiveData<String>()
 
     /** URLを開くためのLiveData */
-    val url: LiveData<String> get() = _url
+    val url: LiveData<String> = _url
 
     private val _searchAddress = MutableLiveData<String>()
 
     /** 住所をエンコードしてURLを開くためのLiveData */
-    val searchAddress: LiveData<String> get() = _searchAddress
+    val searchAddress: LiveData<String> = _searchAddress
 
     /** ボタンクリック時に住所をエンコードしてURLを開く */
     fun openMap(address: String) {

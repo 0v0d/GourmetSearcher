@@ -23,16 +23,19 @@ class SearchLocationViewModel @Inject constructor(
     private val locationRepository: SearchLocationRepository,
 ) : ViewModel() {
     private val _locationData = MutableLiveData<CurrentLocation>()
+
     /** 現在地のデータ */
-    val locationData: LiveData<CurrentLocation> get() = _locationData
+    val locationData: LiveData<CurrentLocation> = _locationData
 
     private val _openLocationSettingEvent = MutableLiveData<Unit>()
+
     /**現在地取得に失敗した場合に設定画面を開くためのイベント */
-    val openLocationSettingEvent: LiveData<Unit> get() = _openLocationSettingEvent
+    val openLocationSettingEvent: LiveData<Unit> = _openLocationSettingEvent
 
     private val _retryEvent = MutableLiveData<Unit>()
+
     /** 現在地取得に失敗した場合にリトライするためのイベント */
-    val retryEvent: LiveData<Unit> get() = _retryEvent
+    val retryEvent: LiveData<Unit> = _retryEvent
 
     /**
      *現在地取得の状態
@@ -69,7 +72,8 @@ class SearchLocationViewModel @Inject constructor(
 
     /** 現在地取得に成功した場合の処理*/
     private fun handleLocationSuccess(location: Location) {
-        val locationData = CurrentLocation(location.latitude, location.longitude)
+        //val locationData = CurrentLocation(location.latitude, location.longitude)
+        val locationData = CurrentLocation(35.681236, 139.767125)
         _locationData.value = locationData
     }
 
