@@ -70,8 +70,10 @@ class RestaurantListFragment : Fragment() {
     /** 検索結果のリストを監視する */
     private fun observeResultList() {
         viewModel.restaurantData.observe(viewLifecycleOwner) { resultList ->
-            binding.loadingProgressBar.isVisible = false
-            adapter.submitList(resultList)
+           if(resultList.isNotEmpty()){
+               binding.loadingProgressBar.isVisible = false
+               adapter.submitList(resultList)
+           }
         }
     }
 
