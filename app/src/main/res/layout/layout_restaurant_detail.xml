@@ -61,12 +61,12 @@
 			style="@style/restaurantDetailTextStyle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
 			android:text="@string/genre"
+			android:layout_marginTop="10dp"
 			android:textStyle="bold"
 			app:drawableStartCompat="@drawable/ic_genre"
 			app:layout_constraintStart_toStartOf="@+id/nameTitleTextView"
-			app:layout_constraintTop_toBottomOf="@+id/nameTitleTextView" />
+			app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
 		<TextView
 			android:id="@+id/genreTextView"
@@ -126,6 +126,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/access"
+			android:layout_marginTop="10dp"
 			android:textStyle="bold"
 			app:drawableStartCompat="@drawable/ic_access"
 			app:layout_constraintStart_toStartOf="@+id/nameTitleTextView"
