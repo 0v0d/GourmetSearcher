@@ -70,6 +70,11 @@ class RestaurantListViewModelTest {
             )
         )
     )
+    private val emptyResponse = HotPepperResponse(
+        Results(
+            emptyList()
+        )
+    )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
@@ -84,6 +89,9 @@ class RestaurantListViewModelTest {
     @After
     fun cleanup() {
         Dispatchers.resetMain()
+
+        viewModel.restaurantData.removeObserver(restaurantDataObserver)
+        viewModel.searchState.removeObserver(searchStateObserver)
     }
 
     /**
@@ -150,10 +158,14 @@ class RestaurantListViewModelTest {
     fun searchHotPepperRepositoryEmptyResponse() =
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-            val response = HotPepperResponse(Results(emptyList()))
             `when`(repository.searchHotPepperRepository(searchTerms))
-                .thenReturn(Response.success(response))
+                .thenReturn(Response.success(emptyResponse))
 
+            viewModel.restaurantData.observeForever {
+                if (it == emptyResponse.results.shops) {
+                    assertEquals(emptyResponse.results.shops, viewModel.restaurantData.value)
+                }
+            }
 
             viewModel.searchState.observeForever {
                 if (it == SearchState.EMPTY_RESULT) {
