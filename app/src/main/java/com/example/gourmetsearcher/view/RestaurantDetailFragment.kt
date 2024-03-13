@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.Keep
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +15,6 @@ import com.example.gourmetsearcher.databinding.FragmentRestaurantDetailBinding
 import com.example.gourmetsearcher.viewmodel.RestaurantDetailViewModel
 
 /** レストラン詳細画面 */
-@Keep
 class RestaurantDetailFragment : Fragment() {
     private val viewModel: RestaurantDetailViewModel by viewModels()
     private var _binding: FragmentRestaurantDetailBinding? = null

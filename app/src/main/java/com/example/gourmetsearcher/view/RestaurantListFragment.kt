@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.Keep
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,7 +19,6 @@ import com.example.gourmetsearcher.viewmodel.RestaurantListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /** レストラン検索結果画面 */
-@Keep
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
     private val viewModel: RestaurantListViewModel by viewModels()
