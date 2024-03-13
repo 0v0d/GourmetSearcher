@@ -41,14 +41,18 @@ class RestaurantDetailFragment : Fragment() {
     /** searchAddressの変更を監視 */
     private fun observeAddress() {
         viewModel.searchAddress.observe(viewLifecycleOwner) {
-            openMap(it)
+            if (it != null) {
+                openMap(it)
+            }
         }
     }
 
     /** urlの変更を監視 */
     private fun observeUrl() {
         viewModel.url.observe(viewLifecycleOwner) {
-            openWebBrowser(it)
+            if (it != null) {
+                openWebBrowser(it)
+            }
         }
     }
 

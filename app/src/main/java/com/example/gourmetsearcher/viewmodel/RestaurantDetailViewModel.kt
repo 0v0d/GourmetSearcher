@@ -1,29 +1,31 @@
 package com.example.gourmetsearcher.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.net.URLEncoder
 
 /** レストラン詳細画面のViewModel */
 class RestaurantDetailViewModel : ViewModel() {
-    private val _url = MutableLiveData<String>()
+    private val _url = MutableLiveData<String?>()
 
     /** URLを開くためのLiveData */
-    val url: LiveData<String> = _url
+    val url: MutableLiveData<String?> = _url
 
-    private val _searchAddress = MutableLiveData<String>()
+    private val _searchAddress = MutableLiveData<String?>()
 
     /** 住所をエンコードしてURLを開くためのLiveData */
-    val searchAddress: LiveData<String> = _searchAddress
+    val searchAddress: MutableLiveData<String?> = _searchAddress
 
     /** ボタンクリック時に住所をエンコードしてURLを開く */
     fun openMap(address: String) {
         _searchAddress.value = URLEncoder.encode(address, "UTF-8")
+        _searchAddress.value = null
     }
 
     /** ボタンクリック時にURLを開く */
     fun openUrl(htmlUrl: String) {
         _url.value = htmlUrl
+        _url.value = null
     }
+
 }
