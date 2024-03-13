@@ -111,7 +111,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:contentDescription="@string/map_button_description"
-			android:onClickListener="@{() -> viewModel.openMap(restaurant.address)}"
+			android:onClickListener="@{() -> viewModel.openMap(restaurant.address + restaurant.name)}"
 			android:strokeColor="@color/black"
 			app:icon="@drawable/ic_map"
 			app:iconSize="30dp"
