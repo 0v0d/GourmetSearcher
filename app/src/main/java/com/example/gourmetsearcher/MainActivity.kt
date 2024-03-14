@@ -1,7 +1,6 @@
 package com.example.gourmetsearcher
 
 import android.os.Bundle
-import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -11,7 +10,6 @@ import com.example.gourmetsearcher.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 /** メイン画面 */
-@Keep
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
