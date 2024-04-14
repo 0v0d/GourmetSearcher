@@ -2,12 +2,16 @@ package com.example.gourmetsearcher.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
 /**
  *  検索履歴のリポジトリ
  * @param context コンテキスト
  */
-class KeyWordHistoryRepository(private val context: Context) {
+class KeyWordHistoryRepository @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
     /**
      * 検索履歴を保存する
      */

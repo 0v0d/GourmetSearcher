@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.ui.viewholder
+package com.example.gourmetsearcher.ui.holder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
@@ -6,17 +6,17 @@ import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
 /**
  * 範囲のリストのViewHolder
  * @param binding ViewHolderのViewBinding
- * @param onRangeItemClick 範囲のリストをクリックした時の処理
  */
 class RangeListViewHolder(
-    private val binding: LayoutRangeListItemBinding,
-    private val onRangeItemClick: (Int) -> Unit
+    private val binding: LayoutRangeListItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
+
     /**
      * ViewHolderにデータをバインドする
      * @param range 範囲
+     * @param onRangeItemClick 範囲のリストをクリックした時の処理
      */
-    fun bind(range: Int) {
+    fun bind(range: Int, onRangeItemClick: (Int) -> Unit) {
         binding.range = range
         binding.root.setOnClickListener {
             //APIの引数に合わせるために+1する

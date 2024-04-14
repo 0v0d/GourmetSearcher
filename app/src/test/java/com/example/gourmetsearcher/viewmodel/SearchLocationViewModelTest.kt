@@ -3,7 +3,7 @@ package com.example.gourmetsearcher.viewmodel
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.example.gourmetsearcher.model.CurrentLocation
+import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.repository.SearchLocationRepository
 import com.example.gourmetsearcher.state.LocationSearchState
 import kotlinx.coroutines.Dispatchers

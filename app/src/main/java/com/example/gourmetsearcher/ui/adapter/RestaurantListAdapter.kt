@@ -3,58 +3,40 @@ package com.example.gourmetsearcher.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.viewbinding.ViewBinding
+import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRestaurantListItemBinding
-import com.example.gourmetsearcher.model.RestaurantData
-import com.example.gourmetsearcher.ui.viewholder.RestaurantListViewHolder
+import com.example.gourmetsearcher.model.api.Shops
+import com.example.gourmetsearcher.ui.holder.RestaurantListViewHolder
 
 /**
  * レストランリストのAdapter
  * @param onRestaurantItemClick レストランリストをクリックした時の処理
  */
-class RestaurantListAdapter(onRestaurantItemClick: (RestaurantData) -> Unit) :
-    BaseListAdapter<RestaurantData, RestaurantListViewHolder>(
-        restaurantDataDiffCallback,
-        onRestaurantItemClick
-    ) {
+class RestaurantListAdapter(private val onRestaurantItemClick: (Shops) -> Unit) :
+    ListAdapter<Shops, RestaurantListViewHolder>(shopsDiffCallback) {
+
     /**
      * ViewHolderのViewBindingを生成する
      * @param parent 親View
      * @return ViewBinding ViewHolderのViewBinding
      */
-    override fun createViewBinding(parent: ViewGroup): ViewBinding {
-        return LayoutRestaurantListItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-    }
-
-    /**
-     * ViewHolderを生成する
-     * @param viewBinding ViewHolderのViewBinding
-     * @param onItemClicked リストの要素がクリックされた時の処理
-     * @return VH ViewHolder
-     */
-    override fun createViewHolder(
-        viewBinding: ViewBinding,
-        onItemClicked: (RestaurantData) -> Unit
-    ): RestaurantListViewHolder {
-        val binding = viewBinding as LayoutRestaurantListItemBinding
-        return RestaurantListViewHolder(binding, onItemClicked)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantListViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = LayoutRestaurantListItemBinding.inflate(inflater, parent, false)
+        return RestaurantListViewHolder(binding)
     }
 
     /**
      * ViewHolderにデータをバインドする
      * @param holder ViewHolder
-     * @param item リストの要素
+     * @param position ポジション
      */
-    override fun bind(holder: RestaurantListViewHolder, item: RestaurantData) {
-        holder.bind(item)
+    override fun onBindViewHolder(holder: RestaurantListViewHolder, position: Int) {
+        holder.bind(getItem(position), onRestaurantItemClick)
     }
 
     /**
-     * ViewHolderがリサイクルされる際に呼ばれる
+     * ViewHolderのバインドを解除する
      * @param holder ViewHolder
      */
     override fun onViewRecycled(holder: RestaurantListViewHolder) {
@@ -63,29 +45,29 @@ class RestaurantListAdapter(onRestaurantItemClick: (RestaurantData) -> Unit) :
 
     private companion object {
         /** 更新されたデータを判定する */
-        private val restaurantDataDiffCallback = object : DiffUtil.ItemCallback<RestaurantData>() {
+        private val shopsDiffCallback = object : DiffUtil.ItemCallback<Shops>() {
             /**
              * リストの要素が同じかどうかを判定する
-             * @param oldRestaurantData 古いリストの要素
-             * @param newRestaurantData 新しいリストの要素
+             * @param oldShops 古いリストの要素
+             * @param newShops 新しいリストの要素
              */
             override fun areItemsTheSame(
-                oldRestaurantData: RestaurantData,
-                newRestaurantData: RestaurantData
+                oldShops: Shops,
+                newShops: Shops
             ): Boolean {
-                return oldRestaurantData.id == newRestaurantData.id
+                return oldShops.id == newShops.id
             }
 
             /**
              * リストの要素の内容が同じかどうかを判定する
-             * @param oldRestaurantData 古いリストの要素
-             * @param newRestaurantData 新しいリストの要素
+             * @param oldShops 古いリストの要素
+             * @param newShops 新しいリストの要素
              */
             override fun areContentsTheSame(
-                oldRestaurantData: RestaurantData,
-                newRestaurantData: RestaurantData
+                oldShops: Shops,
+                newShops: Shops
             ): Boolean {
-                return oldRestaurantData == newRestaurantData
+                return oldShops == newShops
             }
         }
     }

@@ -3,67 +3,47 @@ package com.example.gourmetsearcher.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.viewbinding.ViewBinding
+import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutKeyWordHistoryListItemBinding
-import com.example.gourmetsearcher.ui.viewholder.KeyWordHistoryViewHolder
+import com.example.gourmetsearcher.ui.holder.KeyWordHistoryViewHolder
 
 /**
  * キーワード履歴のリストのAdapter
  * @param onKeyWordHistoryItemClick キーワード履歴のリストのアイテムをクリックしたときの処理
  */
-class KeyWordHistoryAdapter(onKeyWordHistoryItemClick: (String) -> Unit) :
-    BaseListAdapter<String, KeyWordHistoryViewHolder>(
-        keyWordHistoryDiffCallback,
-        onKeyWordHistoryItemClick
-    ) {
+class KeyWordHistoryAdapter(
+    private val onKeyWordHistoryItemClick: (String) -> Unit
+) : ListAdapter<String, KeyWordHistoryViewHolder>(keyWordHistoryDiffCallback) {
 
     /**
-     * キーワード履歴のリストのアイテムのViewBindingを生成する
+     * ViewHolderのViewBindingを生成する
      * @param parent 親View
-     * @return キーワード履歴のリストのアイテムのViewBinding
+     * @return ViewBinding ViewHolderのViewBinding
      */
-    override fun createViewBinding(parent: ViewGroup): LayoutKeyWordHistoryListItemBinding {
-        return LayoutKeyWordHistoryListItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeyWordHistoryViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = LayoutKeyWordHistoryListItemBinding.inflate(inflater, parent, false)
+        return KeyWordHistoryViewHolder(binding)
     }
 
     /**
-     * キーワード履歴のリストのViewHolderを生成する
-     * @param viewBinding キーワード履歴のリストのアイテムのViewBinding
-     * @param onItemClicked キーワード履歴のリストのアイテムをクリックしたときの処理
-     * @return キーワード履歴のリストのViewHolder
+     * ViewHolderにデータをバインドする
+     * @param holder ViewHolder
+     * @param position ポジション
      */
-    override fun createViewHolder(
-        viewBinding: ViewBinding,
-        onItemClicked: (String) -> Unit
-    ): KeyWordHistoryViewHolder {
-        val binding = viewBinding as LayoutKeyWordHistoryListItemBinding
-        return KeyWordHistoryViewHolder(binding, onItemClicked)
-    }
-
-    /**
-     * キーワード履歴のリストのアイテムをバインドする
-     * @param holder キーワード履歴のリストのViewHolder
-     * @param item キーワード履歴のリストのアイテム
-     */
-    override fun bind(holder: KeyWordHistoryViewHolder, item: String) {
-        holder.bind(item)
+    override fun onBindViewHolder(holder: KeyWordHistoryViewHolder, position: Int) {
+        holder.bind(getItem(position), onKeyWordHistoryItemClick)
     }
 
     private companion object {
         /** キーワード履歴のリストのDiffCallback */
         private val keyWordHistoryDiffCallback = object : DiffUtil.ItemCallback<String>() {
             override fun areItemsTheSame(
-                oldValue: String,
-                newValue: String
+                oldValue: String, newValue: String
             ): Boolean = oldValue == newValue
 
             override fun areContentsTheSame(
-                oldValue: String,
-                newValue: String
+                oldValue: String, newValue: String
             ): Boolean = oldValue == newValue
         }
     }

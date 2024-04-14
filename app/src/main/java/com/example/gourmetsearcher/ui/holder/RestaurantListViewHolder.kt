@@ -1,24 +1,23 @@
-package com.example.gourmetsearcher.ui.viewholder
+package com.example.gourmetsearcher.ui.holder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gourmetsearcher.databinding.LayoutRestaurantListItemBinding
-import com.example.gourmetsearcher.model.RestaurantData
+import com.example.gourmetsearcher.model.api.Shops
 
 /**
  * レストランリストのViewHolder
  * @param binding ViewHolderのViewBinding
- * @param onRestaurantItemClick レストランリストをクリックした時の処理
  */
 class RestaurantListViewHolder(
-    private val binding: LayoutRestaurantListItemBinding,
-    private val onRestaurantItemClick: (RestaurantData) -> Unit
+    private val binding: LayoutRestaurantListItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    
+
     /**
      * ViewHolderにデータをバインドする
      * @param item レストラン情報
+     * @param onRestaurantItemClick レストランリストをクリックした時の処理
      */
-    fun bind(item: RestaurantData) {
+    fun bind(item: Shops, onRestaurantItemClick: (Shops) -> Unit) {
         binding.restaurant = item
         // レストランリストをクリックした時の処理
         binding.root.setOnClickListener {

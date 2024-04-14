@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.model
+package com.example.gourmetsearcher.model.data
 
 import java.io.Serializable
 
