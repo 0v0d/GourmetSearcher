@@ -49,7 +49,7 @@
 		tools:layout="@layout/fragment_result_list">
 		<argument
 			android:name="searchTerms"
-			app:argType="com.example.gourmetsearcher.model.SearchTerms" />
+			app:argType="com.example.gourmetsearcher.model.data.SearchTerms" />
 
 		<action
 			android:id="@+id/action_to_restaurant_detail_fragment"
@@ -70,6 +70,6 @@
 			app:argType="string" />
 		<argument
 			android:name="restaurantData"
-			app:argType="com.example.gourmetsearcher.model.RestaurantData" />
+			app:argType="com.example.gourmetsearcher.model.api.Shops" />
 	</fragment>
 </navigation>

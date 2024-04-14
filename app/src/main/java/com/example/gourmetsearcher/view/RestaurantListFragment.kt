@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.databinding.FragmentResultListBinding
-import com.example.gourmetsearcher.model.RestaurantData
+import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.state.SearchState
 import com.example.gourmetsearcher.ui.adapter.RestaurantListAdapter
 import com.example.gourmetsearcher.viewmodel.RestaurantListViewModel
@@ -32,7 +32,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     /** レストランリストをクリックした時の処理 */
-    private val restaurantItemClick = { it: RestaurantData ->
+    private val restaurantItemClick = { it: Shops ->
         navigateToRestaurantDetailFragment(it)
     }
 
@@ -67,7 +67,7 @@ class RestaurantListFragment : Fragment() {
 
     /** 検索結果のリストを監視する */
     private fun observeResultList() {
-        viewModel.restaurantData.observe(viewLifecycleOwner) { resultList ->
+        viewModel.shops.observe(viewLifecycleOwner) { resultList ->
            if(resultList.isNotEmpty()){
                binding.loadingProgressBar.isVisible = false
                adapter.submitList(resultList)
@@ -126,7 +126,7 @@ class RestaurantListFragment : Fragment() {
      * レストラン詳細画面に遷移する
      * @param restaurant 選択されたレストラン
      */
-    private fun navigateToRestaurantDetailFragment(restaurant: RestaurantData) {
+    private fun navigateToRestaurantDetailFragment(restaurant: Shops) {
         val action = RestaurantListFragmentDirections.actionToRestaurantDetailFragment(
             restaurant.name,
             restaurant

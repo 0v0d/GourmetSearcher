@@ -2,18 +2,18 @@ package com.example.gourmetsearcher.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.example.gourmetsearcher.model.BudgetData
-import com.example.gourmetsearcher.model.CurrentLocation
-import com.example.gourmetsearcher.model.GenreData
-import com.example.gourmetsearcher.model.HotPepperResponse
-import com.example.gourmetsearcher.model.LargeAreaData
-import com.example.gourmetsearcher.model.PCData
-import com.example.gourmetsearcher.model.PhotoData
-import com.example.gourmetsearcher.model.RestaurantData
-import com.example.gourmetsearcher.model.Results
-import com.example.gourmetsearcher.model.SearchTerms
-import com.example.gourmetsearcher.model.SmallAreaData
-import com.example.gourmetsearcher.model.Urls
+import com.example.gourmetsearcher.model.api.BudgetData
+import com.example.gourmetsearcher.model.data.CurrentLocation
+import com.example.gourmetsearcher.model.api.GenreData
+import com.example.gourmetsearcher.model.api.HotPepperResponse
+import com.example.gourmetsearcher.model.api.LargeAreaData
+import com.example.gourmetsearcher.model.api.PCData
+import com.example.gourmetsearcher.model.api.PhotoData
+import com.example.gourmetsearcher.model.api.Shops
+import com.example.gourmetsearcher.model.api.Results
+import com.example.gourmetsearcher.model.data.SearchTerms
+import com.example.gourmetsearcher.model.api.SmallAreaData
+import com.example.gourmetsearcher.model.api.Urls
 import com.example.gourmetsearcher.repository.HotPepperRepository
 import com.example.gourmetsearcher.state.SearchState
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +43,7 @@ class RestaurantListViewModelTest {
     private lateinit var repository: HotPepperRepository
 
     @Mock
-    private lateinit var restaurantDataObserver: Observer<List<RestaurantData>>
+    private lateinit var shopsObserver: Observer<List<Shops>>
 
     @Mock
     private lateinit var searchStateObserver: Observer<SearchState>
@@ -52,7 +52,7 @@ class RestaurantListViewModelTest {
     private val response = HotPepperResponse(
         Results(
             listOf(
-                RestaurantData(
+                Shops(
                     "1",
                     "Restaurant",
                     "Address",
@@ -81,7 +81,7 @@ class RestaurantListViewModelTest {
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         viewModel = RestaurantListViewModel(repository)
-        viewModel.restaurantData.observeForever(restaurantDataObserver)
+        viewModel.shops.observeForever(shopsObserver)
         viewModel.searchState.observeForever(searchStateObserver)
     }
 
@@ -90,7 +90,7 @@ class RestaurantListViewModelTest {
     fun cleanup() {
         Dispatchers.resetMain()
 
-        viewModel.restaurantData.removeObserver(restaurantDataObserver)
+        viewModel.shops.removeObserver(shopsObserver)
         viewModel.searchState.removeObserver(searchStateObserver)
     }
 
@@ -107,9 +107,9 @@ class RestaurantListViewModelTest {
             `when`(repository.searchHotPepperRepository(searchTerms))
                 .thenReturn(Response.success(response))
 
-            viewModel.restaurantData.observeForever {
+            viewModel.shops.observeForever {
                 if (it == response.results.shops) {
-                    assertEquals(response.results.shops, viewModel.restaurantData.value)
+                    assertEquals(response.results.shops, viewModel.shops.value)
                 }
             }
 
@@ -161,9 +161,9 @@ class RestaurantListViewModelTest {
             `when`(repository.searchHotPepperRepository(searchTerms))
                 .thenReturn(Response.success(emptyResponse))
 
-            viewModel.restaurantData.observeForever {
+            viewModel.shops.observeForever {
                 if (it == emptyResponse.results.shops) {
-                    assertEquals(emptyResponse.results.shops, viewModel.restaurantData.value)
+                    assertEquals(emptyResponse.results.shops, viewModel.shops.value)
                 }
             }
 

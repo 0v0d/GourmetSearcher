@@ -7,7 +7,7 @@
 
 		<variable
 			name="restaurant"
-			type="com.example.gourmetsearcher.model.RestaurantData" />
+			type="com.example.gourmetsearcher.model.api.Shops" />
 
 		<variable
 			name="viewModel"

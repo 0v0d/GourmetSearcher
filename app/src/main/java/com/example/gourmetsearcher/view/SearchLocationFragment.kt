@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.databinding.FragmentSearchLocationBinding
-import com.example.gourmetsearcher.model.SearchTerms
+import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.state.LocationSearchState
 import com.example.gourmetsearcher.viewmodel.SearchLocationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

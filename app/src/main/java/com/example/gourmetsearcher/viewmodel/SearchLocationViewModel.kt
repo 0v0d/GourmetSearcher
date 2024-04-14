@@ -5,13 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gourmetsearcher.model.CurrentLocation
+import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.repository.SearchLocationRepository
 import com.example.gourmetsearcher.state.LocationSearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -60,9 +58,7 @@ class SearchLocationViewModel @Inject constructor(
 
     /** 現在地を取得するための処理 */
     private suspend fun performSearch() {
-        val location = withContext(Dispatchers.IO) {
-            locationRepository.getLocation()
-        }
+        val location = locationRepository.getLocation()
         if (location != null) {
             handleLocationSuccess(location)
             return

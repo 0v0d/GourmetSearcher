@@ -1,8 +1,28 @@
-package com.example.gourmetsearcher.model
+package com.example.gourmetsearcher.model.api
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
+
+/**
+ * ホットペッパーグルメAPIのレスポンスデータクラス
+ * @param results レストラン情報
+ */
+@Parcelize
+data class HotPepperResponse(
+    @Json(name = "results")
+    val results: Results
+) : Parcelable
+
+/**
+ * レストラン情報を保持するデータクラス
+ * @param shops レストラン情報
+ */
+@Parcelize
+data class Results(
+    @Json(name = "shop")
+    val shops: List<Shops>
+) : Parcelable
 
 /**
  * レストラン情報を保持するデータクラス
@@ -21,7 +41,7 @@ import kotlinx.parcelize.Parcelize
  * @param close 営業時間（閉店）
  */
 @Parcelize
-data class RestaurantData(
+data class Shops(
     @Json(name = "id")
     val id: String,
     @Json(name = "name")
@@ -53,7 +73,6 @@ data class RestaurantData(
 /**
  * 大エリア情報を保持するデータクラス
  * @param name 大エリア名
- * - 東京
  */
 @Parcelize
 data class LargeAreaData(
@@ -64,7 +83,6 @@ data class LargeAreaData(
 /**
  * 小エリア情報を保持するデータクラス
  * @param name 小エリア名
- * -銀座5～8丁目
  */
 @Parcelize
 data class SmallAreaData(
@@ -75,7 +93,6 @@ data class SmallAreaData(
 /**
  * ジャンル情報を保持するデータクラス
  * @param name ジャンル名
- * - 居酒屋
  */
 @Parcelize
 data class GenreData(
@@ -86,7 +103,6 @@ data class GenreData(
 /**
  * 予算情報を保持するデータクラス
  * @param name 予算
- * - 3000円
  */
 @Parcelize
 data class BudgetData(

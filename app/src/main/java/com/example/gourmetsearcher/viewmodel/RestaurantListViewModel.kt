@@ -5,32 +5,32 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.example.gourmetsearcher.model.HotPepperResponse
-import com.example.gourmetsearcher.model.RestaurantData
-import com.example.gourmetsearcher.model.Results
-import com.example.gourmetsearcher.model.SearchTerms
-import com.example.gourmetsearcher.repository.HotPepperRepository
+import com.example.gourmetsearcher.model.api.HotPepperResponse
+import com.example.gourmetsearcher.model.api.Results
+import com.example.gourmetsearcher.model.api.Shops
+import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.state.SearchState
+import com.example.gourmetsearcher.usecase.HotPepperUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
 /**
  * レストラン検索画面のViewModel
- * @param repository レストラン情報を取得するRepository
+ * @param hotPepperUseCase ホットペッパーグルメAPIを利用して、レストラン情報を取得するUseCase
  */
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
-    private val repository: HotPepperRepository
+    private val hotPepperUseCase: HotPepperUseCase
 ) : ViewModel() {
     private val _restaurantData = MutableLiveData(HotPepperResponse(Results(emptyList())))
+
     /** レストラン情報 */
-    val restaurantData: LiveData<List<RestaurantData>> = _restaurantData.map { it.results.shops }
+    val shops: LiveData<List<Shops>> = _restaurantData.map { it.results.shops }
 
     private val _searchState = MutableLiveData<SearchState>()
+
     /** 検索状態 */
     val searchState: LiveData<SearchState> = _searchState
     private lateinit var searchTerm: SearchTerms
@@ -44,22 +44,12 @@ class RestaurantListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 searchTerm = searchTerms
-                performSearch(searchTerms)
+                val response = hotPepperUseCase.execute(searchTerms)
+                handleResponse(response)
             } catch (e: Exception) {
                 _searchState.postValue(SearchState.EMPTY_RESULT)
             }
         }
-    }
-
-    /**
-     * APIから検索結果を取得する
-     * @param searchTerms 検索条件
-     */
-    private suspend fun performSearch(searchTerms: SearchTerms) {
-        val response = withContext(Dispatchers.IO) {
-            repository.searchHotPepperRepository(searchTerms)
-        }
-        handleResponse(response)
     }
 
     /**
@@ -90,7 +80,6 @@ class RestaurantListViewModel @Inject constructor(
         if (searchTerm.keyword.isEmpty()) {
             return
         }
-        _searchState.value = SearchState.LOADING
         searchRestaurants(searchTerm)
     }
 }

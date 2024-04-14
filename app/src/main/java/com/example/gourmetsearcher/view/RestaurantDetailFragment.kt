@@ -69,6 +69,7 @@ class RestaurantDetailFragment : Fragment() {
             )
         )
         startActivity(intent)
+        viewModel.clearUrl()
     }
 
     /**
@@ -85,6 +86,7 @@ class RestaurantDetailFragment : Fragment() {
             )
         )
         startActivity(intent)
+        viewModel.clearAddress()
     }
 
     override fun onDestroyView() {

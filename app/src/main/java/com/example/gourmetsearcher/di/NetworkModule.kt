@@ -10,10 +10,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
 
 /**
  * ネットワーク関連のモジュール
@@ -26,34 +24,23 @@ object NetworkModule {
      * @return Moshi
      */
     @Provides
-    fun provideMoshi(): Moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-
-    /**
-     * OkHttpClientを提供
-     * @return OkHttpClient
-     */
-    @Provides
-    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
-        .build()
+    fun provideMoshi(): Moshi =
+        Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
     /**
      * Retrofitを提供
      * @param context Context
      * @param moshi Moshi
-     * @param okHttpClient OkHttpClient
      * @return Retrofit
      */
     @Provides
-    fun provideRetrofit(@ApplicationContext context: Context, moshi: Moshi, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(
+        @ApplicationContext context: Context,
+        moshi: Moshi,
+    ): Retrofit = Retrofit.Builder()
         .baseUrl(context.getString(R.string.hot_pepper_url))
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .client(okHttpClient)
-        .build()
+        .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+
 
     /**
      * HotPepperNetworkDataSourceを提供

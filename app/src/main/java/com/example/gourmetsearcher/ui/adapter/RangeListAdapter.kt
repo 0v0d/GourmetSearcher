@@ -3,54 +3,35 @@ package com.example.gourmetsearcher.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.viewbinding.ViewBinding
+import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
-import com.example.gourmetsearcher.ui.viewholder.RangeListViewHolder
+import com.example.gourmetsearcher.ui.holder.RangeListViewHolder
 
 /**
  * 範囲のリストのAdapter
  * @param onRangeItemClick 範囲のリストをクリックした時の処理
  */
-class RangeListAdapter(onRangeItemClick: (Int) -> Unit) :
-    BaseListAdapter<Int, RangeListViewHolder>(
-        rangeListDiffCallback,
-        onRangeItemClick
-    ) {
-        
+class RangeListAdapter(private val onRangeItemClick: (Int) -> Unit) :
+    ListAdapter<Int, RangeListViewHolder>(rangeListDiffCallback) {
+
     /**
      * ViewHolderのViewBindingを生成する
      * @param parent 親View
      * @return ViewBinding ViewHolderのViewBinding
      */
-    override fun createViewBinding(parent: ViewGroup): LayoutRangeListItemBinding {
-        return LayoutRangeListItemBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-    }
-
-    /**
-     * ViewHolderを生成する
-     * @param viewBinding ViewHolderのViewBinding
-     * @param onItemClicked リストの要素がクリックされた時の処理
-     * @return VH ViewHolder
-     */
-    override fun createViewHolder(
-        viewBinding: ViewBinding,
-        onItemClicked: (Int) -> Unit
-    ): RangeListViewHolder {
-        val binding = viewBinding as LayoutRangeListItemBinding
-        return RangeListViewHolder(binding, onItemClicked)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RangeListViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = LayoutRangeListItemBinding.inflate(inflater, parent, false)
+        return RangeListViewHolder(binding)
     }
 
     /**
      * ViewHolderにデータをバインドする
      * @param holder ViewHolder
-     * @param item リストの要素
+     * @param position ポジション
      */
-    override fun bind(holder: RangeListViewHolder, item: Int) {
-        holder.bind(item)
+    override fun onBindViewHolder(holder: RangeListViewHolder, position: Int) {
+        holder.bind(getItem(position), onRangeItemClick)
     }
 
     private companion object {
@@ -63,19 +44,11 @@ class RangeListAdapter(onRangeItemClick: (Int) -> Unit) :
              * @return 同じかどうか
              */
             override fun areItemsTheSame(
-                oldValue: Int,
-                newValue: Int
+                oldValue: Int, newValue: Int
             ): Boolean = oldValue == newValue
 
-            /**
-             * リストの要素が同じかどうかを判定する
-             * @param oldValue 古い値
-             * @param newValue 新しい値
-             * @return 同じかどうか
-             */
             override fun areContentsTheSame(
-                oldValue: Int,
-                newValue: Int
+                oldValue: Int, newValue: Int
             ): Boolean = oldValue == newValue
         }
     }
