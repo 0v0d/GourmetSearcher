@@ -1,6 +1,5 @@
 package com.example.gourmetsearcher.repository
 
-import android.util.LruCache
 import com.example.gourmetsearcher.BuildConfig
 import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.data.SearchTerms
@@ -22,12 +21,6 @@ class HotPepperRepository @Inject constructor
     private val key = BuildConfig.API_KEY
     private val format = "json"
 
-    /** キャッシュサイズ */
-    private val cacheSize = 5
-
-    /** キャッシュ */
-    private val cache = LruCache<String, Response<HotPepperResponse>?>(cacheSize)
-
     /** リポジトリ情報を取得
      * @param searchTerms 検索条件
      * @return Response<HotPepperResponse>レストラン情報 or null
@@ -44,11 +37,8 @@ class HotPepperRepository @Inject constructor
     private suspend fun searchHotPepperRepository(searchTerms: SearchTerms): Response<HotPepperResponse>? =
         withContext(Dispatchers.IO)
         {
-            // キャッシュから結果を取得
-            cache[searchTerms.keyword]?.let { return@withContext it }
-
             return@withContext try {
-                val response = service.getRestaurantDatum(
+                service.getRestaurantDatum(
                     key,
                     searchTerms.keyword,
                     searchTerms.location.lat,
@@ -56,8 +46,6 @@ class HotPepperRepository @Inject constructor
                     searchTerms.range,
                     format
                 )
-                cache.put(searchTerms.keyword, response)
-                response
             } catch (e: Exception) {
                 null
             }
