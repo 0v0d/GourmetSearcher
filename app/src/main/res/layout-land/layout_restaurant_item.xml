@@ -6,7 +6,7 @@
 
 		<variable
 			name="restaurant"
-			type="com.example.gourmetsearcher.model.api.Shops" />
+			type="com.example.gourmetsearcher.model.domain.ShopsDomain" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
@@ -21,14 +21,12 @@
 			android:id="@+id/icon"
 			android:layout_width="150dp"
 			android:layout_height="150dp"
-			android:layout_marginStart="5dp"
+			android:layout_marginStart="20dp"
 			android:importantForAccessibility="no"
 			app:imageUrl="@{restaurant.photo.pc.l}"
-
 			app:layout_constraintEnd_toStartOf="@+id/infoLayout"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintVertical_bias="0.0"
+			app:layout_constraintTop_toTopOf="@+id/infoLayout"
 			app:shapeAppearanceOverlay="@style/roundedCornersImageView"
 			tools:ignore="ImageContrastCheck"
 			tools:src="@tools:sample/avatars" />
@@ -47,7 +45,7 @@
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="10dp"
-				android:layout_marginTop="5dp"
+				android:layout_marginEnd="20dp"
 				android:text="@{restaurant.name}"
 				android:textSize="23sp"
 				android:textStyle="bold"
@@ -60,11 +58,11 @@
 				android:id="@+id/areaTextView"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="10dp"
+				android:layout_marginTop="5dp"
 				android:text='@{restaurant.smallArea.name +"[" +restaurant.largeArea.name +"]"}'
 				android:textSize="20sp"
 				app:drawableStartCompat="@drawable/ic_address"
-				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintEnd_toEndOf="@+id/nameTextView"
 				app:layout_constraintStart_toStartOf="@+id/nameTextView"
 				app:layout_constraintTop_toBottomOf="@+id/nameTextView"
 				tools:text="天王寺[大阪]" />
@@ -73,11 +71,11 @@
 				android:id="@+id/genreTextView"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="10dp"
+				android:layout_marginTop="5dp"
 				android:text='@{restaurant.genre.name}'
 				android:textSize="20sp"
 				app:drawableStartCompat="@drawable/ic_genre"
-				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintEnd_toEndOf="@+id/nameTextView"
 				app:layout_constraintStart_toStartOf="@+id/nameTextView"
 				app:layout_constraintTop_toBottomOf="@+id/areaTextView"
 				tools:text="和食" />
@@ -86,11 +84,11 @@
 				android:id="@+id/budgetTextView"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="10dp"
+				android:layout_marginTop="5dp"
 				android:text='@{restaurant.budget.name}'
 				android:textSize="20sp"
 				app:drawableStartCompat="@drawable/ic_budget"
-				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintEnd_toEndOf="@+id/nameTextView"
 				app:layout_constraintStart_toStartOf="@+id/nameTextView"
 				app:layout_constraintTop_toBottomOf="@+id/genreTextView"
 				tools:text="1501～2000円" />
@@ -99,11 +97,11 @@
 				android:id="@+id/accessTextView"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="10dp"
+				android:layout_marginTop="5dp"
 				android:text='@{restaurant.access}'
 				android:textSize="20sp"
 				app:drawableStartCompat="@drawable/ic_access"
-				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintEnd_toEndOf="@+id/nameTextView"
 				app:layout_constraintStart_toStartOf="@+id/nameTextView"
 				app:layout_constraintTop_toBottomOf="@+id/budgetTextView"
 				tools:text="天王寺駅12号出口より直結｡あべのｷｭｰｽﾞﾓｰﾙ3F" />

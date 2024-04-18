@@ -70,6 +70,6 @@
 			app:argType="string" />
 		<argument
 			android:name="restaurantData"
-			app:argType="com.example.gourmetsearcher.model.api.Shops" />
+			app:argType="com.example.gourmetsearcher.model.domain.ShopsDomain" />
 	</fragment>
 </navigation>

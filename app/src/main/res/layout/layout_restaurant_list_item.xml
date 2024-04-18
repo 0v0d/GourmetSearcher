@@ -5,7 +5,7 @@
 
 		<variable
 			name="restaurant"
-			type="com.example.gourmetsearcher.model.api.Shops" />
+			type="com.example.gourmetsearcher.model.domain.ShopsDomain" />
 	</data>
 
 	<androidx.cardview.widget.CardView

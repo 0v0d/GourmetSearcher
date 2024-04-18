@@ -10,7 +10,7 @@
 
 		<variable
 			name="restaurant"
-			type="com.example.gourmetsearcher.model.api.Shops" />
+			type="com.example.gourmetsearcher.model.domain.ShopsDomain" />
 	</data>
 
 	<androidx.constraintlayout.widget.ConstraintLayout

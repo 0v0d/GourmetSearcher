@@ -7,7 +7,7 @@
 
 		<variable
 			name="restaurant"
-			type="com.example.gourmetsearcher.model.api.Shops" />
+			type="com.example.gourmetsearcher.model.domain.ShopsDomain" />
 
 		<variable
 			name="viewModel"
@@ -50,7 +50,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="30dp"
-			android:layout_marginEnd="5dp"
+			android:layout_marginEnd="20dp"
 			android:text="@{restaurant.name}"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toEndOf="@+id/nameTitleTextView"
