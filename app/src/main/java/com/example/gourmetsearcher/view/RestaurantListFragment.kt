@@ -7,16 +7,20 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.databinding.FragmentResultListBinding
-import com.example.gourmetsearcher.model.api.Shops
+import com.example.gourmetsearcher.model.domain.ShopsDomain
 import com.example.gourmetsearcher.state.SearchState
 import com.example.gourmetsearcher.ui.adapter.RestaurantListAdapter
 import com.example.gourmetsearcher.viewmodel.RestaurantListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /** レストラン検索結果画面 */
 @AndroidEntryPoint
@@ -32,7 +36,7 @@ class RestaurantListFragment : Fragment() {
     }
 
     /** レストランリストをクリックした時の処理 */
-    private val restaurantItemClick = { it: Shops ->
+    private val restaurantItemClick = { it: ShopsDomain ->
         navigateToRestaurantDetailFragment(it)
     }
 
@@ -53,25 +57,33 @@ class RestaurantListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeSearchState()
-        observeResultList()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    observeSearchState()
+                }
+                launch {
+                    observeResultList()
+                }
+            }
+        }
         setUpResultListRecyclerView()
     }
 
     /** searchStateの変化を監視する */
-    private fun observeSearchState() {
-        viewModel.searchState.observe(viewLifecycleOwner) {
+    private suspend fun observeSearchState() {
+        viewModel.searchState.collect {
             switchSearchState(it)
         }
     }
 
     /** 検索結果のリストを監視する */
-    private fun observeResultList() {
-        viewModel.shops.observe(viewLifecycleOwner) { resultList ->
-           if(resultList.isNotEmpty()){
-               binding.loadingProgressBar.isVisible = false
-               adapter.submitList(resultList)
-           }
+    private suspend fun observeResultList() {
+        viewModel.shops.collect { shops ->
+            if (shops != null) {
+                binding.loadingProgressBar.isVisible = false
+                adapter.submitList(shops)
+            }
         }
     }
 
@@ -83,7 +95,7 @@ class RestaurantListFragment : Fragment() {
         when (state) {
             SearchState.EMPTY_RESULT -> showError(state, R.string.empty_result_message)
             SearchState.NETWORK_ERROR -> showError(state, R.string.network_error_message)
-            SearchState.DONE -> invisibleError()
+            SearchState.SUCCESS -> invisibleError()
             SearchState.LOADING -> showLoading()
         }
     }
@@ -126,7 +138,7 @@ class RestaurantListFragment : Fragment() {
      * レストラン詳細画面に遷移する
      * @param restaurant 選択されたレストラン
      */
-    private fun navigateToRestaurantDetailFragment(restaurant: Shops) {
+    private fun navigateToRestaurantDetailFragment(restaurant: ShopsDomain) {
         val action = RestaurantListFragmentDirections.actionToRestaurantDetailFragment(
             restaurant.name,
             restaurant

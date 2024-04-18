@@ -2,7 +2,7 @@ package com.example.gourmetsearcher.ui.holder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gourmetsearcher.databinding.LayoutRestaurantListItemBinding
-import com.example.gourmetsearcher.model.api.Shops
+import com.example.gourmetsearcher.model.domain.ShopsDomain
 
 /**
  * レストランリストのViewHolder
@@ -17,7 +17,7 @@ class RestaurantListViewHolder(
      * @param item レストラン情報
      * @param onRestaurantItemClick レストランリストをクリックした時の処理
      */
-    fun bind(item: Shops, onRestaurantItemClick: (Shops) -> Unit) {
+    fun bind(item: ShopsDomain, onRestaurantItemClick: (ShopsDomain) -> Unit) {
         binding.restaurant = item
         // レストランリストをクリックした時の処理
         binding.root.setOnClickListener {

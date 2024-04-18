@@ -1,17 +1,16 @@
 package com.example.gourmetsearcher.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.gourmetsearcher.model.api.HotPepperResponse
-import com.example.gourmetsearcher.model.api.Results
-import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.model.data.SearchTerms
+import com.example.gourmetsearcher.model.domain.ShopsDomain
+import com.example.gourmetsearcher.model.domain.toDomain
 import com.example.gourmetsearcher.state.SearchState
 import com.example.gourmetsearcher.usecase.HotPepperUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -24,15 +23,16 @@ import javax.inject.Inject
 class RestaurantListViewModel @Inject constructor(
     private val hotPepperUseCase: HotPepperUseCase
 ) : ViewModel() {
-    private val _restaurantData = MutableLiveData(HotPepperResponse(Results(emptyList())))
+    private val _shops = MutableStateFlow<List<ShopsDomain>?>(null)
 
     /** レストラン情報 */
-    val shops: LiveData<List<Shops>> = _restaurantData.map { it.results.shops }
+    val shops = _shops.asStateFlow()
 
-    private val _searchState = MutableLiveData<SearchState>()
+    private val _searchState = MutableStateFlow(SearchState.LOADING)
 
     /** 検索状態 */
-    val searchState: LiveData<SearchState> = _searchState
+    val searchState = _searchState.asStateFlow()
+
     private lateinit var searchTerm: SearchTerms
 
     /**
@@ -47,7 +47,7 @@ class RestaurantListViewModel @Inject constructor(
                 val response = hotPepperUseCase.execute(searchTerms)
                 handleResponse(response)
             } catch (e: Exception) {
-                _searchState.postValue(SearchState.EMPTY_RESULT)
+                _searchState.value = SearchState.EMPTY_RESULT
             }
         }
     }
@@ -58,18 +58,18 @@ class RestaurantListViewModel @Inject constructor(
      */
     private fun handleResponse(response: Response<HotPepperResponse>?) {
         if (response?.body() == null) {
-            _searchState.postValue(SearchState.NETWORK_ERROR)
+            _searchState.value = SearchState.NETWORK_ERROR
             return
         }
-
-        val isResultEmpty = response.body()?.results?.shops?.isEmpty() ?: true
+        val repositories = response.body()?.results?.shops?.map { it.toDomain() }
+        val isResultEmpty = repositories.isNullOrEmpty()
 
         if (response.isSuccessful && !isResultEmpty) {
-            _searchState.postValue(SearchState.DONE)
-            _restaurantData.postValue(response.body())
-            return
+            _searchState.value = SearchState.SUCCESS
+            _shops.value = repositories
+        } else {
+            _searchState.value = SearchState.EMPTY_RESULT
         }
-        _searchState.postValue(SearchState.EMPTY_RESULT)
     }
 
     /**

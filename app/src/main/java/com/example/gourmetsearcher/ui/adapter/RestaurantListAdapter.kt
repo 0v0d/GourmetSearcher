@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRestaurantListItemBinding
-import com.example.gourmetsearcher.model.api.Shops
+import com.example.gourmetsearcher.model.domain.ShopsDomain
 import com.example.gourmetsearcher.ui.holder.RestaurantListViewHolder
 
 /**
  * レストランリストのAdapter
  * @param onRestaurantItemClick レストランリストをクリックした時の処理
  */
-class RestaurantListAdapter(private val onRestaurantItemClick: (Shops) -> Unit) :
-    ListAdapter<Shops, RestaurantListViewHolder>(shopsDiffCallback) {
+class RestaurantListAdapter(private val onRestaurantItemClick: (ShopsDomain) -> Unit) :
+    ListAdapter<ShopsDomain, RestaurantListViewHolder>(shopsDiffCallback) {
 
     /**
      * ViewHolderのViewBindingを生成する
@@ -45,15 +45,15 @@ class RestaurantListAdapter(private val onRestaurantItemClick: (Shops) -> Unit) 
 
     private companion object {
         /** 更新されたデータを判定する */
-        private val shopsDiffCallback = object : DiffUtil.ItemCallback<Shops>() {
+        private val shopsDiffCallback = object : DiffUtil.ItemCallback<ShopsDomain>() {
             /**
              * リストの要素が同じかどうかを判定する
              * @param oldShops 古いリストの要素
              * @param newShops 新しいリストの要素
              */
             override fun areItemsTheSame(
-                oldShops: Shops,
-                newShops: Shops
+                oldShops: ShopsDomain,
+                newShops: ShopsDomain
             ): Boolean {
                 return oldShops.id == newShops.id
             }
@@ -64,8 +64,8 @@ class RestaurantListAdapter(private val onRestaurantItemClick: (Shops) -> Unit) 
              * @param newShops 新しいリストの要素
              */
             override fun areContentsTheSame(
-                oldShops: Shops,
-                newShops: Shops
+                oldShops: ShopsDomain,
+                newShops: ShopsDomain
             ): Boolean {
                 return oldShops == newShops
             }
