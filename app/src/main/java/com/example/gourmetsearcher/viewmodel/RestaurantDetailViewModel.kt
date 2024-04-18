@@ -1,18 +1,21 @@
 package com.example.gourmetsearcher.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.net.URLEncoder
 
 /** レストラン詳細画面のViewModel */
 class RestaurantDetailViewModel : ViewModel() {
-    private val _url = MutableLiveData<String?>()
-    /** URLを開くためのLiveData */
-    val url: MutableLiveData<String?> = _url
+    private val _url = MutableStateFlow<String?>(null)
 
-    private val _searchAddress = MutableLiveData<String?>()
+    /** URLを開くためのLiveData */
+    val url = _url.asStateFlow()
+
+    private val _searchAddress = MutableStateFlow<String?>(null)
+
     /** 住所をエンコードしてURLを開くためのLiveData */
-    val searchAddress: MutableLiveData<String?> = _searchAddress
+    val searchAddress = _searchAddress.asStateFlow()
 
     /** ボタンクリック時に住所をエンコードしてURLを開く */
     fun openMap(address: String) {

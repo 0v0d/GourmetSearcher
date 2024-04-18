@@ -9,10 +9,14 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.databinding.FragmentRestaurantDetailBinding
 import com.example.gourmetsearcher.viewmodel.RestaurantDetailViewModel
+import kotlinx.coroutines.launch
 
 /** レストラン詳細画面 */
 class RestaurantDetailFragment : Fragment() {
@@ -32,15 +36,23 @@ class RestaurantDetailFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        observeAddress()
-        observeUrl()
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    observeUrl()
+                }
+                launch {
+                    observeAddress()
+                }
+            }
+        }
         return binding.root
     }
 
     /** searchAddressの変更を監視 */
-    private fun observeAddress() {
-        viewModel.searchAddress.observe(viewLifecycleOwner) {
+    private suspend fun observeAddress() {
+        viewModel.searchAddress.collect {
             if (it != null) {
                 openMap(it)
             }
@@ -48,8 +60,8 @@ class RestaurantDetailFragment : Fragment() {
     }
 
     /** urlの変更を監視 */
-    private fun observeUrl() {
-        viewModel.url.observe(viewLifecycleOwner) {
+    private suspend fun observeUrl() {
+        viewModel.url.collect {
             if (it != null) {
                 openWebBrowser(it)
             }
