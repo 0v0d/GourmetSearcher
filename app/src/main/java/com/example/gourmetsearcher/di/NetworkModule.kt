@@ -41,7 +41,6 @@ object NetworkModule {
         .baseUrl(context.getString(R.string.hot_pepper_url))
         .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
 
-
     /**
      * HotPepperNetworkDataSourceを提供
      * @param retrofit Retrofit
