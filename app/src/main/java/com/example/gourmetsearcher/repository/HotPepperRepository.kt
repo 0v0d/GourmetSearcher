@@ -19,16 +19,21 @@ import javax.inject.Singleton
 @Singleton
 class HotPepperRepository @Inject constructor
     (private val service: HotPepperNetworkDataSource) : HotPepperUseCase {
+    /** APIキー */
     private val key = BuildConfig.API_KEY
+
+    /** レスポンスフォーマット */
     private val format = "json"
+
     /** キャッシュサイズ */
     private val cacheSize = 5
+
     /** キャッシュ */
     private val cache = LruCache<SearchTerms, Response<HotPepperResponse>?>(cacheSize)
 
     /** リポジトリ情報を取得
      * @param searchTerms 検索条件
-     * @return Response<HotPepperResponse>レストラン情報 or null
+     * @return レストラン情報 or null
      */
     override suspend fun execute(searchTerms: SearchTerms): Response<HotPepperResponse>? {
         return searchHotPepperRepository(searchTerms)
@@ -37,7 +42,7 @@ class HotPepperRepository @Inject constructor
     /**
      * ホットペッパーグルメAPIを利用して、レストラン情報を取得
      * @param searchTerms 検索条件
-     * @return Response<HotPepperResponse>レストラン情報 or null
+     * @return レストラン情報 or null
      */
     private suspend fun searchHotPepperRepository(searchTerms: SearchTerms): Response<HotPepperResponse>? =
         withContext(Dispatchers.IO)
