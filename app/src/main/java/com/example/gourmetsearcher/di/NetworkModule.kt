@@ -2,7 +2,9 @@ package com.example.gourmetsearcher.di
 
 import android.content.Context
 import com.example.gourmetsearcher.R
+import com.example.gourmetsearcher.repository.HotPepperRepository
 import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
+import com.example.gourmetsearcher.usecase.HotPepperUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -13,9 +15,7 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-/**
- * ネットワーク関連のモジュール
- */
+/** ネットワーク関連のモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -49,4 +49,13 @@ object NetworkModule {
     @Provides
     fun provideHotPepperService(retrofit: Retrofit): HotPepperNetworkDataSource =
         retrofit.create(HotPepperNetworkDataSource::class.java)
+
+    /**
+     * HotPepperRepositoryを提供
+     * @param repository HotPepperRepository
+     */
+    @Provides
+    fun provideHotPepperRepository(repository: HotPepperRepository): HotPepperUseCase {
+        return repository
+    }
 }

@@ -11,13 +11,15 @@ import com.example.gourmetsearcher.ui.holder.RangeListViewHolder
  * 範囲のリストのAdapter
  * @param onRangeItemClick 範囲のリストをクリックした時の処理
  */
-class RangeListAdapter(private val onRangeItemClick: (Int) -> Unit) :
-    ListAdapter<Int, RangeListViewHolder>(rangeListDiffCallback) {
+class RangeListAdapter(
+    private val onRangeItemClick: (Int) -> Unit
+):ListAdapter<Int, RangeListViewHolder>(rangeListDiffCallback) {
 
     /**
      * ViewHolderのViewBindingを生成する
      * @param parent 親View
-     * @return ViewBinding ViewHolderのViewBinding
+     * @param viewType ビュータイプ
+     * @return RangeListViewHolder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RangeListViewHolder {
         val inflater = LayoutInflater.from(parent.context)

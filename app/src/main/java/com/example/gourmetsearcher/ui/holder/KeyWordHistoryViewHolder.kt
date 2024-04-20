@@ -12,7 +12,7 @@ class KeyWordHistoryViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     /**
-     * キーワード履歴のリストのアイテムをバインドする
+     * ViewHolderにデータをバインドする
      * @param item キーワード履歴のリストのアイテム
      * @param onKeyWordHistoryItemClick キーワード履歴のリストのアイテムをクリックしたときの処理
      */

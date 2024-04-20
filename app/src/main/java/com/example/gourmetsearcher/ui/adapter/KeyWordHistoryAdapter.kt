@@ -13,12 +13,13 @@ import com.example.gourmetsearcher.ui.holder.KeyWordHistoryViewHolder
  */
 class KeyWordHistoryAdapter(
     private val onKeyWordHistoryItemClick: (String) -> Unit
-) : ListAdapter<String, KeyWordHistoryViewHolder>(keyWordHistoryDiffCallback) {
+):ListAdapter<String, KeyWordHistoryViewHolder>(keyWordHistoryDiffCallback) {
 
     /**
      * ViewHolderのViewBindingを生成する
      * @param parent 親View
-     * @return ViewBinding ViewHolderのViewBinding
+     * @param viewType ビュータイプ
+     * @return KeyWordHistoryViewHolder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeyWordHistoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -38,6 +39,12 @@ class KeyWordHistoryAdapter(
     private companion object {
         /** キーワード履歴のリストのDiffCallback */
         private val keyWordHistoryDiffCallback = object : DiffUtil.ItemCallback<String>() {
+            /**
+             * リストの要素が同じかどうかを判定する
+             * @param oldValue 古い値
+             * @param newValue 新しい値
+             * @return 同じかどうか
+             */
             override fun areItemsTheSame(
                 oldValue: String, newValue: String
             ): Boolean = oldValue == newValue

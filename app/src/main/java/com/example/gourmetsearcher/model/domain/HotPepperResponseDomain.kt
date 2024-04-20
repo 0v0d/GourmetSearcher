@@ -20,11 +20,31 @@ data class HotPepperResponseDomain(
     val results: ResultsDomain
 ) : Parcelable
 
+/**
+ * レストラン情報を保持するデータクラス
+ * @param shops レストラン情報
+ */
 @Parcelize
 data class ResultsDomain(
     val shops: List<ShopsDomain>
 ) : Parcelable
 
+/**
+ * レストラン情報を保持するデータクラス
+ * @param id レストランID
+ * @param name レストラン名
+ * @param address 住所
+ * @param station 最寄り駅
+ * @param largeArea 大エリア
+ * @param smallArea 小エリア
+ * @param genre ジャンル
+ * @param budget 予算
+ * @param access アクセス
+ * @param url URL
+ * @param photo 写真
+ * @param open 営業時間（開店）
+ * @param close 営業時間（閉店）
+ */
 @Parcelize
 data class ShopsDomain(
     val id: String,
@@ -42,36 +62,64 @@ data class ShopsDomain(
     val close: String
 ) : Parcelable
 
+/**
+ * 大エリアデータクラス
+ * @param name 大エリア
+ */
 @Parcelize
 data class LargeAreaDomain(
     val name: String
 ) : Parcelable
 
+/**
+ * 小エリアデータクラス
+ * @param name 小エリア
+ */
 @Parcelize
 data class SmallAreaDomain(
     val name: String
 ) : Parcelable
 
+/**
+ * ジャンルデータクラス
+ * @param name ジャンル
+ */
 @Parcelize
 data class GenreDomain(
     val name: String
 ) : Parcelable
 
+/**
+ *  予算データクラス
+ * @param name 予算
+ */
 @Parcelize
 data class BudgetDomain(
     val name: String
 ) : Parcelable
 
+/**
+ *  URLデータクラス
+ * @param pc URL
+ */
 @Parcelize
 data class UrlDomain(
     val pc: String
 ) : Parcelable
 
+/**
+ * 写真クラス
+ * @param pc 写真URL
+ */
 @Parcelize
 data class PhotoDomain(
     val pc: PCDomain
 ) : Parcelable
 
+/**
+ * 写真データクラス
+ * @param l 写真URL
+ */
 @Parcelize
 data class PCDomain(
     val l: String

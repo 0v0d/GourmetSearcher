@@ -12,13 +12,14 @@ import com.example.gourmetsearcher.ui.holder.RestaurantListViewHolder
  * レストランリストのAdapter
  * @param onRestaurantItemClick レストランリストをクリックした時の処理
  */
-class RestaurantListAdapter(private val onRestaurantItemClick: (ShopsDomain) -> Unit) :
-    ListAdapter<ShopsDomain, RestaurantListViewHolder>(shopsDiffCallback) {
+class RestaurantListAdapter(
+    private val onRestaurantItemClick: (ShopsDomain) -> Unit
+):ListAdapter<ShopsDomain, RestaurantListViewHolder>(shopsDiffCallback) {
 
     /**
      * ViewHolderのViewBindingを生成する
      * @param parent 親View
-     * @return ViewBinding ViewHolderのViewBinding
+     * @return RestaurantListViewHolder
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -58,11 +59,6 @@ class RestaurantListAdapter(private val onRestaurantItemClick: (ShopsDomain) -> 
                 return oldShops.id == newShops.id
             }
 
-            /**
-             * リストの要素の内容が同じかどうかを判定する
-             * @param oldShops 古いリストの要素
-             * @param newShops 新しいリストの要素
-             */
             override fun areContentsTheSame(
                 oldShops: ShopsDomain,
                 newShops: ShopsDomain

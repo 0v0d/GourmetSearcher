@@ -15,7 +15,7 @@ interface HotPepperNetworkDataSource {
      * @param lng 経度
      * @param range 検索範囲
      * @param format レスポンスフォーマット
-     * @return Call<HotPepperResponse> レストラン情報
+     * @return レストラン情報
      */
     @GET("gourmet/v1/")
     suspend fun getRestaurantDatum(
