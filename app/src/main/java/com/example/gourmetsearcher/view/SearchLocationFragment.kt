@@ -14,6 +14,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.gourmetsearcher.R
@@ -23,6 +26,7 @@ import com.example.gourmetsearcher.state.LocationSearchState
 import com.example.gourmetsearcher.viewmodel.SearchLocationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /** 位置情報検索画面 */
 @AndroidEntryPoint
@@ -55,10 +59,22 @@ class SearchLocationFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         checkLocationPermission()
-        observeLocationData()
-        observeSearchState()
-        observerRetryEvent()
-        observerOpenLocationSettingEvent()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    observeLocationData()
+                }
+                launch {
+                    observeSearchState()
+                }
+                launch {
+                    observerRetryEvent()
+                }
+                launch {
+                    observerOpenLocationSettingEvent()
+                }
+            }
+        }
         return binding.root
     }
 
@@ -159,24 +175,24 @@ class SearchLocationFragment : Fragment() {
     }
 
     /** 位置情報の設定画面を開くイベントを監視 */
-    private fun observerOpenLocationSettingEvent() {
-        viewModel.openLocationSettingEvent.observe(viewLifecycleOwner) {
+    private suspend fun observerOpenLocationSettingEvent() {
+        viewModel.openLocationSettingEvent.collect {
             openLocationSetting()
         }
     }
 
     /** リトライイベントを監視 */
-    private fun observerRetryEvent() {
-        viewModel.retryEvent.observe(viewLifecycleOwner) {
+    private suspend fun observerRetryEvent() {
+        viewModel.retryEvent.collect {
             showLoading()
             checkLocationPermission()
         }
     }
 
     /** 位置情報の取得状態を監視 */
-    private fun observeSearchState() {
+    private suspend fun observeSearchState() {
         //位置情報の取得状態を監視
-        viewModel.searchState.observe(viewLifecycleOwner) { state ->
+        viewModel.searchState.collect { state ->
             when (state) {
                 LocationSearchState.LOADING -> {
                     showLoading()
@@ -191,9 +207,11 @@ class SearchLocationFragment : Fragment() {
 
 
     /** 位置情報の取得状態を監視 */
-    private fun observeLocationData() {
-        viewModel.locationData.observe(viewLifecycleOwner) { locationData ->
-            navigateToResultListFragment(SearchTerms(args.inputText, locationData, args.range))
+    private suspend fun observeLocationData() {
+        viewModel.locationData.collect { locationData ->
+            if (locationData != null) {
+                navigateToResultListFragment(SearchTerms(args.inputText, locationData, args.range))
+            }
         }
     }
 

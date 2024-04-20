@@ -8,6 +8,9 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +20,7 @@ import com.example.gourmetsearcher.ui.adapter.KeyWordHistoryAdapter
 import com.example.gourmetsearcher.ui.adapter.RangeListAdapter
 import com.example.gourmetsearcher.viewmodel.InputKeyWordViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /** キーワード入力画面 */
 @AndroidEntryPoint
@@ -29,13 +33,13 @@ class InputKeyWordFragment : Fragment() {
         RangeListAdapter(rangeItemClick)
     }
 
+    private val keyWordHistoryAdapter by lazy {
+        KeyWordHistoryAdapter(inputKeyWordHistoryItemClick)
+    }
+
     /** 範囲のリストをクリックした時の処理 */
     private val rangeItemClick = { range: Int ->
         navigateToSearchLocationFragment(range)
-    }
-
-    private val keyWordHistoryAdapter by lazy {
-        KeyWordHistoryAdapter(inputKeyWordHistoryItemClick)
     }
 
     /** キーワード履歴のリストのアイテムをクリックしたときの処理 */
@@ -52,14 +56,19 @@ class InputKeyWordFragment : Fragment() {
         _binding = FragmentInputKeyWordBinding.inflate(inflater, container, false)
         binding.searchParameters.viewModel = viewModel
         binding.searchParameters.lifecycleOwner = viewLifecycleOwner
-
-        observeHistoryList()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    observeHistoryList()
+                }
+            }
+        }
         return binding.root
     }
 
     /** キーワード履歴を監視する */
-    private fun observeHistoryList() {
-        viewModel.historyListData.observe(viewLifecycleOwner) {
+    private suspend fun observeHistoryList() {
+        viewModel.historyListData.collect {
             keyWordHistoryAdapter.submitList(it.reversed())
             binding.searchParameters.keyWordClearButton.isVisible = it.isNotEmpty()
         }
@@ -79,7 +88,7 @@ class InputKeyWordFragment : Fragment() {
             val inputString = input.toString()
 
             /** 入力があるかどうか */
-            val isNotEmpty = viewModel.isNotInputEmpty(inputString)
+            val isNotEmpty = inputString.isNotEmpty()
             if (isNotEmpty) {
                 inputText = inputString
             }

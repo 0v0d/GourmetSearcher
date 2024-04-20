@@ -23,9 +23,9 @@ class RestaurantDetailFragment : Fragment() {
     private val viewModel: RestaurantDetailViewModel by viewModels()
     private var _binding: FragmentRestaurantDetailBinding? = null
     private val binding get() = _binding!!
-
     /** argsによって渡されたレストラン情報を取得 */
     private val args: RestaurantDetailFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
