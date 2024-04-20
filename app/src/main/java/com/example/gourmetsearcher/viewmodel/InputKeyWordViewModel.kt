@@ -1,25 +1,24 @@
 package com.example.gourmetsearcher.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
+import com.example.gourmetsearcher.usecase.KeyWordHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 /**
  *  キーワード入力画面のViewModel
- *  @param keyWordHistoryRepository キーワード履歴のリポジトリ
+ *  @param keyWordHistoryUseCase キーワード履歴のUseCase
  */
 @HiltViewModel
 class InputKeyWordViewModel @Inject constructor(
-    private val keyWordHistoryRepository: KeyWordHistoryRepository
-) :
-    ViewModel() {
-    private val _historyListData = MutableLiveData<List<String>>()
+    private val keyWordHistoryUseCase: KeyWordHistoryUseCase
+) : ViewModel() {
+    private val _historyListData = MutableStateFlow<List<String>>(emptyList())
 
     /** キーワード履歴リストデータ */
-    val historyListData: LiveData<List<String>> = _historyListData
+    val historyListData = _historyListData.asStateFlow()
 
     /** 初期化でキーワード履歴リストを取得する */
     init {
@@ -31,26 +30,18 @@ class InputKeyWordViewModel @Inject constructor(
      *  @param input 入力されたキーワード
      */
     fun saveHistoryItem(input: String) {
-        keyWordHistoryRepository.saveHistoryItem(input)
+        keyWordHistoryUseCase.saveHistoryItem(input)
         loadHistory()
     }
 
     /** 履歴リストをクリアする */
     fun clearHistory() {
-        keyWordHistoryRepository.clearHistory()
+        keyWordHistoryUseCase.clearHistory()
         loadHistory()
     }
 
     /** 履歴リストを取得する */
     private fun loadHistory() {
-        _historyListData.value = keyWordHistoryRepository.getHistoryList()
-    }
-
-    /**
-     * 入力が空でないことを確認する
-     * @param inputText 入力されたテキスト
-     */
-    fun isNotInputEmpty(inputText: String): Boolean {
-        return inputText.isNotEmpty()
+        _historyListData.value = keyWordHistoryUseCase.getHistoryList()
     }
 }

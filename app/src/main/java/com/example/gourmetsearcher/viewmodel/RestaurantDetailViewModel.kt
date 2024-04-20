@@ -9,12 +9,12 @@ import java.net.URLEncoder
 class RestaurantDetailViewModel : ViewModel() {
     private val _url = MutableStateFlow<String?>(null)
 
-    /** URLを開くためのLiveData */
+    /** URLを開くためのStateFlow */
     val url = _url.asStateFlow()
 
     private val _searchAddress = MutableStateFlow<String?>(null)
 
-    /** 住所をエンコードしてURLを開くためのLiveData */
+    /** 住所を検索するためのStateFlow */
     val searchAddress = _searchAddress.asStateFlow()
 
     /** ボタンクリック時に住所をエンコードしてURLを開く */
