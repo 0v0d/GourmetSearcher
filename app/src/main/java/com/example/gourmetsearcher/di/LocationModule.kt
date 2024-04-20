@@ -2,6 +2,7 @@ package com.example.gourmetsearcher.di
 
 import android.content.Context
 import com.example.gourmetsearcher.repository.SearchLocationRepository
+import com.example.gourmetsearcher.usecase.FusedLocationProviderUseCase
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -30,7 +31,7 @@ object LocationModule {
      * @return 位置情報のリポジトリ
      */
     @Provides
-    fun provideLocationRepository(locationProvider: FusedLocationProviderClient): SearchLocationRepository {
+    fun provideLocationRepository(locationProvider: FusedLocationProviderClient): FusedLocationProviderUseCase {
         return SearchLocationRepository(locationProvider)
     }
 }

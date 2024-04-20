@@ -2,6 +2,7 @@ package com.example.gourmetsearcher.di
 
 import android.content.Context
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
+import com.example.gourmetsearcher.usecase.KeyWordHistoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +21,7 @@ object KeyWordHistoryModule {
      */
     @Provides
     @ViewModelScoped
-    fun provideKeyWordHistoryRepository(@ApplicationContext context: Context): KeyWordHistoryRepository {
+    fun provideKeyWordHistoryUseCase(@ApplicationContext context: Context): KeyWordHistoryUseCase {
         return KeyWordHistoryRepository(context)
     }
 }
