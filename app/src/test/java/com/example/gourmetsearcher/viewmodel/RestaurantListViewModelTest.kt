@@ -1,21 +1,21 @@
 package com.example.gourmetsearcher.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.example.gourmetsearcher.model.api.BudgetData
-import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.model.api.GenreData
 import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.api.LargeAreaData
 import com.example.gourmetsearcher.model.api.PCData
 import com.example.gourmetsearcher.model.api.PhotoData
-import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.model.api.Results
-import com.example.gourmetsearcher.model.data.SearchTerms
+import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.model.api.SmallAreaData
 import com.example.gourmetsearcher.model.api.Urls
-import com.example.gourmetsearcher.repository.HotPepperRepository
+import com.example.gourmetsearcher.model.data.CurrentLocation
+import com.example.gourmetsearcher.model.data.SearchTerms
+import com.example.gourmetsearcher.model.domain.toDomain
 import com.example.gourmetsearcher.state.SearchState
+import com.example.gourmetsearcher.usecase.HotPepperUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -30,23 +30,20 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class RestaurantListViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var repository: HotPepperRepository
+    private lateinit var useCase: HotPepperUseCase
 
-    @Mock
-    private lateinit var shopsObserver: Observer<List<Shops>>
-
-    @Mock
-    private lateinit var searchStateObserver: Observer<SearchState>
     private lateinit var viewModel: RestaurantListViewModel
 
     private val response = HotPepperResponse(
@@ -76,22 +73,15 @@ class RestaurantListViewModelTest {
         )
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        viewModel = RestaurantListViewModel(repository)
-        viewModel.shops.observeForever(shopsObserver)
-        viewModel.searchState.observeForever(searchStateObserver)
+        viewModel = RestaurantListViewModel(useCase)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun cleanup() {
         Dispatchers.resetMain()
-
-        viewModel.shops.removeObserver(shopsObserver)
-        viewModel.searchState.removeObserver(searchStateObserver)
     }
 
     /**
@@ -104,24 +94,13 @@ class RestaurantListViewModelTest {
     fun searchHotPepperRepositorySuccess() =
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-            `when`(repository.searchHotPepperRepository(searchTerms))
-                .thenReturn(Response.success(response))
-
-            viewModel.shops.observeForever {
-                if (it == response.results.shops) {
-                    assertEquals(response.results.shops, viewModel.shops.value)
-                }
-            }
-
-
-            viewModel.searchState.observeForever {
-                if (it == SearchState.DONE) {
-                    assertEquals(SearchState.DONE, viewModel.searchState.value)
-                }
-            }
+            `when`(useCase.execute(searchTerms)).thenReturn(Response.success(response))
             viewModel.searchRestaurants(searchTerms)
 
-
+            verify(useCase).execute(searchTerms)
+            val shops = response.results.shops.map { it.toDomain() }
+            assertEquals(shops, viewModel.shops.value)
+            assertEquals(SearchState.SUCCESS, viewModel.searchState.value)
         }
 
     /**
@@ -135,17 +114,12 @@ class RestaurantListViewModelTest {
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
             val response = Response.error<HotPepperResponse>(500, ResponseBody.create(null, ""))
-            `when`(repository.searchHotPepperRepository(searchTerms))
+            `when`(useCase.execute(searchTerms))
                 .thenReturn(response)
-
-            viewModel.searchState.observeForever {
-                if (it == SearchState.NETWORK_ERROR) {
-                    assertEquals(SearchState.NETWORK_ERROR, viewModel.searchState.value)
-                }
-            }
-
             viewModel.searchRestaurants(searchTerms)
 
+            assertEquals(null, viewModel.shops.value)
+            assertEquals(SearchState.NETWORK_ERROR, viewModel.searchState.value)
         }
 
     /**
@@ -157,21 +131,12 @@ class RestaurantListViewModelTest {
     @Test
     fun searchHotPepperRepositoryEmptyResponse() =
         runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-            `when`(repository.searchHotPepperRepository(searchTerms))
-                .thenReturn(Response.success(emptyResponse))
+            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 1)
+            `when`(useCase.execute(searchTerms)).thenReturn(Response.success(emptyResponse))
 
-            viewModel.shops.observeForever {
-                if (it == emptyResponse.results.shops) {
-                    assertEquals(emptyResponse.results.shops, viewModel.shops.value)
-                }
-            }
-
-            viewModel.searchState.observeForever {
-                if (it == SearchState.EMPTY_RESULT) {
-                    assertEquals(SearchState.EMPTY_RESULT, viewModel.searchState.value)
-                }
-            }
             viewModel.searchRestaurants(searchTerms)
+            val shops = emptyResponse.results.shops.map { it.toDomain() }
+            assertEquals(emptyList<Shops>(), shops)
+            assertEquals(SearchState.EMPTY_RESULT, viewModel.searchState.value)
         }
 }

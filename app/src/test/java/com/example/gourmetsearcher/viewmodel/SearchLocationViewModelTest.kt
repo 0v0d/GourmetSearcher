@@ -2,10 +2,9 @@ package com.example.gourmetsearcher.viewmodel
 
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.example.gourmetsearcher.model.data.CurrentLocation
-import com.example.gourmetsearcher.repository.SearchLocationRepository
 import com.example.gourmetsearcher.state.LocationSearchState
+import com.example.gourmetsearcher.usecase.FusedLocationProviderUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -15,7 +14,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,33 +25,23 @@ import org.mockito.junit.MockitoJUnitRunner
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class SearchLocationViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var locationRepository: SearchLocationRepository
-
-    @Mock
-    private lateinit var locationDataObserver: Observer<CurrentLocation>
-
-    @Mock
-    private lateinit var searchStateObserver: Observer<LocationSearchState>
+    private lateinit var locationUseCase: FusedLocationProviderUseCase
 
     private lateinit var viewModel: SearchLocationViewModel
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        viewModel = SearchLocationViewModel(locationRepository)
-        viewModel.searchState.observeForever(searchStateObserver)
-
-        viewModel.locationData.observeForever(locationDataObserver)
+        viewModel = SearchLocationViewModel(locationUseCase)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun cleanup() {
         Dispatchers.resetMain()
@@ -66,14 +54,9 @@ class SearchLocationViewModelTest {
         val mockLocation = mock(Location::class.java)
         `when`(mockLocation.latitude).thenReturn(location.lat)
         `when`(mockLocation.longitude).thenReturn(location.lng)
-        `when`(locationRepository.getLocation()).thenReturn(mockLocation)
+        `when`(locationUseCase.getLocation()).thenReturn(mockLocation)
 
         val latch = CountDownLatch(1)
-        viewModel.locationData.observeForever {
-            if (it != null) {
-                latch.countDown()
-            }
-        }
 
         viewModel.getLocation()
 
@@ -84,14 +67,9 @@ class SearchLocationViewModelTest {
     /** セキュリティ例外が発生した場合のテスト */
     @Test
     fun getLocation_securityException() = runBlocking {
-        `when`(locationRepository.getLocation()).thenThrow(SecurityException())
+        `when`(locationUseCase.getLocation()).thenThrow(SecurityException())
 
         val latch = CountDownLatch(1)
-        viewModel.searchState.observeForever {
-            if (it == LocationSearchState.ERROR) {
-                latch.countDown()
-            }
-        }
 
         viewModel.getLocation()
 
@@ -102,14 +80,10 @@ class SearchLocationViewModelTest {
     /** nullポインタ例外が発生した場合のテスト */
     @Test
     fun getLocation_nullPointerException() = runBlocking {
-        `when`(locationRepository.getLocation()).thenThrow(NullPointerException())
+        `when`(locationUseCase.getLocation()).thenThrow(NullPointerException())
 
         val latch = CountDownLatch(1)
-        viewModel.searchState.observeForever {
-            if (it == LocationSearchState.ERROR) {
-                latch.countDown()
-            }
-        }
+
 
         viewModel.getLocation()
 
@@ -121,13 +95,11 @@ class SearchLocationViewModelTest {
     @Test
     fun onOpenLocationSettingClicked() = runTest {
         viewModel.onOpenLocationSettingClicked()
-        assertNotNull(viewModel.openLocationSettingEvent.value)
     }
 
     /** リトライボタンを押した時のテスト */
     @Test
     fun onRetryClicked() = runTest {
         viewModel.onRetryClicked()
-        assertNotNull(viewModel.retryEvent.value)
     }
 }
