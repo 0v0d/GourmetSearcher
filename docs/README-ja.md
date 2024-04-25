@@ -10,7 +10,7 @@ GourmetSearcher
 
 現在位置付近のレストランをキーワードで検索できるAndroidアプリです。
 
-<img src="docs/app.gif" width="314" alt="アプリのデモ動画">
+<img src="app.gif" width="314" alt="アプリのデモ動画">
 
 ### APIKeyについて
 
