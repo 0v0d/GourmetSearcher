@@ -147,10 +147,10 @@ class InputKeyWordFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         /** メモリリークを防ぐためにRecyclerViewのアダプターを解放する */
         binding.searchParameters.rangeListRecyclerView.adapter = null
         binding.searchParameters.keyWordListRecyclerView.adapter = null
         _binding = null
+        super.onDestroyView()
     }
 }

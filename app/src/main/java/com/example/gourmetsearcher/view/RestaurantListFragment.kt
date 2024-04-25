@@ -147,8 +147,8 @@ class RestaurantListFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         binding.resultListRecyclerView.adapter = null
         _binding = null
+        super.onDestroyView()
     }
 }
