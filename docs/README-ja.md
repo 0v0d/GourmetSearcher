@@ -1,5 +1,5 @@
-# 簡易仕様書
-
+[English README is here](https://github.com/0v0d/GourmetSearcher/blob/master/ReadMe.md
+)
 ## アプリ名
 
 GourmetSearcher
