@@ -1,4 +1,4 @@
-[日本語はこちら](https://github.com/0v0d/GourmetSearcher/blob/future-readme/docs/README-ja.md)
+[日本語はこちら](https://github.com/0v0d/GourmetSearcher/blob/master/docs/README-ja.md)
 ## App Name
 
 GourmetSearcher
