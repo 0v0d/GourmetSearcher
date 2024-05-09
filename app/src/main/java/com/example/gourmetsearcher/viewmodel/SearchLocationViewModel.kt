@@ -4,8 +4,8 @@ import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gourmetsearcher.model.data.CurrentLocation
+import com.example.gourmetsearcher.repository.LocationRepository
 import com.example.gourmetsearcher.state.LocationSearchState
-import com.example.gourmetsearcher.usecase.FusedLocationProviderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,11 +16,11 @@ import javax.inject.Inject
 
 /**
  * 現在地を取得するためのViewModel
- * @param locationProviderUseCase 位置情報を取得するUseCase
+ * @param locationRepository 位置情報を取得するRepository
  */
 @HiltViewModel
 class SearchLocationViewModel @Inject constructor(
-    private val locationProviderUseCase: FusedLocationProviderUseCase
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
     private val _locationData = MutableStateFlow<CurrentLocation?>(null)
 
@@ -60,7 +60,7 @@ class SearchLocationViewModel @Inject constructor(
 
     /** 現在地を取得するための処理 */
     private suspend fun performSearch() {
-        val location = locationProviderUseCase.getLocation()
+        val location = locationRepository.getLocation()
         if (location != null) {
             handleLocationSuccess(location)
             return

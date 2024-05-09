@@ -5,20 +5,28 @@ import com.example.gourmetsearcher.BuildConfig
 import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
-import com.example.gourmetsearcher.usecase.HotPepperUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** ホットペッパーグルメAPIを利用して、レストラン情報を取得する */
+interface HotPepperRepository {
+    /** リポジトリ情報を取得
+     * @param searchTerms 検索条件
+     * @return Response<HotPepperResponse>レストラン情報 or null
+     */
+    suspend fun execute(searchTerms: SearchTerms): Response<HotPepperResponse>?
+}
+
 /**
  * ホットペッパーグルメAPIを利用して、レストラン情報を取得するRepository
  * @param service ホットペッパーグルメAPIのインターフェース
  */
 @Singleton
-class HotPepperRepository @Inject constructor
-    (private val service: HotPepperNetworkDataSource) : HotPepperUseCase {
+class HotPepperRepositoryImpl @Inject constructor
+    (private val service: HotPepperNetworkDataSource) : HotPepperRepository {
     /** APIキー */
     private val key = BuildConfig.API_KEY
 

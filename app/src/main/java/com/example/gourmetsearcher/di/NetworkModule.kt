@@ -3,8 +3,8 @@ package com.example.gourmetsearcher.di
 import android.content.Context
 import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.repository.HotPepperRepository
+import com.example.gourmetsearcher.repository.HotPepperRepositoryImpl
 import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
-import com.example.gourmetsearcher.usecase.HotPepperUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -55,7 +55,7 @@ object NetworkModule {
      * @param repository HotPepperRepository
      */
     @Provides
-    fun provideHotPepperRepository(repository: HotPepperRepository): HotPepperUseCase {
+    fun provideHotPepperRepository(repository: HotPepperRepositoryImpl): HotPepperRepository {
         return repository
     }
 }

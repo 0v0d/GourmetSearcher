@@ -2,17 +2,27 @@ package com.example.gourmetsearcher.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.gourmetsearcher.usecase.KeyWordHistoryUseCase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+
+interface KeyWordHistoryRepository {
+    /** 検索履歴を取得する */
+    fun getHistoryList(): List<String>
+
+    /** 検索履歴を保存する */
+    fun saveHistoryItem(input: String)
+
+    /** 検索履歴を削除する */
+    fun clearHistory()
+}
 
 /**
  *  検索履歴のリポジトリ
  * @param context コンテキスト
  */
-class KeyWordHistoryRepository @Inject constructor(
+class KeyWordHistoryRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
-): KeyWordHistoryUseCase{
+): KeyWordHistoryRepository{
     /** 検索履歴を保存する */
     private val sharedPrefs: SharedPreferences by lazy {
         context.getSharedPreferences("HistoryPrefs", Context.MODE_PRIVATE)

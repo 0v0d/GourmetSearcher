@@ -1,7 +1,7 @@
 package com.example.gourmetsearcher.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.gourmetsearcher.usecase.KeyWordHistoryUseCase
+import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,11 +9,11 @@ import javax.inject.Inject
 
 /**
  *  キーワード入力画面のViewModel
- *  @param keyWordHistoryUseCase キーワード履歴のUseCase
+ *  @param keyWordHistoryRepository キーワード履歴のRepository
  */
 @HiltViewModel
 class InputKeyWordViewModel @Inject constructor(
-    private val keyWordHistoryUseCase: KeyWordHistoryUseCase
+    private val keyWordHistoryRepository: KeyWordHistoryRepository
 ) : ViewModel() {
     private val _historyListData = MutableStateFlow<List<String>>(emptyList())
 
@@ -30,18 +30,18 @@ class InputKeyWordViewModel @Inject constructor(
      *  @param input 入力されたキーワード
      */
     fun saveHistoryItem(input: String) {
-        keyWordHistoryUseCase.saveHistoryItem(input)
+        keyWordHistoryRepository.saveHistoryItem(input)
         loadHistory()
     }
 
     /** 履歴リストをクリアする */
     fun clearHistory() {
-        keyWordHistoryUseCase.clearHistory()
+        keyWordHistoryRepository.clearHistory()
         loadHistory()
     }
 
     /** 履歴リストを取得する */
     private fun loadHistory() {
-        _historyListData.value = keyWordHistoryUseCase.getHistoryList()
+        _historyListData.value = keyWordHistoryRepository.getHistoryList()
     }
 }

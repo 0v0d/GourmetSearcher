@@ -1,7 +1,6 @@
 package com.example.gourmetsearcher.repository
 
 import android.location.Location
-import com.example.gourmetsearcher.usecase.FusedLocationProviderUseCase
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.Task
@@ -14,19 +13,22 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 
 /**
- * 現在の位置情報を取得するRepository
- * @param locationProvider 位置情報を取得するためのクライアント
+ * 位置情報の取得を表すインターフェイス
  */
-class SearchLocationRepository @Inject constructor(
-    private val locationProvider: FusedLocationProviderClient,
-) : FusedLocationProviderUseCase {
-    /**
-     * 現在の位置情報を取得
-     * @return 現在の位置情報 or null
-     */
+interface LocationRepository {
+    suspend fun getLocation(): Location?
+}
+
+/**
+ * LocationRepositoryの実装クラス
+ */
+class LocationRepositoryImpl @Inject constructor(
+    private val locationProvider: FusedLocationProviderClient
+) : LocationRepository {
+
     override suspend fun getLocation(): Location? = withContext(Dispatchers.IO) {
         return@withContext try {
-            /** 20秒以内に位置情報を取得できなかった場合はnullを返す*/
+            /** 20秒以内に位置情報を取得できなかった場合はnullを返す */
             withTimeoutOrNull(20000L) {
                 fetchLocation()
             }

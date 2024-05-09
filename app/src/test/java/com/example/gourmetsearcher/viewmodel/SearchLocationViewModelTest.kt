@@ -3,8 +3,8 @@ package com.example.gourmetsearcher.viewmodel
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.gourmetsearcher.model.data.CurrentLocation
+import com.example.gourmetsearcher.repository.LocationRepository
 import com.example.gourmetsearcher.state.LocationSearchState
-import com.example.gourmetsearcher.usecase.FusedLocationProviderUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -32,14 +32,14 @@ class SearchLocationViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var locationUseCase: FusedLocationProviderUseCase
+    private lateinit var locationRepository: LocationRepository
 
     private lateinit var viewModel: SearchLocationViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        viewModel = SearchLocationViewModel(locationUseCase)
+        viewModel = SearchLocationViewModel(locationRepository)
     }
 
     @After
@@ -54,7 +54,7 @@ class SearchLocationViewModelTest {
         val mockLocation = mock(Location::class.java)
         `when`(mockLocation.latitude).thenReturn(location.lat)
         `when`(mockLocation.longitude).thenReturn(location.lng)
-        `when`(locationUseCase.getLocation()).thenReturn(mockLocation)
+        `when`(locationRepository.getLocation()).thenReturn(mockLocation)
 
         val latch = CountDownLatch(1)
 
@@ -67,7 +67,7 @@ class SearchLocationViewModelTest {
     /** セキュリティ例外が発生した場合のテスト */
     @Test
     fun getLocation_securityException() = runBlocking {
-        `when`(locationUseCase.getLocation()).thenThrow(SecurityException())
+        `when`(locationRepository.getLocation()).thenThrow(SecurityException())
 
         val latch = CountDownLatch(1)
 
@@ -80,7 +80,7 @@ class SearchLocationViewModelTest {
     /** nullポインタ例外が発生した場合のテスト */
     @Test
     fun getLocation_nullPointerException() = runBlocking {
-        `when`(locationUseCase.getLocation()).thenThrow(NullPointerException())
+        `when`(locationRepository.getLocation()).thenThrow(NullPointerException())
 
         val latch = CountDownLatch(1)
 

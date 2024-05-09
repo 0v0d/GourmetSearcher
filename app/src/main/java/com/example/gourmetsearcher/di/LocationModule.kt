@@ -1,8 +1,8 @@
 package com.example.gourmetsearcher.di
 
 import android.content.Context
-import com.example.gourmetsearcher.repository.SearchLocationRepository
-import com.example.gourmetsearcher.usecase.FusedLocationProviderUseCase
+import com.example.gourmetsearcher.repository.LocationRepository
+import com.example.gourmetsearcher.repository.LocationRepositoryImpl
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -31,7 +31,7 @@ object LocationModule {
      * @return 位置情報のリポジトリ
      */
     @Provides
-    fun provideLocationRepository(locationProvider: FusedLocationProviderClient): FusedLocationProviderUseCase {
-        return SearchLocationRepository(locationProvider)
+    fun provideLocationRepository(locationProvider: FusedLocationProviderClient): LocationRepository {
+        return LocationRepositoryImpl(locationProvider)
     }
 }

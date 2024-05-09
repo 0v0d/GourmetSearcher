@@ -6,8 +6,8 @@ import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.model.domain.ShopsDomain
 import com.example.gourmetsearcher.model.domain.toDomain
+import com.example.gourmetsearcher.repository.HotPepperRepository
 import com.example.gourmetsearcher.state.SearchState
-import com.example.gourmetsearcher.usecase.HotPepperUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,11 +17,11 @@ import javax.inject.Inject
 
 /**
  * レストラン検索画面のViewModel
- * @param hotPepperUseCase ホットペッパーグルメAPIを利用して、レストラン情報を取得するUseCase
+ * @param hotPepperRepository ホットペッパーグルメAPIを利用して、レストラン情報を取得するRepository
  */
 @HiltViewModel
 class RestaurantListViewModel @Inject constructor(
-    private val hotPepperUseCase: HotPepperUseCase
+    private val hotPepperRepository: HotPepperRepository
 ) : ViewModel() {
     private val _shops = MutableStateFlow<List<ShopsDomain>?>(null)
 
@@ -44,7 +44,7 @@ class RestaurantListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 searchTerm = searchTerms
-                val response = hotPepperUseCase.execute(searchTerms)
+                val response = hotPepperRepository.execute(searchTerms)
                 handleResponse(response)
             } catch (e: Exception) {
                 _searchState.value = SearchState.EMPTY_RESULT

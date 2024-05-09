@@ -1,7 +1,7 @@
 package com.example.gourmetsearcher.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.gourmetsearcher.usecase.KeyWordHistoryUseCase
+import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -19,24 +19,24 @@ class InputKeyWordViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var mockUseCase: KeyWordHistoryUseCase
+    private lateinit var mockRepository: KeyWordHistoryRepository
 
     private lateinit var viewModel: InputKeyWordViewModel
 
     @Before
     fun setUp() {
-        viewModel = InputKeyWordViewModel(mockUseCase)
+        viewModel = InputKeyWordViewModel(mockRepository)
     }
 
     /** 履歴リストの保存と取得を確認する */
     @Test
     fun testSaveAndGetHistoryItem() {
         val keyword = "test"
-        `when`(mockUseCase.getHistoryList()).thenReturn(listOf(keyword))
+        `when`(mockRepository.getHistoryList()).thenReturn(listOf(keyword))
 
         viewModel.saveHistoryItem(keyword)
 
-        verify(mockUseCase, times(1)).saveHistoryItem(keyword)
+        verify(mockRepository, times(1)).saveHistoryItem(keyword)
         assertEquals(listOf(keyword), viewModel.historyListData.value)
     }
 
@@ -46,7 +46,7 @@ class InputKeyWordViewModelTest {
     fun testClearHistory() {
         viewModel.clearHistory()
 
-        verify(mockUseCase, times(1)).clearHistory()
+        verify(mockRepository, times(1)).clearHistory()
 
         assertEquals(emptyList<String>(), viewModel.historyListData.value)
     }

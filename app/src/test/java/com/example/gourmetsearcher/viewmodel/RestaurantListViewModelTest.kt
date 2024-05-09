@@ -14,8 +14,8 @@ import com.example.gourmetsearcher.model.api.Urls
 import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.model.domain.toDomain
+import com.example.gourmetsearcher.repository.HotPepperRepository
 import com.example.gourmetsearcher.state.SearchState
-import com.example.gourmetsearcher.usecase.HotPepperUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -42,7 +42,7 @@ class RestaurantListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var useCase: HotPepperUseCase
+    private lateinit var repository: HotPepperRepository
 
     private lateinit var viewModel: RestaurantListViewModel
 
@@ -76,7 +76,7 @@ class RestaurantListViewModelTest {
     @Before
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        viewModel = RestaurantListViewModel(useCase)
+        viewModel = RestaurantListViewModel(repository)
     }
 
     @After
@@ -94,10 +94,10 @@ class RestaurantListViewModelTest {
     fun searchHotPepperRepositorySuccess() =
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-            `when`(useCase.execute(searchTerms)).thenReturn(Response.success(response))
+            `when`(repository.execute(searchTerms)).thenReturn(Response.success(response))
             viewModel.searchRestaurants(searchTerms)
 
-            verify(useCase).execute(searchTerms)
+            verify(repository).execute(searchTerms)
             val shops = response.results.shops.map { it.toDomain() }
             assertEquals(shops, viewModel.shops.value)
             assertEquals(SearchState.SUCCESS, viewModel.searchState.value)
@@ -114,7 +114,7 @@ class RestaurantListViewModelTest {
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
             val response = Response.error<HotPepperResponse>(500, ResponseBody.create(null, ""))
-            `when`(useCase.execute(searchTerms))
+            `when`(repository.execute(searchTerms))
                 .thenReturn(response)
             viewModel.searchRestaurants(searchTerms)
 
@@ -132,7 +132,7 @@ class RestaurantListViewModelTest {
     fun searchHotPepperRepositoryEmptyResponse() =
         runTest {
             val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 1)
-            `when`(useCase.execute(searchTerms)).thenReturn(Response.success(emptyResponse))
+            `when`(repository.execute(searchTerms)).thenReturn(Response.success(emptyResponse))
 
             viewModel.searchRestaurants(searchTerms)
             val shops = emptyResponse.results.shops.map { it.toDomain() }
