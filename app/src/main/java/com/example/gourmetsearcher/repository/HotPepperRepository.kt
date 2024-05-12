@@ -1,6 +1,5 @@
 package com.example.gourmetsearcher.repository
 
-import android.util.LruCache
 import com.example.gourmetsearcher.BuildConfig
 import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.data.SearchTerms
@@ -25,19 +24,15 @@ interface HotPepperRepository {
  * @param service ホットペッパーグルメAPIのインターフェース
  */
 @Singleton
-class HotPepperRepositoryImpl @Inject constructor
-    (private val service: HotPepperNetworkDataSource) : HotPepperRepository {
+class HotPepperRepositoryImpl @Inject constructor(
+    private val service: HotPepperNetworkDataSource,
+    private val cacheManager: CacheManager
+) : HotPepperRepository {
     /** APIキー */
     private val key = BuildConfig.API_KEY
 
     /** レスポンスフォーマット */
     private val format = "json"
-
-    /** キャッシュサイズ */
-    private val cacheSize = 5
-
-    /** キャッシュ */
-    private val cache = LruCache<SearchTerms, Response<HotPepperResponse>?>(cacheSize)
 
     /** リポジトリ情報を取得
      * @param searchTerms 検索条件
@@ -56,7 +51,7 @@ class HotPepperRepositoryImpl @Inject constructor
         withContext(Dispatchers.IO)
         {
             // キャッシュから結果を取得
-            cache[searchTerms]?.let { return@withContext it }
+            cacheManager.get(searchTerms)?.let { return@withContext it }
 
             return@withContext try {
                 val response = service.getRestaurantDatum(
@@ -67,7 +62,7 @@ class HotPepperRepositoryImpl @Inject constructor
                     searchTerms.range,
                     format
                 )
-                cache.put(searchTerms, response)
+                cacheManager.put(searchTerms, response)
                 response
             } catch (e: Exception) {
                 null
