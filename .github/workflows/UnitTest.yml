@@ -1,0 +1,30 @@
+name: UnitTest
+
+on:
+  push:
+    branches: [ "master", "developer" ]
+  pull_request:
+    branches: [ "master", "developer" ]
+    
+permissions:
+  contents: read
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: set up JDK
+        uses: actions/setup-java@v4
+        with:
+           java-version: 17
+           distribution: 'adopt'
+      - name: chmod gradlew
+        run: chmod +x ./gradlew
+      - name: from Secrets
+        env:
+         API_KEY: ${{ secrets.API_KEY }}
+        run: echo API_KEY="$API_KEY" > ./local.properties
+
+      - name: Unit tests
+        run: ./gradlew test
