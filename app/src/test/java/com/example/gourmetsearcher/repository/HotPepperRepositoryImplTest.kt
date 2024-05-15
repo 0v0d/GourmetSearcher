@@ -23,7 +23,7 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyDouble
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.mock
+import org.mockito.Mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -34,9 +34,15 @@ import retrofit2.Response
 class HotPepperRepositoryImplTest {
 
     private lateinit var repository: HotPepperRepositoryImpl
-    private val mockService = mock(HotPepperNetworkDataSource::class.java)
-    private val mockCacheManager = mock(CacheManager::class.java)
+
+    @Mock
+    private lateinit var mockService: HotPepperNetworkDataSource
+
+    @Mock
+    private lateinit var mockCacheManager: CacheManager
+
     private val searchTerms = SearchTerms("keyword", CurrentLocation(35.0, 139.0), 1)
+
     private val mockResponse = Response.success(
         HotPepperResponse(
             Results(
@@ -61,14 +67,14 @@ class HotPepperRepositoryImplTest {
         )
     )
 
-
     @Before
     fun setUp() {
         repository = HotPepperRepositoryImpl(mockService, mockCacheManager)
     }
 
+    /** キャッシュヒット時にキャッシュされたレスポンスを返すことを確認 */
     @Test
-    fun `execute returns cached response if available`() = runBlocking {
+    fun testCacheHitReturnsCachedResponse() = runBlocking {
         `when`(mockCacheManager.get(searchTerms)).thenReturn(mockResponse)
 
         val result = repository.execute(searchTerms)
@@ -85,8 +91,9 @@ class HotPepperRepositoryImplTest {
         assertEquals(mockResponse, result)
     }
 
+    /** キャッシュミス時にAPIからレスポンスを取得し、キャッシュに保存することを確認 */
     @Test
-    fun `execute fetches from service and caches response if not cached`() = runBlocking {
+    fun testRetrieveRestaurantDetails() = runBlocking {
         `when`(mockCacheManager.get(searchTerms)).thenReturn(null)
         `when`(
             mockService.getRestaurantDatum(
@@ -114,8 +121,9 @@ class HotPepperRepositoryImplTest {
         assertEquals(mockResponse, result)
     }
 
+    /** APIからレスポンスを取得できなかった場合、nullを返すことを確認 */
     @Test
-    fun `execute returns null on service exception`() = runBlocking {
+    fun testGetRestaurantInfoWithException() = runBlocking {
         `when`(
             mockService.getRestaurantDatum(
                 anyString(),
@@ -128,7 +136,7 @@ class HotPepperRepositoryImplTest {
         ).thenThrow(RuntimeException::class.java)
 
         val result = repository.execute(searchTerms)
-        
+
         assertNull(result)
     }
 }

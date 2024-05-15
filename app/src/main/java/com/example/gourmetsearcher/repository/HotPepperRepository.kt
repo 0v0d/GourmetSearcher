@@ -20,7 +20,7 @@ interface HotPepperRepository {
 }
 
 /**
- * ホットペッパーグルメAPIを利用して、レストラン情報を取得するRepository
+ *  HotPepperRepositoryの実装クラス
  * @param service ホットペッパーグルメAPIのインターフェース
  */
 @Singleton

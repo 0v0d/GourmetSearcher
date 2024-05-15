@@ -12,9 +12,7 @@ import javax.inject.Inject
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 
-/**
- * 位置情報の取得を表すインターフェイス
- */
+/** 位置情報の取得のリポジトリ*/
 interface LocationRepository {
     suspend fun getLocation(): Location?
 }
@@ -26,6 +24,10 @@ class LocationRepositoryImpl @Inject constructor(
     private val locationProvider: FusedLocationProviderClient
 ) : LocationRepository {
 
+    /**
+     * 位置情報を取得
+     * @return 位置情報 or null
+     */
     override suspend fun getLocation(): Location? = withContext(Dispatchers.IO) {
         return@withContext try {
             /** 20秒以内に位置情報を取得できなかった場合はnullを返す */
