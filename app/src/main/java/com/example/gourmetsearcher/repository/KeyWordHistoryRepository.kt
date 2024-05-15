@@ -1,10 +1,8 @@
 package com.example.gourmetsearcher.repository
 
-import android.content.Context
-import android.content.SharedPreferences
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+/** 検索履歴のリポジトリ */
 interface KeyWordHistoryRepository {
     /** 検索履歴を取得する */
     fun getHistoryList(): List<String>
@@ -17,36 +15,18 @@ interface KeyWordHistoryRepository {
 }
 
 /**
- *  検索履歴のリポジトリ
- * @param context コンテキスト
+ *  KeyWordHistoryRepositoryの実装クラス
+ * @param preferences PreferencesManger
  */
 class KeyWordHistoryRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context
-): KeyWordHistoryRepository{
-    /** 検索履歴を保存する */
-    private val sharedPrefs: SharedPreferences by lazy {
-        context.getSharedPreferences("HistoryPrefs", Context.MODE_PRIVATE)
-    }
-
+    private val preferences: PreferencesManger
+) : KeyWordHistoryRepository {
     /**
      * 直近の5件の入力されたキーワードを保存する
      * @param input 入力されたキーワード
      */
     override fun saveHistoryItem(input: String) {
-        val historyList = getHistoryList().toMutableList()
-        /** 既に存在する項目でないことを確認  */
-        if (!historyList.contains(input)) {
-            historyList.add(input)
-            if (historyList.size > 5) {
-                val itemToRemove = historyList.removeAt(0)
-                /** 既存の項目を削除 */
-                sharedPrefs.edit().remove(itemToRemove).apply()
-            }
-            /** 各項目を個別のキーで保存 */
-            sharedPrefs.edit().putString(input, input).apply()
-            /** 順序付けたリストを保存 */
-            sharedPrefs.edit().putString("historyList", historyList.joinToString(",")).apply()
-        }
+        preferences.saveHistoryItem(input)
     }
 
     /**
@@ -54,14 +34,11 @@ class KeyWordHistoryRepositoryImpl @Inject constructor(
      * @return 検索履歴
      */
     override fun getHistoryList(): List<String> {
-        val historyString = sharedPrefs.getString("historyList", "") ?: ""
-        return historyString.split(",").filter { it.isNotEmpty() }
+        return preferences.getHistoryList()
     }
 
     /** 検索履歴をクリアする */
     override fun clearHistory() {
-        /** 全てのキーを削除 */
-        getHistoryList().forEach { sharedPrefs.edit().remove(it).apply() }
-        sharedPrefs.edit().remove("historyList").apply()
+        preferences.clearHistory()
     }
 }

@@ -3,6 +3,7 @@ package com.example.gourmetsearcher.di
 import android.content.Context
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepositoryImpl
+import com.example.gourmetsearcher.repository.PreferencesManger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,12 +17,22 @@ import dagger.hilt.android.scopes.ViewModelScoped
 object KeyWordHistoryModule {
     /**
      * 検索履歴のリポジトリを提供する
-     * @param context コンテキスト
+     * @param preferencesManger プリファレンスマネージャ
      * @return 検索履歴のリポジトリ
      */
     @Provides
     @ViewModelScoped
-    fun provideKeyWordHistoryUseCase(@ApplicationContext context: Context): KeyWordHistoryRepository {
-        return KeyWordHistoryRepositoryImpl(context)
+    fun provideKeyWordHistory(preferencesManger: PreferencesManger): KeyWordHistoryRepository {
+        return KeyWordHistoryRepositoryImpl(preferencesManger)
+    }
+
+    /**
+     * プリファレンスマネージャを提供する
+     * @param context コンテキスト
+     * @return プリファレンスマネージャ
+     */
+    @Provides
+    fun providePreferencesManger(@ApplicationContext context: Context): PreferencesManger {
+        return PreferencesManger(context)
     }
 }
