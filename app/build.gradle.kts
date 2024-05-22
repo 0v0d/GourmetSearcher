@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -48,6 +50,10 @@ android {
     hilt {
         enableAggregatingTask = true
     }
+    testOptions {
+        // テスト時のアニメーションを無効化
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -91,7 +97,9 @@ dependencies {
     //Espresso
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.uiautomator)
+    androidTestImplementation(libs.androidx.rules)
+    androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.androidx.uiautomator.v18)
 }
 kapt {
     // エラータイプの修正を有効化

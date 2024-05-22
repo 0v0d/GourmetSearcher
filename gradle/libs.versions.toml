@@ -6,7 +6,7 @@ coreKtx = "1.13.1"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
-kotlinxCoroutinesTest = "1.7.3"
+kotlinxCoroutinesTest = "1.8.0"
 material = "1.12.0"
 constraintlayout = "2.1.4"
 mockitoCore = "5.2.0"
@@ -20,7 +20,9 @@ retrofit = "2.9.0"
 moshi = "1.15.1"
 runnerVersion = "1.5.2"
 secretsGradlePlugin = "2.0.1"
-uiautomator = "2.3.0"
+rules = "1.5.0"
+espressoContrib = "3.5.1"
+uiautomatorV18 = "2.2.0-alpha1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -64,7 +66,9 @@ androidx-core-testing = { module = "androidx.arch.core:core-testing", version.re
 #Android Test
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+androidx-rules = { group = "androidx.test", name = "rules", version.ref = "rules" }
+androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
+androidx-uiautomator-v18 = { group = "androidx.test.uiautomator", name = "uiautomator-v18", version.ref = "uiautomatorV18" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
