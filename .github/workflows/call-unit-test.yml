@@ -1,10 +1,10 @@
-name: UnitTest
+name: Unit Tests
 
 on:
-  push:
-    branches: [ "master", "developer" ]
-  pull_request:
-    branches: [ "master", "developer" ]
+  workflow_call:
+    secrets:
+      API_KEY:
+        required: true
 
 permissions:
   checks: write
@@ -26,6 +26,7 @@ jobs:
 
       - name: chmod gradlew
         run: chmod +x ./gradlew
+
       - name: from Secrets
         env:
           API_KEY: ${{ secrets.API_KEY }}
