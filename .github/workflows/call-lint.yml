@@ -44,17 +44,10 @@ jobs:
       - name: Create local.properties
         run: echo "API_KEY=${{ secrets.API_KEY }}" > local.properties
 
-      - name: Run lint
-        id: lint
-        continue-on-error: true
+      - name: Lint
         run: ./gradlew lint
 
-      - name: Run report
-        if: failure()
-        uses: yutailang0119/action-android-lint@v4
+      - name: Check and report lint results
+        uses: hidakatsuya/action-report-android-lint@v1.2.0
         with:
-          report-path: '**/build/reports/lint-results-*.xml'
-          follow-symbolic-links: true
-          ignore-warnings: false
-        env:
-          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          result-path: 'app/build/reports/lint-results-debug.xml'
