@@ -13,11 +13,12 @@ import org.mockito.junit.MockitoJUnitRunner
 class KeyWordHistoryRepositoryImplTest {
 
     @Mock
-    private lateinit var preferences: PreferencesManger
+    private lateinit var preferences: PreferencesManager
 
     @InjectMocks
     private lateinit var keyWordHistoryRepository: KeyWordHistoryRepositoryImpl
-    
+
+    /** saveHistoryItemが呼ばれたときに、PreferencesManagerのsaveHistoryItemが呼ばれることを確認するテスト */
     @Test
     fun testSaveHistoryItemWithNewEntry() {
         val input = "keyword1"
@@ -25,6 +26,7 @@ class KeyWordHistoryRepositoryImplTest {
         verify(preferences).saveHistoryItem(input)
     }
 
+    /** getHistoryListが呼ばれたときに、PreferencesManagerのgetHistoryListが呼ばれ、期待されるリストが返されることを確認するテスト */
     @Test
     fun testGetHistoryList() {
         val expectedHistoryList = listOf("keyword1", "keyword2", "keyword3")
@@ -36,6 +38,7 @@ class KeyWordHistoryRepositoryImplTest {
         verify(preferences).getHistoryList()
     }
 
+    /** clearHistoryが呼ばれたときに、PreferencesManagerのclearHistoryが呼ばれることを確認するテスト */
     @Test
     fun testClearHistory() {
         keyWordHistoryRepository.clearHistory()
