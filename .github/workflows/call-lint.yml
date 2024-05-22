@@ -49,7 +49,7 @@ jobs:
         continue-on-error: true
         run: ./gradlew lint
 
-      - name: Run report with ReviewDog
+      - name: Run report
         if: failure()
         uses: yutailang0119/action-android-lint@v4
         with:
