@@ -17,7 +17,8 @@ permissions:
 jobs:
   Lint:
     uses: ./.github/workflows/call-lint.yml
-
+    secrets:
+      API_KEY: ${{ secrets.API_KEY }}
   unit_tests:
     uses: ./.github/workflows/call-unit-test.yml
     secrets:
