@@ -1,4 +1,4 @@
-name: Create Pull Request
+name: Auto Merge to Master
 
 on:
   workflow_run:
@@ -11,34 +11,22 @@ permissions:
   pull-requests: write
 
 jobs:
-  create_pull_request:
+  auto_merge:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create Pull Request
-        id: create_pr
-        uses: peter-evans/create-pull-request@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Auto merge from successful CI'
-          branch: auto-merge-${{ github.sha }}
-          base: master
-          title: 'Auto merge from successful CI'
-          body: 'This PR is automatically created and merged when CI succeeds.'
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
 
-      - name: Merge Pull Request
-        if: steps.create_pr.outputs.pull-request-number
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const prNumber = ${{ steps.create_pr.outputs.pull-request-number }};
-            const result = await github.pulls.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-              merge_method: 'merge'
-            });
-            console.log(result);
+      - name: Merge to Master
+        run: |
+          git checkout master
+          git merge --no-ff ${{ github.event.workflow_run.head_commit.id }}
+          git push origin master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
