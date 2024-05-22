@@ -44,7 +44,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
 
       - name: Create local.properties
-        run: echo > local.properties
+        run: echo "API_KEY=${{ secrets.API_KEY }}" > local.properties
 
       - name: Run lint
         id: lint
