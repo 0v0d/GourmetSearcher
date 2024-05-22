@@ -13,7 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class KeyWordHistoryRepositoryImplTest {
 
     @Mock
-    private lateinit var preferences: PreferencesManger
+    private lateinit var preferences: PreferencesManager
 
     @InjectMocks
     private lateinit var keyWordHistoryRepository: KeyWordHistoryRepositoryImpl

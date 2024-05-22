@@ -10,8 +10,7 @@ import javax.inject.Singleton
  * @param context コンテキスト
  */
 @Singleton
-class PreferencesManger @Inject
-constructor(
+class PreferencesManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     /** 検索履歴を保存する */
@@ -26,8 +25,8 @@ constructor(
     fun saveHistoryItem(input: String) {
         val historyList = (getHistoryList().toMutableList() + input)
             .distinct()
-            .takeLast(5)
-        sharedPrefs.edit().putString("historyList", historyList.joinToString(",")).apply()
+            .takeLast(MAX_HISTORY_SIZE)
+        sharedPrefs.edit().putString(HISTORY_KEY, historyList.joinToString(",")).apply()
     }
 
     /**
@@ -35,14 +34,17 @@ constructor(
      * @return 検索履歴
      */
     fun getHistoryList(): List<String> {
-        val historyString = sharedPrefs.getString("historyList", "") ?: ""
+        val historyString = sharedPrefs.getString(HISTORY_KEY, "") ?: ""
         return historyString.split(",").filter { it.isNotEmpty() }
     }
 
     /** 検索履歴をクリアする */
     fun clearHistory() {
-        /** 全てのキーを削除 */
-        getHistoryList().forEach { sharedPrefs.edit().remove(it).apply() }
-        sharedPrefs.edit().remove("historyList").apply()
+        sharedPrefs.edit().remove(HISTORY_KEY).apply()
+    }
+
+    companion object {
+        private const val HISTORY_KEY = "historyList"
+        private const val MAX_HISTORY_SIZE = 5
     }
 }

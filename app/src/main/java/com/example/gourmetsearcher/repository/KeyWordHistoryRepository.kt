@@ -19,7 +19,7 @@ interface KeyWordHistoryRepository {
  * @param preferences PreferencesManger
  */
 class KeyWordHistoryRepositoryImpl @Inject constructor(
-    private val preferences: PreferencesManger
+    private val preferences: PreferencesManager
 ) : KeyWordHistoryRepository {
     /**
      * 直近の5件の入力されたキーワードを保存する
