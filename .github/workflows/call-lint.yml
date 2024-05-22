@@ -4,8 +4,8 @@ on:
   workflow_call:
 
 permissions:
-  statuses: write
-  contents: write
+  statuses: none
+  contents: read
   checks: write
 
 jobs:
