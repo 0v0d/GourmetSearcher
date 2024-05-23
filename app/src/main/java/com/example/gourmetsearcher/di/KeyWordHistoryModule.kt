@@ -32,7 +32,10 @@ object KeyWordHistoryModule {
      * @return プリファレンスマネージャ
      */
     @Provides
-    fun providePreferencesManger(@ApplicationContext context: Context): PreferencesManager {
+    fun providePreferencesManger(
+        @Suppress("ktlint:standard:function-signature")
+        @ApplicationContext context: Context,
+    ): PreferencesManager {
         return PreferencesManager(context)
     }
 }

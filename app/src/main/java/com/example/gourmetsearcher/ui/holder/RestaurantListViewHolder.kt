@@ -9,15 +9,17 @@ import com.example.gourmetsearcher.model.domain.ShopsDomain
  * @param binding ViewHolderのViewBinding
  */
 class RestaurantListViewHolder(
-    private val binding: LayoutRestaurantListItemBinding
+    private val binding: LayoutRestaurantListItemBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
-
     /**
      * ViewHolderにデータをバインドする
      * @param item レストラン情報
      * @param onRestaurantItemClick レストランリストをクリックした時の処理
      */
-    fun bind(item: ShopsDomain, onRestaurantItemClick: (ShopsDomain) -> Unit) {
+    fun bind(
+        item: ShopsDomain,
+        onRestaurantItemClick: (ShopsDomain) -> Unit,
+    ) {
         binding.restaurant = item
         // レストランリストをクリックした時の処理
         binding.root.setOnClickListener {

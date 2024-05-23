@@ -31,9 +31,10 @@ import kotlinx.coroutines.launch
 /** 位置情報検索画面 */
 @AndroidEntryPoint
 class SearchLocationFragment : Fragment() {
+    private var fragmentSearchLocationBinding: FragmentSearchLocationBinding? = null
+    private val binding get() = fragmentSearchLocationBinding!!
+
     private val viewModel: SearchLocationViewModel by viewModels()
-    private var _binding: FragmentSearchLocationBinding? = null
-    private val binding get() = _binding!!
 
     /** ナビゲーションの引数を取得するための変数 */
     private val args: SearchLocationFragmentArgs by navArgs()
@@ -41,7 +42,8 @@ class SearchLocationFragment : Fragment() {
     /** パーミッションのリクエスト結果を追跡するための変数 */
     private val locationPermissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-            val isGranted = it[Manifest.permission.ACCESS_COARSE_LOCATION] == true ||
+            val isGranted =
+                it[Manifest.permission.ACCESS_COARSE_LOCATION] == true ||
                     it[Manifest.permission.ACCESS_FINE_LOCATION] == true
             if (isGranted) {
                 viewModel.getLocation()
@@ -53,9 +55,10 @@ class SearchLocationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentSearchLocationBinding.inflate(inflater, container, false)
+        fragmentSearchLocationBinding =
+            FragmentSearchLocationBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         checkLocationPermission()
@@ -108,16 +111,17 @@ class SearchLocationFragment : Fragment() {
     private fun isPermissionGranted(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
-            permission
+            permission,
         ) == PackageManager.PERMISSION_GRANTED
     }
 
     /** 位置情報のパーミッションをリクエストする */
     private fun requestLocationPermission() {
-        val permissions = arrayOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
+        val permissions =
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            )
         locationPermissionRequest.launch(permissions)
     }
 
@@ -137,7 +141,7 @@ class SearchLocationFragment : Fragment() {
     private fun shouldShowLocationPermissionRationale(): Boolean {
         return ActivityCompat.shouldShowRequestPermissionRationale(
             requireActivity(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION,
         )
     }
 
@@ -160,7 +164,7 @@ class SearchLocationFragment : Fragment() {
                 R.string.location_error_message
             } else {
                 R.string.location_permission_denied_message
-            }
+            },
         )
     }
 
@@ -191,7 +195,7 @@ class SearchLocationFragment : Fragment() {
 
     /** 位置情報の取得状態を監視 */
     private suspend fun observeSearchState() {
-        //位置情報の取得状態を監視
+        // 位置情報の取得状態を監視
         viewModel.searchState.collect { state ->
             when (state) {
                 LocationSearchState.LOADING -> {
@@ -204,7 +208,6 @@ class SearchLocationFragment : Fragment() {
             }
         }
     }
-
 
     /** 位置情報の取得状態を監視 */
     private suspend fun observeLocationData() {
@@ -240,7 +243,7 @@ class SearchLocationFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        _binding = null
+        fragmentSearchLocationBinding = null
         super.onDestroyView()
     }
 }

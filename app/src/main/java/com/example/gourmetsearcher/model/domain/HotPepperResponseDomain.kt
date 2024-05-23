@@ -17,7 +17,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class HotPepperResponseDomain(
-    val results: ResultsDomain
+    val results: ResultsDomain,
 ) : Parcelable
 
 /**
@@ -26,7 +26,7 @@ data class HotPepperResponseDomain(
  */
 @Parcelize
 data class ResultsDomain(
-    val shops: List<ShopsDomain>
+    val shops: List<ShopsDomain>,
 ) : Parcelable
 
 /**
@@ -59,7 +59,7 @@ data class ShopsDomain(
     val url: UrlDomain,
     val photo: PhotoDomain,
     val open: String,
-    val close: String
+    val close: String,
 ) : Parcelable
 
 /**
@@ -68,7 +68,7 @@ data class ShopsDomain(
  */
 @Parcelize
 data class LargeAreaDomain(
-    val name: String
+    val name: String,
 ) : Parcelable
 
 /**
@@ -77,7 +77,7 @@ data class LargeAreaDomain(
  */
 @Parcelize
 data class SmallAreaDomain(
-    val name: String
+    val name: String,
 ) : Parcelable
 
 /**
@@ -86,7 +86,7 @@ data class SmallAreaDomain(
  */
 @Parcelize
 data class GenreDomain(
-    val name: String
+    val name: String,
 ) : Parcelable
 
 /**
@@ -95,7 +95,7 @@ data class GenreDomain(
  */
 @Parcelize
 data class BudgetDomain(
-    val name: String
+    val name: String,
 ) : Parcelable
 
 /**
@@ -104,7 +104,7 @@ data class BudgetDomain(
  */
 @Parcelize
 data class UrlDomain(
-    val pc: String
+    val pc: String,
 ) : Parcelable
 
 /**
@@ -113,7 +113,7 @@ data class UrlDomain(
  */
 @Parcelize
 data class PhotoDomain(
-    val pc: PCDomain
+    val pc: PCDomain,
 ) : Parcelable
 
 /**
@@ -122,27 +122,28 @@ data class PhotoDomain(
  */
 @Parcelize
 data class PCDomain(
-    val l: String
+    val l: String,
 ) : Parcelable
 
 /** APIレスポンスデータからドメインモデルへの変換関数
  * @return ドメインモデル
  */
-fun Shops.toDomain() = ShopsDomain(
-    id,
-    name,
-    address,
-    station,
-    largeArea.toDomain(),
-    smallArea.toDomain(),
-    genre.toDomain(),
-    budget.toDomain(),
-    access,
-    url.toDomain(),
-    photo.toDomain(),
-    open,
-    close
-)
+fun Shops.toDomain() =
+    ShopsDomain(
+        id,
+        name,
+        address,
+        station,
+        largeArea.toDomain(),
+        smallArea.toDomain(),
+        genre.toDomain(),
+        budget.toDomain(),
+        access,
+        url.toDomain(),
+        photo.toDomain(),
+        open,
+        close,
+    )
 
 fun LargeAreaData.toDomain() = LargeAreaDomain(name)
 

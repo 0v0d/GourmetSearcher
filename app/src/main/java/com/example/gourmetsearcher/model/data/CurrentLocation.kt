@@ -9,5 +9,5 @@ import java.io.Serializable
  */
 data class CurrentLocation(
     val lat: Double,
-    val lng: Double
+    val lng: Double,
 ) : Serializable

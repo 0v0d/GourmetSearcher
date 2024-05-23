@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class HotPepperResponse(
     @Json(name = "results")
-    val results: Results
+    val results: Results,
 ) : Parcelable
 
 /**
@@ -21,7 +21,7 @@ data class HotPepperResponse(
 @Parcelize
 data class Results(
     @Json(name = "shop")
-    val shops: List<Shops>
+    val shops: List<Shops>,
 ) : Parcelable
 
 /**

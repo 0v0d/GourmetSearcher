@@ -24,8 +24,7 @@ object NetworkModule {
      * @return Moshi
      */
     @Provides
-    fun provideMoshi(): Moshi =
-        Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    fun provideMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
     /**
      * Retrofitを提供
@@ -37,9 +36,10 @@ object NetworkModule {
     fun provideRetrofit(
         @ApplicationContext context: Context,
         moshi: Moshi,
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(context.getString(R.string.hot_pepper_url))
-        .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+    ): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(context.getString(R.string.hot_pepper_url))
+            .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
 
     /**
      * HotPepperNetworkDataSourceを提供
@@ -47,8 +47,7 @@ object NetworkModule {
      * @return HotPepperNetworkDataSource
      */
     @Provides
-    fun provideHotPepperService(retrofit: Retrofit): HotPepperNetworkDataSource =
-        retrofit.create(HotPepperNetworkDataSource::class.java)
+    fun provideHotPepperService(retrofit: Retrofit): HotPepperNetworkDataSource = retrofit.create(HotPepperNetworkDataSource::class.java)
 
     /**
      * HotPepperRepositoryを提供

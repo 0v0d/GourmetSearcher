@@ -20,60 +20,62 @@ interface LocationRepository {
 /**
  * LocationRepositoryの実装クラス
  */
-class LocationRepositoryImpl @Inject constructor(
-    private val locationProvider: FusedLocationProviderClient
-) : LocationRepository {
-
-    /**
-     * 位置情報を取得
-     * @return 位置情報 or null
-     */
-    override suspend fun getLocation(): Location? = withContext(Dispatchers.IO) {
-        return@withContext try {
-            /** 20秒以内に位置情報を取得できなかった場合はnullを返す */
-            withTimeoutOrNull(20000L) {
-                fetchLocation()
-            }
-        } catch (e: Exception) {
-            println(e.message)
-            null
-        }
-    }
-
-    /**
-     * 位置情報を取得
-     * @return 位置情報 or null
-     */
-    private suspend fun fetchLocation(): Location? =
-        suspendCancellableCoroutine { continuation ->
-            try {
-                locationProvider.getCurrentLocation(
-                    Priority.PRIORITY_LOW_POWER,
+class LocationRepositoryImpl
+    @Inject
+    constructor(
+        private val locationProvider: FusedLocationProviderClient,
+    ) : LocationRepository {
+        /**
+         * 位置情報を取得
+         * @return 位置情報 or null
+         */
+        override suspend fun getLocation(): Location? =
+            withContext(Dispatchers.IO) {
+                return@withContext try {
+                    /** 20秒以内に位置情報を取得できなかった場合はnullを返す */
+                    withTimeoutOrNull(20000L) {
+                        fetchLocation()
+                    }
+                } catch (e: Exception) {
+                    println(e.message)
                     null
-                ).addOnCompleteListener { task ->
-                    handleCompletion(task, continuation)
                 }
-            } catch (e: SecurityException) {
-                continuation.resume(null)
-            } catch (e: Exception) {
+            }
+
+        /**
+         * 位置情報を取得
+         * @return 位置情報 or null
+         */
+        private suspend fun fetchLocation(): Location? =
+            suspendCancellableCoroutine { continuation ->
+                try {
+                    locationProvider.getCurrentLocation(
+                        Priority.PRIORITY_LOW_POWER,
+                        null,
+                    ).addOnCompleteListener { task ->
+                        handleCompletion(task, continuation)
+                    }
+                } catch (e: SecurityException) {
+                    continuation.resume(null)
+                } catch (e: Exception) {
+                    continuation.resume(null)
+                }
+            }
+
+        /**
+         * Taskの完了結果を処理
+         * @param task Task<Location>
+         * @param continuation Continuation<Location?>
+         */
+        private fun handleCompletion(
+            task: Task<Location>,
+            continuation: Continuation<Location?>,
+        ) {
+            if (task.isSuccessful) {
+                val location = task.result
+                continuation.resume(location)
+            } else {
                 continuation.resume(null)
             }
         }
-
-    /**
-     * Taskの完了結果を処理
-     * @param task Task<Location>
-     * @param continuation Continuation<Location?>
-     */
-    private fun handleCompletion(
-        task: Task<Location>,
-        continuation: Continuation<Location?>
-    ) {
-        if (task.isSuccessful) {
-            val location = task.result
-            continuation.resume(location)
-        } else {
-            continuation.resume(null)
-        }
     }
-}

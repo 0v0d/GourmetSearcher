@@ -25,10 +25,12 @@ import kotlinx.coroutines.launch
 /** キーワード入力画面 */
 @AndroidEntryPoint
 class InputKeyWordFragment : Fragment() {
-    private var _binding: FragmentInputKeyWordBinding? = null
-    private val binding get() = _binding!!
+    private var fragmentInputKeyWordBinding: FragmentInputKeyWordBinding? = null
+    private val binding get() = fragmentInputKeyWordBinding!!
+
     private val viewModel: InputKeyWordViewModel by viewModels()
     private var inputText = ""
+
     private val rangeListAdapter by lazy {
         RangeListAdapter(rangeItemClick)
     }
@@ -51,9 +53,10 @@ class InputKeyWordFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentInputKeyWordBinding.inflate(inflater, container, false)
+        fragmentInputKeyWordBinding =
+            FragmentInputKeyWordBinding.inflate(inflater, container, false)
         binding.searchParameters.viewModel = viewModel
         binding.searchParameters.lifecycleOwner = viewLifecycleOwner
         viewLifecycleOwner.lifecycleScope.launch {
@@ -74,7 +77,10 @@ class InputKeyWordFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setupSearchInputClick()
         setUpRangeListRecyclerView()
@@ -133,7 +139,7 @@ class InputKeyWordFragment : Fragment() {
         val action =
             InputKeyWordFragmentDirections.actionToSearchLocationFragment(
                 inputText,
-                range
+                range,
             )
         findNavController().navigate(action)
         clearKeywordInputText()
@@ -150,7 +156,7 @@ class InputKeyWordFragment : Fragment() {
         /** メモリリークを防ぐためにRecyclerViewのアダプターを解放する */
         binding.searchParameters.rangeListRecyclerView.adapter = null
         binding.searchParameters.keyWordListRecyclerView.adapter = null
-        _binding = null
+        fragmentInputKeyWordBinding = null
         super.onDestroyView()
     }
 }

@@ -20,18 +20,21 @@ import kotlinx.coroutines.launch
 
 /** レストラン詳細画面 */
 class RestaurantDetailFragment : Fragment() {
+    private var fragmentRestaurantDetailBinding: FragmentRestaurantDetailBinding? = null
+    private val binding get() = fragmentRestaurantDetailBinding!!
+
     private val viewModel: RestaurantDetailViewModel by viewModels()
-    private var _binding: FragmentRestaurantDetailBinding? = null
-    private val binding get() = _binding!!
+
     /** argsによって渡されたレストラン情報を取得 */
     private val args: RestaurantDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentRestaurantDetailBinding.inflate(inflater, container, false)
+        fragmentRestaurantDetailBinding =
+            FragmentRestaurantDetailBinding.inflate(inflater, container, false)
         binding.restaurant = args.restaurantData
 
         binding.viewModel = viewModel
@@ -77,8 +80,8 @@ class RestaurantDetailFragment : Fragment() {
         intent.setComponent(
             ComponentName(
                 "com.android.chrome",
-                "com.google.android.apps.chrome.Main"
-            )
+                "com.google.android.apps.chrome.Main",
+            ),
         )
         startActivity(intent)
         viewModel.clearUrl()
@@ -94,15 +97,15 @@ class RestaurantDetailFragment : Fragment() {
         intent.setComponent(
             ComponentName(
                 "com.google.android.apps.maps",
-                "com.google.android.maps.MapsActivity"
-            )
+                "com.google.android.maps.MapsActivity",
+            ),
         )
         startActivity(intent)
         viewModel.clearAddress()
     }
 
     override fun onDestroyView() {
-        _binding = null
+        fragmentRestaurantDetailBinding = null
         super.onDestroyView()
     }
 }
