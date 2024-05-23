@@ -5,5 +5,5 @@ enum class SearchState {
     SUCCESS,
     NETWORK_ERROR,
     EMPTY_RESULT,
-    LOADING
+    LOADING,
 }

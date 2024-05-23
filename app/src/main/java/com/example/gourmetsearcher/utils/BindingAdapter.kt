@@ -15,7 +15,7 @@ object BindingAdapter {
     @JvmStatic
     fun loadImage(
         imageView: ImageView,
-        profileImageUrl: String
+        profileImageUrl: String,
     ) {
         Picasso.get()
             .load(profileImageUrl)

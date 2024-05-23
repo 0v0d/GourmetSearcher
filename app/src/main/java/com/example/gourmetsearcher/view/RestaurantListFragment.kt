@@ -25,9 +25,10 @@ import kotlinx.coroutines.launch
 /** レストラン検索結果画面 */
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
+    private var fragmentResultListBinding: FragmentResultListBinding? = null
+    private val binding get() = fragmentResultListBinding!!
+
     private val viewModel: RestaurantListViewModel by viewModels()
-    private var _binding: FragmentResultListBinding? = null
-    private val binding get() = _binding!!
 
     /** ナビゲーションの引数を取得するための変数 */
     private val args: RestaurantListFragmentArgs by navArgs()
@@ -46,16 +47,20 @@ class RestaurantListFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentResultListBinding.inflate(inflater, container, false)
+        fragmentResultListBinding = FragmentResultListBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -105,7 +110,10 @@ class RestaurantListFragment : Fragment() {
      * @param state 検索状態
      * @param messageResId エラーメッセージ
      */
-    private fun showError(state: SearchState, messageResId: Int) {
+    private fun showError(
+        state: SearchState,
+        messageResId: Int,
+    ) {
         binding.resultListRecyclerView.isVisible = false
         binding.loadingProgressBar.isVisible = false
         binding.errorTextView.text = getString(messageResId)
@@ -126,7 +134,6 @@ class RestaurantListFragment : Fragment() {
         binding.loadingProgressBar.isVisible = true
     }
 
-
     /** 検索結果のリストを表示する */
     private fun setUpResultListRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext())
@@ -139,16 +146,17 @@ class RestaurantListFragment : Fragment() {
      * @param restaurant 選択されたレストラン
      */
     private fun navigateToRestaurantDetailFragment(restaurant: ShopsDomain) {
-        val action = RestaurantListFragmentDirections.actionToRestaurantDetailFragment(
-            restaurant.name,
-            restaurant
-        )
+        val action =
+            RestaurantListFragmentDirections.actionToRestaurantDetailFragment(
+                restaurant.name,
+                restaurant,
+            )
         findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
         binding.resultListRecyclerView.adapter = null
-        _binding = null
+        fragmentResultListBinding = null
         super.onDestroyView()
     }
 }

@@ -21,7 +21,9 @@ object LocationModule {
      * @return 位置情報のリポジトリ
      */
     @Provides
-    fun provideFusedLocationProviderClient(@ApplicationContext context: Context): FusedLocationProviderClient {
+    fun provideFusedLocationProviderClient(
+        @ApplicationContext context: Context,
+    ): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(context)
     }
 

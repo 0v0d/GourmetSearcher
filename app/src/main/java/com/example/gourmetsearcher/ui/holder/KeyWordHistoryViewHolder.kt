@@ -10,13 +10,15 @@ import com.example.gourmetsearcher.databinding.LayoutKeyWordHistoryListItemBindi
 class KeyWordHistoryViewHolder(
     private val binding: LayoutKeyWordHistoryListItemBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
-
     /**
      * ViewHolderにデータをバインドする
      * @param item キーワード履歴のリストのアイテム
      * @param onKeyWordHistoryItemClick キーワード履歴のリストのアイテムをクリックしたときの処理
      */
-    fun bind(item: String, onKeyWordHistoryItemClick: (String) -> Unit) {
+    fun bind(
+        item: String,
+        onKeyWordHistoryItemClick: (String) -> Unit,
+    ) {
         binding.keyWordHistory = item
         /** キーワード履歴のリストのアイテムをクリックしたときの処理 */
         binding.root.setOnClickListener {

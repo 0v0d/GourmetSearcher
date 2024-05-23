@@ -18,27 +18,29 @@ interface KeyWordHistoryRepository {
  *  KeyWordHistoryRepositoryの実装クラス
  * @param preferences PreferencesManger
  */
-class KeyWordHistoryRepositoryImpl @Inject constructor(
-    private val preferences: PreferencesManager
-) : KeyWordHistoryRepository {
-    /**
-     * 直近の5件の入力されたキーワードを保存する
-     * @param input 入力されたキーワード
-     */
-    override fun saveHistoryItem(input: String) {
-        preferences.saveHistoryItem(input)
-    }
+class KeyWordHistoryRepositoryImpl
+    @Inject
+    constructor(
+        private val preferences: PreferencesManager,
+    ) : KeyWordHistoryRepository {
+        /**
+         * 直近の5件の入力されたキーワードを保存する
+         * @param input 入力されたキーワード
+         */
+        override fun saveHistoryItem(input: String) {
+            preferences.saveHistoryItem(input)
+        }
 
-    /**
-     * 検索履歴を取得する
-     * @return 検索履歴
-     */
-    override fun getHistoryList(): List<String> {
-        return preferences.getHistoryList()
-    }
+        /**
+         * 検索履歴を取得する
+         * @return 検索履歴
+         */
+        override fun getHistoryList(): List<String> {
+            return preferences.getHistoryList()
+        }
 
-    /** 検索履歴をクリアする */
-    override fun clearHistory() {
-        preferences.clearHistory()
+        /** 検索履歴をクリアする */
+        override fun clearHistory() {
+            preferences.clearHistory()
+        }
     }
-}
