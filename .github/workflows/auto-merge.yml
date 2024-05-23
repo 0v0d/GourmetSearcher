@@ -1,4 +1,4 @@
-name: Auto Merge to Master
+name: Auto Merge
 
 on:
   workflow_run:
@@ -15,22 +15,8 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Master Branch
-        uses: actions/checkout@v4
-        with:
-          ref: master
-
-      - name: Checkout Target Branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_branch }}
-
-      - name: Merge Branch
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git checkout master
-          git merge --no-ff ${{ github.event.workflow_run.head_branch }}
-          git push origin master
+      - id: automerge
+        name: Auto Merge
+        uses: "pascalgn/automerge-action@v0.16.3"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
