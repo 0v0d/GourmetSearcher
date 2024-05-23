@@ -55,6 +55,7 @@ jobs:
 
       - name: Gradle properties
         run: |
+          mkdir -p ~/.gradle
           echo "org.gradle.jvmargs=-Xmx4096m" >> ~/.gradle/gradle.properties
           echo "org.gradle.caching=true" >> ~/.gradle/gradle.properties
 
