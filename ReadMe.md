@@ -1,79 +1,84 @@
-[日本語はこちら](https://github.com/0v0d/GourmetSearcher/blob/master/docs/README-ja.md)
-## App Name
+[English README is here](https://github.com/0v0d/GourmetSearcher/blob/master/docs/README-en.md
+)
+## アプリ名
 
 GourmetSearcher
 
-### Project Repository (GitHub)
+### [プロジェクトのリポジトリ (GitHub)](https://github.com/0v0d/GourmetSearcher)
 
-## App Specifications
+## アプリ仕様
 
-This is an Android app that can search for restaurants near your current location using keywords.
+現在位置付近のレストランをキーワードで検索できるAndroidアプリです。
 
-<img src="docs/app.gif" width="314" alt="App demo video">
+<img src="docs/app.gif" width="314" alt="アプリのデモ動画">
 
-### About APIKey
+### APIKeyについて
 
-This app uses the Hot Pepper Gourmet Search API.
-When using it, you need to register your email address here.
-Once registered, an APIKey will be sent to you by email. You can use it as follows:
+本アプリは[ホットペッパーのグルメサーチAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)
+を使用しています。
+ご利用の際には[こちら](https://webservice.recruit.co.jp/register/)にメールアドレスを登録していただく必要がございます。
+登録していただくと、メールにてAPIKeyが送信されますので、そちらを以下のようにしていただくことで、ご利用可能になります。
 
-- Set the API key in the local.properties file in the root directory of the project in the following format:
+- APIKeyはプロジェクトのルートディレクトリにある local.properties ファイルに
 
 ```properties
 API_KEY="YOUR_API_KEY"
 ```
 
-### Bugs and Usage Notes
+の形式で、APIキーを設定して下さい。
 
-- There is a bug that GPS cannot be obtained when using a virtual terminal.</br>
-  (It works without problems on actual devices.)
+### 不具合及び使用上の注意
 
-### Target Devices & OS
+- 仮想端末を使用する際に、GPSが取得できないという不具合があります。</br>
+  (実機端末では、不具合なく動作します。)
 
-#### Target OS
+### 動作対象端末・OS
+
+#### 動作対象OS
 
 Android 14
 
-## Development Environment
+## 開発環境
 
 Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 
-- Compile SDK Version: 34
-- Minimum SDK Version: 32
-- Target SDK Version: 34
-- Java: VERSION_1_8
-- Gradle: 8.6
+- コンパイルSDKバージョン: 34
+- 最小SDKバージョン: 32
+- ターゲットSDKバージョン: 34
+- Java：VERSION_1_8
+- Gradle：8.6
 - Gradle Plugin 7.0.4
-- minSdk: 32
-- targetSdk: 34
+- minSdk：32
+- targetSdk：34
 
-### Development Language
+### 開発言語
 
 - Kotlin 1.9.22
 
-### Actual Device Environment
+### 実機端末環境
 
 - Redmi 12 (Android 14)
 
-## Application Features
+## アプリケーション機能
 
-### Feature List
+### 機能一覧
 
-- Restaurant Search: Use the Hot Pepper Gourmet Search API to search for eateries around your current location.
-- Restaurant Information Acquisition: Use the Hot Pepper Gourmet Search API to obtain detailed information about eateries.
-- Map App Collaboration: Display the location of the eatery on the map app.
-- Keyword Search: By entering a keyword, you can narrow down the search results of the Hot Pepper Gourmet Search API.
+- レストラン検索：ホットペッパーグルメサーチAPIを使用して、現在地周辺の飲食店を検索する。
+- レストラン情報取得：ホットペッパーグルメサーチAPIを使用して、飲食店の詳細情報を取得する。
+- 地図アプリ連携：飲食店の所在地を地図アプリに表示する。
+- キーワード検索：キーワードを入力することで、ホットペッパーグルメサーチAPIの検索結果を絞る。
 
-### Screen Overview
+### 画面概要
 
-- Keyword Input Screen (InputSearchTermsFragment): When a keyword is entered and a radius is selected, it transitions to the location information search screen.
-- Location Information Search Screen (LocationSearchFragment): When GPS acquisition is successful, it transitions to the store list screen.
-- Restaurant Search Result Screen (RestaurantListViewFragment): Displays a list of search results for eateries, and when selected, transitions to the store detail screen.
-- Restaurant Detail Screen (RestaurantDetailFragment): Displays details of the store, and when the Map button is pressed, it transitions to the map app. When the "To Hot Pepper" button is pressed, it displays a web page.
+- キーワード入力画面 (InputSearchTermsFragment) ： キーワードを入力し、半径が選択されると位置情報検索画面へ遷移する。
+- 位置情報検索画面 (LocationSearchFragment) : GPSの取得に成功すると店舗一覧画面へ遷移する。
+- レストラン検索結果画面 (RestaurantListViewFragment) : 検索結果の飲食店を一覧表示し、選択されると店舗詳細画面へ遷移する。
+- レストラン詳細画面 (RestaurantDetailFragment) : 店舗の詳細を表示し、Mapボタンを押された時にはマップアプリへ遷移
+  する。「Hot Pepperへ」ボタンを押されたときにWebページを表示する。
 
-### APIs, SDKs, Libraries Used
+### 使用しているAPI,SDK,ライブラリなど
 
-- Hot Pepper Gourmet Search API
+- ホットペッパーグルメサーチAPI
 - dagger.hilt
 - Retrofit
 - OkHttp
