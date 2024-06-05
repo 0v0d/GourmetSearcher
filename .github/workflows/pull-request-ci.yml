@@ -2,8 +2,16 @@ name: CI
 
 on:
   pull_request:
-    branches: ["master", "developer"]
+    branches: [ "master", "developer" ]
+    types: [ opened, synchronize ]
 
+  # openedのトリガーで呼ばれないため、workflow_runを追加
+  workflow_run:
+    workflows: [ "Create Pull Request" ]
+    types:
+      - completed
+
+# 並行処理の設定
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number }}
   cancel-in-progress: true
@@ -14,12 +22,12 @@ permissions:
   pull-requests: write
 
 jobs:
-  Lint:
-    uses: ./.github/workflows/call-lint.yml
+  PullRequestCheck:
+    uses: ./.github/workflows/call-pull-request-check.yml
     secrets:
       API_KEY: ${{ secrets.API_KEY }}
 
-  unit_tests:
+  UnitTests:
     uses: ./.github/workflows/call-unit-test.yml
     secrets:
       API_KEY: ${{ secrets.API_KEY }}
