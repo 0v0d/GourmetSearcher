@@ -3,7 +3,7 @@ name: Create Pull Request
 on:
   push:
     branches:
-      - dev  # プッシュ対象のブランチ名
+      - developer # プッシュ対象のブランチ名
 
 jobs:
 
