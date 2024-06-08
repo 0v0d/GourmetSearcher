@@ -1,0 +1,35 @@
+name: Dev Branch CI-CD
+
+on:
+  pull_request:
+    branches: ["master", "developer"]
+    types: [opened, synchronize]
+
+concurrency:
+  group: developer-branch-ci-cd-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  StaticAnalysis:
+    uses: ./.github/workflows/call-static-analysis.yml
+    secrets:
+      API_KEY: ${{ secrets.API_KEY }}
+
+  AutoMarge:
+    needs: StaticAnalysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: success()
+    steps:
+      - name: Auto Merge
+        uses: pascalgn/automerge-action@v0.16.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+

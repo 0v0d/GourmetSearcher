@@ -1,6 +1,5 @@
-@file:Suppress("UnstableApiUsage")
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
-val ktlint: Configuration by configurations.creating
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -10,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -100,39 +100,18 @@ dependencies {
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.espresso.contrib)
     androidTestImplementation(libs.androidx.uiautomator.v18)
-
-    ktlint(libs.ktlint) {
-        attributes {
-            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
-        }
-    }
 }
 kapt {
     // エラータイプの修正を有効化
     correctErrorTypes = true
 }
-
-val outputDir = "${project.layout.buildDirectory.get().asFile}/reports/ktlint/"
-val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
-
-val ktlintCheck by tasks.creating(JavaExec::class) {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-
-    group = "ktlint"
-    description = "Check Kotlin code style."
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-    args = listOf("src/**/*.kt")
-}
-
-val ktlintFormat by tasks.creating(JavaExec::class) {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-
-    group = "ktlint"
-    description = "Fix Kotlin code style deviations."
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-    args = listOf("-F", "src/**/*.kt")
+ktlint {
+    android = true
+    outputToConsole = true
+    verbose = true
+    debug = true
+    ignoreFailures = true
+    reporters {
+        reporter(ReporterType.CHECKSTYLE)
+    }
 }
