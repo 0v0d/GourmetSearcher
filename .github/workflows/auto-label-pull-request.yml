@@ -1,15 +1,15 @@
-name: Auto Label Pull Request
+name: Auto Label PR
 
 on:
   pull_request:
     branches: ["master", "developer"]
-    types: [opened, synchronize]
+    types: [opened]
 
 jobs:
   add-label:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Add automerge Label
