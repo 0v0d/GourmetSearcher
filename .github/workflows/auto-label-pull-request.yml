@@ -5,14 +5,37 @@ on:
     branches: ["master", "developer"]
     types: [opened]
 
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+
 jobs:
-  add-label:
+  handle-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Check if Dependabot
+        id: check-actor
+        run: echo "::set-output name=is-dependabot::$(if [[ '${{ github.actor }}' == 'dependabot[bot]' ]]; then echo 'true'; else echo 'false'; fi)"
+
+      - name: Dependabot metadata
+        if: steps.check-actor.outputs.is-dependabot == 'true'
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add automerge label for Dependabot
+        if: steps.check-actor.outputs.is-dependabot == 'true' && steps.metadata.outputs.dependency-type == 'direct:production'
+        run: gh pr edit "$PR_URL" --add-label "automerge"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+
       - name: Add automerge Label
+        if: steps.check-actor.outputs.is-dependabot == 'false'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
