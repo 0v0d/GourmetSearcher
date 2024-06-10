@@ -1,7 +1,9 @@
 package com.example.gourmetsearcher.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
+import com.example.gourmetsearcher.usecase.ClearKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.GetKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.SaveKeyWordHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,13 +11,17 @@ import javax.inject.Inject
 
 /**
  *  キーワード入力画面のViewModel
- *  @param keyWordHistoryRepository キーワード履歴のRepository
+ *  @param getHistoryListUseCase GetKeyWordHistoryUseCase
+ *  @param saveHistoryItemUseCase SaveKeyWordHistoryUseCase
+ *  @param clearHistoryUseCase ClearKeyWordHistoryUseCase
  */
 @HiltViewModel
 class InputKeyWordViewModel
     @Inject
     constructor(
-        private val keyWordHistoryRepository: KeyWordHistoryRepository,
+        private val getHistoryListUseCase: GetKeyWordHistoryUseCase,
+        private val saveHistoryItemUseCase: SaveKeyWordHistoryUseCase,
+        private val clearHistoryUseCase: ClearKeyWordHistoryUseCase,
     ) : ViewModel() {
         private val _historyListData = MutableStateFlow<List<String>>(emptyList())
 
@@ -27,23 +33,23 @@ class InputKeyWordViewModel
             loadHistory()
         }
 
+        /** 履歴リストを取得する */
+        private fun loadHistory() {
+            _historyListData.value = getHistoryListUseCase()
+        }
+
         /**
          *  入力されたキーワードを保存する
          *  @param input 入力されたキーワード
          */
         fun saveHistoryItem(input: String) {
-            keyWordHistoryRepository.saveHistoryItem(input)
+            saveHistoryItemUseCase(input)
             loadHistory()
         }
 
         /** 履歴リストをクリアする */
         fun clearHistory() {
-            keyWordHistoryRepository.clearHistory()
+            clearHistoryUseCase()
             loadHistory()
-        }
-
-        /** 履歴リストを取得する */
-        private fun loadHistory() {
-            _historyListData.value = keyWordHistoryRepository.getHistoryList()
         }
     }

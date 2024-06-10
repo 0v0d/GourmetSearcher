@@ -6,7 +6,6 @@ import org.junit.Test
 import java.net.URLEncoder
 
 class RestaurantDetailViewModelTest {
-
     private lateinit var viewModel: RestaurantDetailViewModel
 
     @Before

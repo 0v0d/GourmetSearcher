@@ -5,6 +5,7 @@ import com.example.gourmetsearcher.R
 import com.example.gourmetsearcher.repository.HotPepperRepository
 import com.example.gourmetsearcher.repository.HotPepperRepositoryImpl
 import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
+import com.example.gourmetsearcher.usecase.GetHotPepperDataUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -52,9 +53,16 @@ object NetworkModule {
     /**
      * HotPepperRepositoryを提供
      * @param repository HotPepperRepository
+     * @return HotPepperRepository
      */
     @Provides
-    fun provideHotPepperRepository(repository: HotPepperRepositoryImpl): HotPepperRepository {
-        return repository
-    }
+    fun provideHotPepperRepository(repository: HotPepperRepositoryImpl): HotPepperRepository = repository
+
+    /**
+     * HotPepperUseCaseを提供
+     * @param repository HotPepperRepository
+     * @return HotPepperUseCase
+     */
+    @Provides
+    fun provideHotPepperUseCase(repository: HotPepperRepository): GetHotPepperDataUseCase = GetHotPepperDataUseCase(repository)
 }
