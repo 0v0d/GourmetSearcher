@@ -1,5 +1,7 @@
 package com.example.gourmetsearcher.repository
 
+import com.example.gourmetsearcher.manager.PreferencesManager
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 /** 検索履歴のリポジトリ */
@@ -18,6 +20,7 @@ interface KeyWordHistoryRepository {
  *  KeyWordHistoryRepositoryの実装クラス
  * @param preferences PreferencesManger
  */
+@ViewModelScoped
 class KeyWordHistoryRepositoryImpl
     @Inject
     constructor(

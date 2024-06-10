@@ -1,11 +1,10 @@
 package com.example.gourmetsearcher.di
 
-import com.example.gourmetsearcher.repository.CacheManager
+import com.example.gourmetsearcher.manager.CacheManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 /** キャッシュマネージャのモジュール */
 @Module
@@ -16,7 +15,6 @@ object CacheManagerModule {
      * @return キャッシュマネージャ
      */
     @Provides
-    @Singleton
     fun provideCacheManager(): CacheManager {
         // キャッシュサイズ
         val cacheSize = 5
