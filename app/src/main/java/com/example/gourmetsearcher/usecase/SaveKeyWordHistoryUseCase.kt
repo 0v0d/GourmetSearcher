@@ -9,7 +9,9 @@ import javax.inject.Inject
  */
 class SaveKeyWordHistoryUseCase
     @Inject
-    constructor(private val repository: KeyWordHistoryRepository) {
+    constructor(
+        private val repository: KeyWordHistoryRepository,
+    ) {
         /**
          * 検索履歴を保存する
          * @param keyword 検索キーワード

@@ -10,7 +10,9 @@ import javax.inject.Inject
  */
 class GetHotPepperDataUseCase
     @Inject
-    constructor(private val hotPepperRepository: HotPepperRepository) {
+    constructor(
+        private val hotPepperRepository: HotPepperRepository,
+    ) {
         /**
          * ホットペッパーAPIからデータを取得する
          * @param searchTerms 検索条件
