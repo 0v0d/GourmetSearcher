@@ -31,10 +31,11 @@ class SearchRestaurantFlowTest {
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @get:Rule
-    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION"
-    )
+    val grantPermissionRule: GrantPermissionRule =
+        GrantPermissionRule.grant(
+            "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.ACCESS_COARSE_LOCATION",
+        )
 
     /** テキストを入力し、範囲を選択して、レストランの画像が表示されることを確認する*/
     @Test
@@ -42,7 +43,7 @@ class SearchRestaurantFlowTest {
         val text = "ラーメン"
         // InputKeyWordFragmentでテキストを入力する
         onView(withId(R.id.searchInputEditText)).perform(
-            replaceText(text)
+            replaceText(text),
         )
 
         // RangeListをクリックして、SearchLocationFragmentに遷移する
@@ -50,8 +51,8 @@ class SearchRestaurantFlowTest {
             .perform(
                 actionOnItemAtPosition<RangeListViewHolder>(
                     4,
-                    click()
-                )
+                    click(),
+                ),
             )
 
         // RestaurantFragmentに遷移し、リストのアイテムをクリックする
@@ -59,14 +60,14 @@ class SearchRestaurantFlowTest {
             .waitShown(R.id.icon).perform(
                 actionOnItemAtPosition<RestaurantListViewHolder>(
                     1,
-                    click()
-                )
+                    click(),
+                ),
             )
 
         // RestaurantDetailFragmentに遷移し、画像が表示されることを確認する
         onView(withId(R.id.restaurantImageView))
             .check(
-                matches(isDisplayed())
+                matches(isDisplayed()),
             ).waitShown(R.id.restaurantImageView)
     }
 
@@ -78,7 +79,7 @@ class SearchRestaurantFlowTest {
      */
     private fun ViewInteraction.waitShown(
         @IdRes resId: Int,
-        timeout: Long = 50_000
+        timeout: Long = 50_000,
     ): ViewInteraction {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
