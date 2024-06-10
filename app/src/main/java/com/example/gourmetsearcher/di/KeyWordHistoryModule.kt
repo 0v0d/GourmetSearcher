@@ -1,15 +1,15 @@
 package com.example.gourmetsearcher.di
 
-import android.content.Context
+import com.example.gourmetsearcher.manager.PreferencesManager
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepositoryImpl
-import com.example.gourmetsearcher.repository.PreferencesManager
+import com.example.gourmetsearcher.usecase.ClearKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.GetKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.SaveKeyWordHistoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
 
 /** 検索履歴のモジュール */
 @Module
@@ -21,21 +21,16 @@ object KeyWordHistoryModule {
      * @return 検索履歴のリポジトリ
      */
     @Provides
-    @ViewModelScoped
-    fun provideKeyWordHistory(preferencesManager: PreferencesManager): KeyWordHistoryRepository {
-        return KeyWordHistoryRepositoryImpl(preferencesManager)
-    }
+    fun provideKeyWordHistory(preferencesManager: PreferencesManager): KeyWordHistoryRepository =
+        KeyWordHistoryRepositoryImpl(preferencesManager)
 
-    /**
-     * プリファレンスマネージャを提供する
-     * @param context コンテキスト
-     * @return プリファレンスマネージャ
-     */
     @Provides
-    fun providePreferencesManger(
-        @Suppress("ktlint:standard:function-signature")
-        @ApplicationContext context: Context,
-    ): PreferencesManager {
-        return PreferencesManager(context)
-    }
+    fun provideGetKeyWordHistoryUseCase(repository: KeyWordHistoryRepository): GetKeyWordHistoryUseCase =
+        GetKeyWordHistoryUseCase(repository)
+
+    @Provides
+    fun provideSaveKeyWordHistoryUseCase(repository: KeyWordHistoryRepository) = SaveKeyWordHistoryUseCase(repository)
+
+    @Provides
+    fun provideClearKeyWordHistoryUseCase(repository: KeyWordHistoryRepository) = ClearKeyWordHistoryUseCase(repository)
 }

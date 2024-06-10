@@ -1,6 +1,7 @@
 package com.example.gourmetsearcher.repository
 
 import com.example.gourmetsearcher.BuildConfig
+import com.example.gourmetsearcher.manager.CacheManager
 import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.source.HotPepperNetworkDataSource

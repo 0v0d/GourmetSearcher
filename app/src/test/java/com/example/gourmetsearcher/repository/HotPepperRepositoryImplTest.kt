@@ -1,6 +1,7 @@
 package com.example.gourmetsearcher.repository
 
 import com.example.gourmetsearcher.BuildConfig
+import com.example.gourmetsearcher.manager.CacheManager
 import com.example.gourmetsearcher.model.api.BudgetData
 import com.example.gourmetsearcher.model.api.GenreData
 import com.example.gourmetsearcher.model.api.HotPepperResponse
@@ -32,7 +33,6 @@ import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
 class HotPepperRepositoryImplTest {
-
     private lateinit var repository: HotPepperRepositoryImpl
 
     @Mock
@@ -43,29 +43,30 @@ class HotPepperRepositoryImplTest {
 
     private val searchTerms = SearchTerms("keyword", CurrentLocation(35.0, 139.0), 1)
 
-    private val mockResponse = Response.success(
-        HotPepperResponse(
-            Results(
-                listOf(
-                    Shops(
-                        "1",
-                        "Restaurant",
-                        "Address",
-                        "Station",
-                        LargeAreaData("Large Area"),
-                        SmallAreaData("Small Area"),
-                        GenreData("Genre"),
-                        BudgetData("Budget"),
-                        "Access",
-                        Urls("URL"),
-                        PhotoData(PCData("Photo URL")),
-                        "Open",
-                        "Close"
-                    )
-                )
-            )
+    private val mockResponse =
+        Response.success(
+            HotPepperResponse(
+                Results(
+                    listOf(
+                        Shops(
+                            "1",
+                            "Restaurant",
+                            "Address",
+                            "Station",
+                            LargeAreaData("Large Area"),
+                            SmallAreaData("Small Area"),
+                            GenreData("Genre"),
+                            BudgetData("Budget"),
+                            "Access",
+                            Urls("URL"),
+                            PhotoData(PCData("Photo URL")),
+                            "Open",
+                            "Close",
+                        ),
+                    ),
+                ),
+            ),
         )
-    )
 
     @Before
     fun setUp() {
@@ -74,69 +75,72 @@ class HotPepperRepositoryImplTest {
 
     /** キャッシュヒット時にキャッシュされたレスポンスを返すことを確認 */
     @Test
-    fun testCacheHitReturnsCachedResponse() = runBlocking {
-        `when`(mockCacheManager.get(searchTerms)).thenReturn(mockResponse)
+    fun testCacheHitReturnsCachedResponse() =
+        runBlocking {
+            `when`(mockCacheManager.get(searchTerms)).thenReturn(mockResponse)
 
-        val result = repository.execute(searchTerms)
+            val result = repository.execute(searchTerms)
 
-        verify(mockCacheManager).get(searchTerms)
-        verify(mockService, never()).getRestaurantDatum(
-            anyString(),
-            anyString(),
-            anyDouble(),
-            anyDouble(),
-            anyInt(),
-            anyString()
-        )
-        assertEquals(mockResponse, result)
-    }
+            verify(mockCacheManager).get(searchTerms)
+            verify(mockService, never()).getRestaurantDatum(
+                anyString(),
+                anyString(),
+                anyDouble(),
+                anyDouble(),
+                anyInt(),
+                anyString(),
+            )
+            assertEquals(mockResponse, result)
+        }
 
     /** キャッシュミス時にAPIからレスポンスを取得し、キャッシュに保存することを確認 */
     @Test
-    fun testRetrieveRestaurantDetails() = runBlocking {
-        `when`(mockCacheManager.get(searchTerms)).thenReturn(null)
-        `when`(
-            mockService.getRestaurantDatum(
-                anyString(),
-                anyString(),
-                anyDouble(),
-                anyDouble(),
-                anyInt(),
-                anyString()
+    fun testRetrieveRestaurantDetails() =
+        runBlocking {
+            `when`(mockCacheManager.get(searchTerms)).thenReturn(null)
+            `when`(
+                mockService.getRestaurantDatum(
+                    anyString(),
+                    anyString(),
+                    anyDouble(),
+                    anyDouble(),
+                    anyInt(),
+                    anyString(),
+                ),
+            ).thenReturn(mockResponse)
+
+            val result = repository.execute(searchTerms)
+
+            verify(mockCacheManager).get(searchTerms)
+            verify(mockService).getRestaurantDatum(
+                BuildConfig.API_KEY,
+                searchTerms.keyword,
+                searchTerms.location.lat,
+                searchTerms.location.lng,
+                searchTerms.range,
+                "json",
             )
-        ).thenReturn(mockResponse)
-
-        val result = repository.execute(searchTerms)
-
-        verify(mockCacheManager).get(searchTerms)
-        verify(mockService).getRestaurantDatum(
-            BuildConfig.API_KEY,
-            searchTerms.keyword,
-            searchTerms.location.lat,
-            searchTerms.location.lng,
-            searchTerms.range,
-            "json"
-        )
-        verify(mockCacheManager).put(searchTerms, mockResponse)
-        assertEquals(mockResponse, result)
-    }
+            verify(mockCacheManager).put(searchTerms, mockResponse)
+            assertEquals(mockResponse, result)
+        }
 
     /** APIからレスポンスを取得できなかった場合、nullを返すことを確認 */
     @Test
-    fun testGetRestaurantInfoWithException() = runBlocking {
-        `when`(
-            mockService.getRestaurantDatum(
-                anyString(),
-                anyString(),
-                anyDouble(),
-                anyDouble(),
-                anyInt(),
-                anyString()
-            )
-        ).thenThrow(RuntimeException::class.java)
+    fun testGetRestaurantInfoWithException() =
+        runBlocking {
+            `when`(
+                mockService.getRestaurantDatum(
+                    anyString(),
+                    anyString(),
+                    anyDouble(),
+                    anyDouble(),
+                    anyInt(),
+                    anyString(),
+                ),
+            ).thenThrow(RuntimeException::class.java)
 
-        val result = repository.execute(searchTerms)
+            val result = repository.execute(searchTerms)
 
-        assertNull(result)
-    }
+            assertNull(result)
+        }
 }

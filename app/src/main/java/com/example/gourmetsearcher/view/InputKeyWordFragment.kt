@@ -112,10 +112,10 @@ class InputKeyWordFragment : Fragment() {
         val rangeList = resources.getStringArray(R.array.range_array)
         rangeListAdapter.submitList(rangeList.map { it.toInt() })
 
-        binding.searchParameters.rangeListRecyclerView.also {
-            it.layoutManager = rangeLayoutManager
-            it.addItemDecoration(rangeDividerItemDecoration)
-            it.adapter = rangeListAdapter
+        binding.searchParameters.rangeListRecyclerView.apply {
+            layoutManager = rangeLayoutManager
+            addItemDecoration(rangeDividerItemDecoration)
+            adapter = rangeListAdapter
         }
     }
 
@@ -124,10 +124,10 @@ class InputKeyWordFragment : Fragment() {
         val historyLayoutManager = LinearLayoutManager(requireContext())
         val historyDividerItemDecoration =
             DividerItemDecoration(requireContext(), historyLayoutManager.orientation)
-        binding.searchParameters.keyWordListRecyclerView.also {
-            it.layoutManager = historyLayoutManager
-            it.addItemDecoration(historyDividerItemDecoration)
-            it.adapter = keyWordHistoryAdapter
+        binding.searchParameters.keyWordListRecyclerView.apply {
+            layoutManager = historyLayoutManager
+            addItemDecoration(historyDividerItemDecoration)
+            adapter = keyWordHistoryAdapter
         }
     }
 
@@ -146,11 +146,12 @@ class InputKeyWordFragment : Fragment() {
     }
 
     /** キーワード入力をクリアする */
-    private fun clearKeywordInputText() {
-        binding.searchInputEditText.text?.clear()
-        binding.searchParameters.keyWordClearButton.isVisible = false
-        binding.searchParameters.keyWordListRecyclerView.isVisible = false
-    }
+    private fun clearKeywordInputText() =
+        with(binding) {
+            searchInputEditText.text?.clear()
+            searchParameters.keyWordClearButton.isVisible = false
+            searchParameters.keyWordListRecyclerView.isVisible = false
+        }
 
     override fun onDestroyView() {
         /** メモリリークを防ぐためにRecyclerViewのアダプターを解放する */

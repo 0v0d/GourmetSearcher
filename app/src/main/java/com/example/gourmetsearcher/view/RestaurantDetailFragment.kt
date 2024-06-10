@@ -39,7 +39,12 @@ class RestaurantDetailFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        observeViewModelStates()
 
+        return binding.root
+    }
+
+    private fun observeViewModelStates() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -50,7 +55,6 @@ class RestaurantDetailFragment : Fragment() {
                 }
             }
         }
-        return binding.root
     }
 
     /** searchAddressの変更を監視 */

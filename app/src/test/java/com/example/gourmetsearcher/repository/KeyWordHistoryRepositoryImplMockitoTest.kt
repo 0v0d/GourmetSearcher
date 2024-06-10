@@ -1,5 +1,6 @@
 package com.example.gourmetsearcher.repository
 
+import com.example.gourmetsearcher.manager.PreferencesManager
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -11,7 +12,6 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class KeyWordHistoryRepositoryImplTest {
-
     @Mock
     private lateinit var preferences: PreferencesManager
 

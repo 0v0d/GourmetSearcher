@@ -62,23 +62,19 @@ class SearchLocationFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         checkLocationPermission()
+        observeViewModelStates()
+        return binding.root
+    }
+
+    private fun observeViewModelStates() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    observeLocationData()
-                }
-                launch {
-                    observeSearchState()
-                }
-                launch {
-                    observerRetryEvent()
-                }
-                launch {
-                    observerOpenLocationSettingEvent()
-                }
+                launch { observeLocationData() }
+                launch { observeSearchState() }
+                launch { observerRetryEvent() }
+                launch { observerOpenLocationSettingEvent() }
             }
         }
-        return binding.root
     }
 
     /**
@@ -86,10 +82,9 @@ class SearchLocationFragment : Fragment() {
      * 許可されている場合は位置情報の取得を開始する
      */
     private fun checkLocationPermission() {
-        if (!isLocationPermissionGranted()) {
-            requestLocationPermission()
-        } else {
-            viewModel.getLocation()
+        when {
+            isLocationPermissionGranted() -> viewModel.getLocation()
+            else -> requestLocationPermission()
         }
     }
 
@@ -117,20 +112,19 @@ class SearchLocationFragment : Fragment() {
 
     /** 位置情報のパーミッションをリクエストする */
     private fun requestLocationPermission() {
-        val permissions =
+        locationPermissionRequest.launch(
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
-            )
-        locationPermissionRequest.launch(permissions)
+            ),
+        )
     }
 
     /** パーミッションが許可されなかった場合の処理 */
     private fun handleLocationPermissionCancel() {
-        if (shouldShowLocationPermissionRationale()) {
-            showPermissionExplanationDialog()
-        } else {
-            showError()
+        when {
+            shouldShowLocationPermissionRationale() -> showPermissionExplanationDialog()
+            else -> showError()
         }
     }
 
@@ -146,27 +140,26 @@ class SearchLocationFragment : Fragment() {
     }
 
     /** エラーを表示する */
-    private fun showError() {
-        binding.loadingProgressBar.isVisible = false
-        binding.retryButton.isVisible = true
-        binding.redirectSettingButton.isVisible = true
-        binding.locationErrorTextView.isVisible = true
-        binding.locationErrorTextView.text = errorText()
-    }
+    private fun showError() =
+        with(binding) {
+            loadingProgressBar.isVisible = false
+            redirectSettingButton.isVisible = true
+            retryButton.isVisible = true
+            locationErrorTextView.isVisible = true
+            locationErrorTextView.text = errorText()
+        }
 
     /**
      * 許可内容に応じたエラーメッセージを返す
      * @return エラーメッセージ
      */
-    private fun errorText(): String {
-        return getString(
-            if (isLocationPermissionGranted()) {
-                R.string.location_error_message
-            } else {
-                R.string.location_permission_denied_message
+    private fun errorText() =
+        getString(
+            when {
+                isLocationPermissionGranted() -> R.string.location_error_message
+                else -> R.string.location_permission_denied_message
             },
         )
-    }
 
     /**  パーミッションの説明ダイアログを表示する */
     private fun showPermissionExplanationDialog() {
@@ -235,12 +228,13 @@ class SearchLocationFragment : Fragment() {
     }
 
     /** 読み込み中のUIを表示する */
-    private fun showLoading() {
-        binding.loadingProgressBar.isVisible = true
-        binding.redirectSettingButton.isVisible = false
-        binding.retryButton.isVisible = false
-        binding.locationErrorTextView.isVisible = false
-    }
+    private fun showLoading() =
+        with(binding) {
+            loadingProgressBar.isVisible = true
+            redirectSettingButton.isVisible = false
+            retryButton.isVisible = false
+            locationErrorTextView.isVisible = false
+        }
 
     override fun onDestroyView() {
         fragmentSearchLocationBinding = null

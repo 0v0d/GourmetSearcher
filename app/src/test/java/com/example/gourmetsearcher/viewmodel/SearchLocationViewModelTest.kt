@@ -3,8 +3,8 @@ package com.example.gourmetsearcher.viewmodel
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.gourmetsearcher.model.data.CurrentLocation
-import com.example.gourmetsearcher.repository.LocationRepository
 import com.example.gourmetsearcher.state.LocationSearchState
+import com.example.gourmetsearcher.usecase.GetCurrentLocationUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -32,14 +32,14 @@ class SearchLocationViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var locationRepository: LocationRepository
+    private lateinit var getCurrentLocationUseCase: GetCurrentLocationUseCase
 
     private lateinit var viewModel: SearchLocationViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        viewModel = SearchLocationViewModel(locationRepository)
+        viewModel = SearchLocationViewModel(getCurrentLocationUseCase)
     }
 
     @After
@@ -49,57 +49,61 @@ class SearchLocationViewModelTest {
 
     /** 位置情報の取得に成功した場合のテスト */
     @Test
-    fun getLocation_success() = runTest {
-        val location = CurrentLocation(34.7010289, 135.4955003)
-        val mockLocation = mock(Location::class.java)
-        `when`(mockLocation.latitude).thenReturn(location.lat)
-        `when`(mockLocation.longitude).thenReturn(location.lng)
-        `when`(locationRepository.getLocation()).thenReturn(mockLocation)
+    fun getLocation_success() =
+        runTest {
+            val location = CurrentLocation(34.7010289, 135.4955003)
+            val mockLocation = mock(Location::class.java)
+            `when`(mockLocation.latitude).thenReturn(location.lat)
+            `when`(mockLocation.longitude).thenReturn(location.lng)
+            `when`(getCurrentLocationUseCase()).thenReturn(mockLocation)
 
-        val latch = CountDownLatch(1)
+            val latch = CountDownLatch(1)
 
-        viewModel.getLocation()
+            viewModel.getLocation()
 
-        latch.await(1, TimeUnit.SECONDS)
-        assertEquals(location, viewModel.locationData.value)
-    }
+            latch.await(1, TimeUnit.SECONDS)
+            assertEquals(location, viewModel.locationData.value)
+        }
 
     /** セキュリティ例外が発生した場合のテスト */
     @Test
-    fun getLocation_securityException() = runBlocking {
-        `when`(locationRepository.getLocation()).thenThrow(SecurityException())
+    fun getLocation_securityException() =
+        runBlocking {
+            `when`(getCurrentLocationUseCase()).thenThrow(SecurityException())
 
-        val latch = CountDownLatch(1)
+            val latch = CountDownLatch(1)
 
-        viewModel.getLocation()
+            viewModel.getLocation()
 
-        latch.await(2, TimeUnit.SECONDS)
-        assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
-    }
+            latch.await(2, TimeUnit.SECONDS)
+            assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
+        }
 
     /** nullポインタ例外が発生した場合のテスト */
     @Test
-    fun getLocation_nullPointerException() = runBlocking {
-        `when`(locationRepository.getLocation()).thenThrow(NullPointerException())
+    fun getLocation_nullPointerException() =
+        runBlocking {
+            `when`(getCurrentLocationUseCase()).thenThrow(NullPointerException())
 
-        val latch = CountDownLatch(1)
+            val latch = CountDownLatch(1)
 
+            viewModel.getLocation()
 
-        viewModel.getLocation()
-
-        latch.await(2, TimeUnit.SECONDS)
-        assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
-    }
+            latch.await(2, TimeUnit.SECONDS)
+            assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
+        }
 
     /** 設定ボタンを押した時のテスト */
     @Test
-    fun onOpenLocationSettingClicked() = runTest {
-        viewModel.onOpenLocationSettingClicked()
-    }
+    fun onOpenLocationSettingClicked() =
+        runTest {
+            viewModel.onOpenLocationSettingClicked()
+        }
 
     /** リトライボタンを押した時のテスト */
     @Test
-    fun onRetryClicked() = runTest {
-        viewModel.onRetryClicked()
-    }
+    fun onRetryClicked() =
+        runTest {
+            viewModel.onRetryClicked()
+        }
 }
