@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.repository
+package com.example.gourmetsearcher.manager
 
 import android.content.Context
 import android.content.SharedPreferences
