@@ -41,11 +41,6 @@ class RestaurantListFragment : Fragment() {
         navigateToRestaurantDetailFragment(it)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.searchRestaurants(args.searchTerms)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +49,7 @@ class RestaurantListFragment : Fragment() {
         fragmentResultListBinding = FragmentResultListBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.searchRestaurants(args.searchTerms)
         return binding.root
     }
 
@@ -64,12 +60,8 @@ class RestaurantListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    observeSearchState()
-                }
-                launch {
-                    observeResultList()
-                }
+                launch { observeSearchState() }
+                launch { observeResultList() }
             }
         }
         setUpResultListRecyclerView()
@@ -113,20 +105,21 @@ class RestaurantListFragment : Fragment() {
     private fun showError(
         state: SearchState,
         messageResId: Int,
-    ) {
-        binding.resultListRecyclerView.isVisible = false
-        binding.loadingProgressBar.isVisible = false
-        binding.errorTextView.text = getString(messageResId)
-        binding.errorTextView.isVisible = true
-        binding.retryButton.isVisible = (state == SearchState.NETWORK_ERROR)
+    ) = with(binding) {
+        resultListRecyclerView.isVisible = false
+        loadingProgressBar.isVisible = false
+        errorTextView.text = getString(messageResId)
+        errorTextView.isVisible = true
+        retryButton.isVisible = (state == SearchState.NETWORK_ERROR)
     }
 
     /** エラーを非表示にする */
-    private fun invisibleError() {
-        binding.resultListRecyclerView.isVisible = true
-        binding.errorTextView.isVisible = false
-        binding.retryButton.isVisible = false
-    }
+    private fun invisibleError() =
+        with(binding) {
+            resultListRecyclerView.isVisible = true
+            errorTextView.isVisible = false
+            retryButton.isVisible = false
+        }
 
     /** ローディングを表示する */
     private fun showLoading() {
