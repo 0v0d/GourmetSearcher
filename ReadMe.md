@@ -40,7 +40,7 @@ Android 14
 
 ## 開発環境
 
-Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
+Android Studio Koala Feature Drop 2024.1.2 Canary 5
 
 - コンパイルSDKバージョン: 34
 - 最小SDKバージョン: 32
@@ -81,7 +81,6 @@ Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 - ホットペッパーグルメサーチAPI
 - dagger.hilt
 - Retrofit
-- OkHttp
 - Moshi
 - safeargs
 - secrets-gradle-plugin
@@ -94,3 +93,10 @@ Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 - DataBinding
 - Fragment
 - RecyclerView
+- BuildConfig
+- leakcanary
+Test
+- junit
+- mockito
+- espresso
+- uiautomator
