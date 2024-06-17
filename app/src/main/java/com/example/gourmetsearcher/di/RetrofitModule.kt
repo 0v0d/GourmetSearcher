@@ -22,7 +22,8 @@ object RetrofitModule {
      */
     @Provides
     fun provideMoshi(): Moshi =
-        Moshi.Builder()
+        Moshi
+            .Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
 
