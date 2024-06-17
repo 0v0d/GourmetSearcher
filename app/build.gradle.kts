@@ -35,6 +35,12 @@ android {
                 "proguard-rules.pro",
             )
         }
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
+            versionNameSuffix = ".D"
+            applicationIdSuffix = ".debug"
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
