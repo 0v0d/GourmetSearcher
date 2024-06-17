@@ -11,7 +11,7 @@ import javax.inject.Singleton
  * @param cacheSize キャッシュサイズ
  */
 @Singleton
-class CacheManager(cacheSize: Int = 5) {
+class CacheManager(cacheSize: Int) {
     /** キャッシュ */
     private val cache = LruCache<SearchTerms, Response<HotPepperResponse>?>(cacheSize)
 
