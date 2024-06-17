@@ -16,8 +16,7 @@ object CacheManagerModule {
      */
     @Provides
     fun provideCacheManager(): CacheManager {
-        // キャッシュサイズ
-        val cacheSize = 5
-        return CacheManager(cacheSize)
+        // キャッシュサイズを5に設定して返す
+        return CacheManager(cacheSize = 5)
     }
 }

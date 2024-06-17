@@ -91,4 +91,8 @@ class SearchLocationViewModel
                 _retryEvent.emit(Unit)
             }
         }
+
+        fun setSearchState(state: LocationSearchState) {
+            _searchState.value = state
+        }
     }

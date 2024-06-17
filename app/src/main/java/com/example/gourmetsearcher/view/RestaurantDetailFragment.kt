@@ -34,7 +34,11 @@ class RestaurantDetailFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         fragmentRestaurantDetailBinding =
-            FragmentRestaurantDetailBinding.inflate(inflater, container, false)
+            FragmentRestaurantDetailBinding.inflate(
+                inflater,
+                container,
+                false,
+            )
         binding.restaurant = args.restaurantData
 
         binding.viewModel = viewModel
@@ -47,12 +51,8 @@ class RestaurantDetailFragment : Fragment() {
     private fun observeViewModelStates() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    observeUrl()
-                }
-                launch {
-                    observeAddress()
-                }
+                launch { observeUrl() }
+                launch { observeAddress() }
             }
         }
     }
@@ -83,8 +83,8 @@ class RestaurantDetailFragment : Fragment() {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         intent.setComponent(
             ComponentName(
-                "com.android.chrome",
-                "com.google.android.apps.chrome.Main",
+                getString(R.string.chrome),
+                getString(R.string.chrome_activity),
             ),
         )
         startActivity(intent)
@@ -100,8 +100,8 @@ class RestaurantDetailFragment : Fragment() {
         val intent = Intent(Intent.ACTION_VIEW, mapUrl.toUri())
         intent.setComponent(
             ComponentName(
-                "com.google.android.apps.maps",
-                "com.google.android.maps.MapsActivity",
+                getString(R.string.google_map),
+                getString(R.string.google_map_activity),
             ),
         )
         startActivity(intent)

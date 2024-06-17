@@ -36,7 +36,7 @@ Android 14
 
 ## Development Environment
 
-Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
+Android Studio Koala Feature Drop 2024.1.2 Canary 5
 
 - Compile SDK Version: 34
 - Minimum SDK Version: 32
@@ -76,7 +76,6 @@ Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 - Hot Pepper Gourmet Search API
 - dagger.hilt
 - Retrofit
-- OkHttp
 - Moshi
 - safeargs
 - secrets-gradle-plugin
@@ -89,3 +88,10 @@ Android Studio Jellyfish | 2023.3.1 Nightly 2024-02-17)
 - DataBinding
 - Fragment
 - RecyclerView
+- BuildConfig
+- leakcanary
+Test
+- junit
+- mockito
+- espresso
+- uiautomator

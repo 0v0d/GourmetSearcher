@@ -8,9 +8,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
+/** プリファレンスのモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
-class PreferencesModule {
+object PreferencesModule {
     /**
      * プリファレンスマネージャを提供する
      * @param context コンテキスト
