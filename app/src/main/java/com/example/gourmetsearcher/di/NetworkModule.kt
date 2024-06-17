@@ -2,10 +2,6 @@ package com.example.gourmetsearcher.di
 
 import android.content.Context
 import com.example.gourmetsearcher.R
-import com.example.gourmetsearcher.repository.HotPepperRepository
-import com.example.gourmetsearcher.repository.HotPepperRepositoryImpl
-import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
-import com.example.gourmetsearcher.usecase.GetHotPepperDataUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -41,28 +37,4 @@ object NetworkModule {
         Retrofit.Builder()
             .baseUrl(context.getString(R.string.hot_pepper_url))
             .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
-
-    /**
-     * HotPepperNetworkDataSourceを提供
-     * @param retrofit Retrofit
-     * @return HotPepperNetworkDataSource
-     */
-    @Provides
-    fun provideHotPepperService(retrofit: Retrofit): HotPepperNetworkDataSource = retrofit.create(HotPepperNetworkDataSource::class.java)
-
-    /**
-     * HotPepperRepositoryを提供
-     * @param repository HotPepperRepository
-     * @return HotPepperRepository
-     */
-    @Provides
-    fun provideHotPepperRepository(repository: HotPepperRepositoryImpl): HotPepperRepository = repository
-
-    /**
-     * HotPepperUseCaseを提供
-     * @param repository HotPepperRepository
-     * @return HotPepperUseCase
-     */
-    @Provides
-    fun provideHotPepperUseCase(repository: HotPepperRepository): GetHotPepperDataUseCase = GetHotPepperDataUseCase(repository)
 }

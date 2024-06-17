@@ -1,7 +1,8 @@
 package com.example.gourmetsearcher.di
 
 import android.content.Context
-import com.example.gourmetsearcher.manager.PreferencesManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,14 +11,14 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object PreferencesModule {
+object LocationServicesModule {
     /**
-     * プリファレンスマネージャを提供する
+     * 位置情報のリポジトリを提供する
      * @param context コンテキスト
-     * @return プリファレンスマネージャ
+     * @return 位置情報のリポジトリ
      */
     @Provides
-    fun providePreferencesManger(
+    fun provideFusedLocationProviderClient(
         @ApplicationContext context: Context,
-    ): PreferencesManager = PreferencesManager(context)
+    ): FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
 }
