@@ -37,4 +37,10 @@
     <string name="setting">設定</string>
 	<string name="map_url">geo:0:0?q=</string>
     <string name="restaurant_name">店舗名</string>
+
+    <string name="google_map">com.google.android.apps.maps</string>
+    <string name="google_map_activity">com.google.android.maps.MapsActivity</string>
+
+    <string name="chrome">com.android.chrome</string>
+    <string name="chrome_activity">com.google.android.apps.chrome.Main</string>
 </resources>
