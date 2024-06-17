@@ -123,8 +123,13 @@ class SearchLocationFragment : Fragment() {
     /** パーミッションが許可されなかった場合の処理 */
     private fun handleLocationPermissionCancel() {
         when {
-            shouldShowLocationPermissionRationale() -> showPermissionExplanationDialog()
-            else -> showError()
+            shouldShowLocationPermissionRationale() -> {
+                showPermissionExplanationDialog()
+            }
+            else -> {
+                // パーミッションが拒否された場合は、viewModelのstateをERRORに設定する
+                viewModel.setSearchState(LocationSearchState.ERROR)
+            }
         }
     }
 
@@ -181,21 +186,20 @@ class SearchLocationFragment : Fragment() {
     /** リトライイベントを監視 */
     private suspend fun observerRetryEvent() {
         viewModel.retryEvent.collect {
-            showLoading()
+            viewModel.setSearchState(LocationSearchState.LOADING)
             checkLocationPermission()
         }
     }
 
     /** 位置情報の取得状態を監視 */
     private suspend fun observeSearchState() {
-        // 位置情報の取得状態を監視
         viewModel.searchState.collect { state ->
             when (state) {
                 LocationSearchState.LOADING -> {
                     showLoading()
                 }
-                // 位置情報の取得に失敗した場合の処理
-                else -> {
+                LocationSearchState.ERROR -> {
+                    // エラー状態の場合はエラー処理を行う
                     showError()
                 }
             }
