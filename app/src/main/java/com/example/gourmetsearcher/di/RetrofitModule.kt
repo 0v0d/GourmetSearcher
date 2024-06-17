@@ -21,7 +21,10 @@ object RetrofitModule {
      * @return Moshi
      */
     @Provides
-    fun provideMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    fun provideMoshi(): Moshi =
+        Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
 
     /**
      * Retrofitを提供
@@ -36,5 +39,6 @@ object RetrofitModule {
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(context.getString(R.string.hot_pepper_url))
-            .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
 }
