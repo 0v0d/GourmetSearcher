@@ -38,7 +38,8 @@ object RetrofitModule {
         @ApplicationContext context: Context,
         moshi: Moshi,
     ): Retrofit =
-        Retrofit.Builder()
+        Retrofit
+            .Builder()
             .baseUrl(context.getString(R.string.hot_pepper_url))
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
