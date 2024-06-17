@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 
+/** ネットワークデータのモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkDataModule {

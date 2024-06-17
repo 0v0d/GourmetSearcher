@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
+/** ネットワークのユースケースのモジュール */
 @Module
 @InstallIn(ViewModelComponent::class)
 object NetworkUseCaseModule {

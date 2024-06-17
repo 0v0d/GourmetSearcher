@@ -12,10 +12,10 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-/** ネットワーク関連のモジュール */
+/** Retrofitのモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object RetrofitModule {
     /**
      * Moshiを提供
      * @return Moshi

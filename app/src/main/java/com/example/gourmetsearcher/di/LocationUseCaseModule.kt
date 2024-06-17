@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
+/** 位置情報のユースケースのモジュール */
 @Module
 @InstallIn(ViewModelComponent::class)
 object LocationUseCaseModule {
