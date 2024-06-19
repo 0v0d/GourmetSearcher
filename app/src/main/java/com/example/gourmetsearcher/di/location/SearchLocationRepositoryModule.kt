@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 /** 位置情報のリポジトリのモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
-object LocationRepositoryModule {
+object SearchLocationRepositoryModule {
     /**
      * 位置情報のリポジトリを提供する
      * @param locationProvider 位置情報のプロバイダー

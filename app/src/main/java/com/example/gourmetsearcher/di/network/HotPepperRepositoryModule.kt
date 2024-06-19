@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 /** ネットワークリポジトリのモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkRepositoryModule {
+object HotPepperRepositoryModule {
     /**
      * HotPepperRepositoryを提供
      * @param service HotPepperNetworkDataSource
