@@ -1,11 +1,11 @@
-package com.example.gourmetsearcher.di
+package com.example.gourmetsearcher.di.keywordhistory
 
 import com.example.gourmetsearcher.manager.PreferencesManager
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepositoryImpl
-import com.example.gourmetsearcher.usecase.ClearKeyWordHistoryUseCase
-import com.example.gourmetsearcher.usecase.GetKeyWordHistoryUseCase
-import com.example.gourmetsearcher.usecase.SaveKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.ClearKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.GetKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.SaveKeyWordHistoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

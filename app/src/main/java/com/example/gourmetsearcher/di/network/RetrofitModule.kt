@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.di
+package com.example.gourmetsearcher.di.network
 
 import android.content.Context
 import com.example.gourmetsearcher.R

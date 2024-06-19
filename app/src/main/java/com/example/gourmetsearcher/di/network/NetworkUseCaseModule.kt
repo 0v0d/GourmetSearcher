@@ -1,7 +1,7 @@
-package com.example.gourmetsearcher.di
+package com.example.gourmetsearcher.di.network
 
 import com.example.gourmetsearcher.repository.HotPepperRepository
-import com.example.gourmetsearcher.usecase.GetHotPepperDataUseCase
+import com.example.gourmetsearcher.usecase.network.GetHotPepperDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

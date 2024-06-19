@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.di
+package com.example.gourmetsearcher.di.location
 
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient
