@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.state.LocationSearchState
-import com.example.gourmetsearcher.usecase.GetCurrentLocationUseCase
+import com.example.gourmetsearcher.usecase.location.GetCurrentLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

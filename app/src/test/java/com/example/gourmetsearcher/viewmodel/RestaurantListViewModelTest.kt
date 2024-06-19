@@ -15,7 +15,7 @@ import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.model.domain.toDomain
 import com.example.gourmetsearcher.state.SearchState
-import com.example.gourmetsearcher.usecase.GetHotPepperDataUseCase
+import com.example.gourmetsearcher.usecase.network.GetHotPepperDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

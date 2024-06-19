@@ -17,8 +17,8 @@ import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
-import com.example.gourmetsearcher.ui.holder.RangeListViewHolder
-import com.example.gourmetsearcher.ui.holder.RestaurantListViewHolder
+import com.example.gourmetsearcher.ui.viewholder.RangeListViewHolder
+import com.example.gourmetsearcher.ui.viewholder.RestaurantListViewHolder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

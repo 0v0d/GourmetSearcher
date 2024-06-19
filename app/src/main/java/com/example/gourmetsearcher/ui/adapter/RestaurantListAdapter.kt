@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRestaurantListItemBinding
 import com.example.gourmetsearcher.model.domain.ShopsDomain
-import com.example.gourmetsearcher.ui.holder.RestaurantListViewHolder
+import com.example.gourmetsearcher.ui.viewholder.RestaurantListViewHolder
 
 /**
  * レストランリストのAdapter

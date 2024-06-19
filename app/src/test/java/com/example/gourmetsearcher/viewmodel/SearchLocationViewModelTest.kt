@@ -4,7 +4,7 @@ import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.state.LocationSearchState
-import com.example.gourmetsearcher.usecase.GetCurrentLocationUseCase
+import com.example.gourmetsearcher.usecase.location.GetCurrentLocationUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

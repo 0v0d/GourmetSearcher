@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.usecase
+package com.example.gourmetsearcher.usecase.network
 
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.repository.HotPepperRepository

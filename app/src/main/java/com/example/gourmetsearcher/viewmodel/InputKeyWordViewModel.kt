@@ -1,9 +1,9 @@
 package com.example.gourmetsearcher.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.gourmetsearcher.usecase.ClearKeyWordHistoryUseCase
-import com.example.gourmetsearcher.usecase.GetKeyWordHistoryUseCase
-import com.example.gourmetsearcher.usecase.SaveKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.ClearKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.GetKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.SaveKeyWordHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
