@@ -7,7 +7,7 @@ import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.model.domain.ShopsDomain
 import com.example.gourmetsearcher.model.domain.toDomain
 import com.example.gourmetsearcher.state.SearchState
-import com.example.gourmetsearcher.usecase.GetHotPepperDataUseCase
+import com.example.gourmetsearcher.usecase.network.GetHotPepperDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

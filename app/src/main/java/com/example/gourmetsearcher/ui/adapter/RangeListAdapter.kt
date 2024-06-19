@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutRangeListItemBinding
-import com.example.gourmetsearcher.ui.holder.RangeListViewHolder
+import com.example.gourmetsearcher.ui.viewholder.RangeListViewHolder
 
 /**
  * 範囲のリストのAdapter

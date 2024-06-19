@@ -13,18 +13,18 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 
 /** 位置情報の取得のリポジトリ*/
-interface LocationRepository {
+interface SearchLocationRepository {
     suspend fun getLocation(): Location?
 }
 
 /**
  * LocationRepositoryの実装クラス
  */
-class LocationRepositoryImpl
+class SearchLocationRepositoryImpl
     @Inject
     constructor(
         private val locationProvider: FusedLocationProviderClient,
-    ) : LocationRepository {
+    ) : SearchLocationRepository {
         /**
          * 位置情報を取得
          * @return 位置情報 or null

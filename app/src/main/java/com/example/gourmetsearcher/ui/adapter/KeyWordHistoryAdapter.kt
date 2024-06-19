@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.gourmetsearcher.databinding.LayoutKeyWordHistoryListItemBinding
-import com.example.gourmetsearcher.ui.holder.KeyWordHistoryViewHolder
+import com.example.gourmetsearcher.ui.viewholder.KeyWordHistoryViewHolder
 
 /**
  * キーワード履歴のリストのAdapter

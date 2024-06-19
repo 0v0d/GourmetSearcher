@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.di
+package com.example.gourmetsearcher.di.network
 
 import com.example.gourmetsearcher.manager.CacheManager
 import dagger.Module

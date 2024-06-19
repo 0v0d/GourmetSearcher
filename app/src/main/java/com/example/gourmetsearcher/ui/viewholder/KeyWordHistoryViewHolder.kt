@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.ui.holder
+package com.example.gourmetsearcher.ui.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gourmetsearcher.databinding.LayoutKeyWordHistoryListItemBinding

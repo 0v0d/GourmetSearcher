@@ -1,9 +1,9 @@
 package com.example.gourmetsearcher.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.gourmetsearcher.usecase.ClearKeyWordHistoryUseCase
-import com.example.gourmetsearcher.usecase.GetKeyWordHistoryUseCase
-import com.example.gourmetsearcher.usecase.SaveKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.ClearKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.GetKeyWordHistoryUseCase
+import com.example.gourmetsearcher.usecase.keywordhistory.SaveKeyWordHistoryUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

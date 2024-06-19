@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.di
+package com.example.gourmetsearcher.di.keywordhistory
 
 import android.content.Context
 import com.example.gourmetsearcher.manager.PreferencesManager

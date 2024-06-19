@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.usecase
+package com.example.gourmetsearcher.usecase.keywordhistory
 
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
 import javax.inject.Inject

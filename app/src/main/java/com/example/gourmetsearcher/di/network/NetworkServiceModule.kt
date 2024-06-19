@@ -1,4 +1,4 @@
-package com.example.gourmetsearcher.di
+package com.example.gourmetsearcher.di.network
 
 import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
 import dagger.Module
@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 /** ネットワークデータのモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkDataModule {
+object NetworkServiceModule {
     /**
      * HotPepperNetworkDataSourceを提供
      * @param retrofit Retrofit
