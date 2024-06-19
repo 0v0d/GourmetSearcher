@@ -10,7 +10,7 @@ import dagger.hilt.android.components.ViewModelComponent
 /** ネットワークのユースケースのモジュール */
 @Module
 @InstallIn(ViewModelComponent::class)
-object NetworkUseCaseModule {
+object HotPepperUseCaseModule {
     /**
      * HotPepperUseCaseを提供
      * @param repository HotPepperRepository

@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 /** ネットワークデータのモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkServiceModule {
+object HotPepperServiceModule {
     /**
      * HotPepperNetworkDataSourceを提供
      * @param retrofit Retrofit

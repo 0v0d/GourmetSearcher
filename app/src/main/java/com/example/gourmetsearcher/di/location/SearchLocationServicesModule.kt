@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 /** 位置情報のモジュール */
 @Module
 @InstallIn(SingletonComponent::class)
-object LocationServicesModule {
+object SearchLocationServicesModule {
     /**
      * 位置情報のリポジトリを提供する
      * @param context コンテキスト
