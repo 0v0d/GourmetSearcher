@@ -2,7 +2,7 @@ name: Auto Label PR
 
 on:
   pull_request:
-    branches: ["developer"]
+    branches: ["master", "developer"]
     types: [opened]
 
 permissions:
