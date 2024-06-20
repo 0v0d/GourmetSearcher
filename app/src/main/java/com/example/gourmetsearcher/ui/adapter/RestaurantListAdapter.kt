@@ -61,16 +61,12 @@ class RestaurantListAdapter(
                 override fun areItemsTheSame(
                     oldShops: ShopsDomain,
                     newShops: ShopsDomain,
-                ): Boolean {
-                    return oldShops.id == newShops.id
-                }
+                ): Boolean = oldShops.id == newShops.id
 
                 override fun areContentsTheSame(
                     oldShops: ShopsDomain,
                     newShops: ShopsDomain,
-                ): Boolean {
-                    return oldShops == newShops
-                }
+                ): Boolean = oldShops == newShops
             }
     }
 }
