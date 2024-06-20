@@ -1,83 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-	<data>
+    <data>
 
-		<variable
-			name="viewModel"
-			type="com.example.gourmetsearcher.viewmodel.InputKeyWordViewModel" />
-	</data>
+        <variable
+            name="viewModel"
+            type="com.example.gourmetsearcher.viewmodel.InputKeyWordViewModel" />
+    </data>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<androidx.constraintlayout.widget.ConstraintLayout
-			android:id="@+id/rangeListLayout"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:visibility="invisible"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/range_list_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-			<TextView
-				android:id="@+id/selectRangeExplanation"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginStart="5dp"
-				android:text="@string/select_range_explanation"
-				android:textSize="18sp"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/select_range_explanation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/select_range_explanation"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-			<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/rangeListRecyclerView"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="5dp"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/selectRangeExplanation"
-				tools:itemCount="5"
-				tools:listitem="@layout/layout_range_list_item" />
-		</androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/range_list_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/select_range_explanation"
+                tools:itemCount="5"
+                tools:listitem="@layout/layout_range_list_item" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-		<androidx.constraintlayout.widget.ConstraintLayout
-			android:id="@+id/keyWordListLayout"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/key_word_list_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-			<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/keyWordListRecyclerView"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				tools:itemCount="5"
-				tools:listitem="@layout/layout_key_word_history_list_item" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/key_word_list_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="5"
+                tools:listitem="@layout/layout_key_word_history_list_item" />
 
-			<com.google.android.material.button.MaterialButton
-				android:id="@+id/keyWordClearButton"
-				style="@style/outlinedButtonStyle"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_marginStart="5dp"
-				android:layout_marginTop="5dp"
-				android:layout_marginEnd="5dp"
-				android:onClickListener="@{() -> viewModel.clearHistory()}"
-				android:text="@string/key_word_clear"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/keyWordListRecyclerView"
-				tools:ignore="VisualLintButtonSize" />
-		</androidx.constraintlayout.widget.ConstraintLayout>
-	</androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/key_word_clear_button"
+                style="@style/outlinedButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:onClickListener="@{() -> viewModel.clearHistory()}"
+                android:text="@string/key_word_clear"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/key_word_list_recycler_view"
+                tools:ignore="VisualLintButtonSize" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

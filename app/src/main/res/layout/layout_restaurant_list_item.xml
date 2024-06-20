@@ -18,7 +18,7 @@
 		app:cardCornerRadius="8dp">
 
 		<include
-			android:id="@+id/restaurantListItemLayout"
+			android:id="@+id/restaurant_list_item_layout"
 			layout="@layout/layout_restaurant_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

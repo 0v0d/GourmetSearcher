@@ -19,7 +19,7 @@ class KeyWordHistoryViewHolder(
         item: String,
         onKeyWordHistoryItemClick: (String) -> Unit,
     ) {
-        binding.keyWordHistory = item
+        binding.keywordHistory = item
         /** キーワード履歴のリストのアイテムをクリックしたときの処理 */
         binding.root.setOnClickListener {
             onKeyWordHistoryItemClick(item)

@@ -6,7 +6,7 @@
 	android:layout_height="match_parent">
 
 	<com.google.android.material.card.MaterialCardView
-		android:id="@+id/materialCardView"
+		android:id="@+id/material_card_view"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_margin="10dp"
@@ -15,7 +15,7 @@
 		app:layout_constraintTop_toTopOf="parent">
 
 		<com.google.android.material.textfield.TextInputLayout
-			android:id="@+id/searchInputLayout"
+			android:id="@+id/search_input_layout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:theme="@style/textCursorStyle"
@@ -24,7 +24,7 @@
 			app:startIconTint="@color/grey">
 
 			<com.google.android.material.textfield.TextInputEditText
-				android:id="@+id/searchInputEditText"
+				android:id="@+id/search_input_edit_text"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:background="@android:color/transparent"
@@ -41,6 +41,6 @@
 		layout="@layout/layout_search_parameters"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+		app:layout_constraintTop_toBottomOf="@+id/material_card_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

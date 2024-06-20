@@ -17,7 +17,7 @@
 		android:layout_marginBottom="10dp">
 
 		<TextView
-			android:id="@+id/rangeTextView"
+			android:id="@+id/range_text_view"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@{range + @string/meter}"
@@ -27,5 +27,6 @@
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
 			tools:text="100m" />
+
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

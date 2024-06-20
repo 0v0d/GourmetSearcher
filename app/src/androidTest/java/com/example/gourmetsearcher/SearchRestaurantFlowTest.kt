@@ -42,12 +42,12 @@ class SearchRestaurantFlowTest {
     fun testInputTextSelectRangeAndCheckImageDisplayed() {
         val text = "ラーメン"
         // InputKeyWordFragmentでテキストを入力する
-        onView(withId(R.id.searchInputEditText)).perform(
+        onView(withId(R.id.search_input_edit_text)).perform(
             replaceText(text),
         )
 
         // RangeListをクリックして、SearchLocationFragmentに遷移する
-        onView(withId(R.id.rangeListRecyclerView))
+        onView(withId(R.id.range_list_recycler_view))
             .perform(
                 actionOnItemAtPosition<RangeListViewHolder>(
                     4,
@@ -56,8 +56,9 @@ class SearchRestaurantFlowTest {
             )
 
         // RestaurantFragmentに遷移し、リストのアイテムをクリックする
-        onView(withId(R.id.resultListRecyclerView))
-            .waitShown(R.id.icon).perform(
+        onView(withId(R.id.result_list_recycler_view))
+            .waitShown(R.id.item_restaurant_image_view)
+            .perform(
                 actionOnItemAtPosition<RestaurantListViewHolder>(
                     1,
                     click(),
@@ -65,10 +66,9 @@ class SearchRestaurantFlowTest {
             )
 
         // RestaurantDetailFragmentに遷移し、画像が表示されることを確認する
-        onView(withId(R.id.restaurantImageView))
-            .check(
-                matches(isDisplayed()),
-            ).waitShown(R.id.restaurantImageView)
+        onView(withId(R.id.detail_restaurant_image_view))
+            .check(matches(isDisplayed()))
+            .waitShown(R.id.detail_restaurant_image_view)
     }
 
     /**

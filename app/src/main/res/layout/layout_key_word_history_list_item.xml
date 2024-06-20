@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="keyWordHistory"
+            name="keyword_history"
             type="String" />
     </data>
 
@@ -17,7 +17,7 @@
         android:layout_marginBottom="10dp">
 
         <ImageView
-            android:id="@+id/keyWordHistoryImageView"
+            android:id="@+id/key_word_history_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:importantForAccessibility="no"
@@ -28,10 +28,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/keyWordHistoryTextView"
+            android:id="@+id/key_word_history_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='@{keyWordHistory}'
+            android:text='@{keyword_history}'
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
