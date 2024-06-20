@@ -1,20 +1,21 @@
 package com.example.gourmetsearcher.viewmodel
 
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.InjectMocks
+import org.mockito.junit.MockitoJUnitRunner
 import java.net.URLEncoder
 
+/** RestaurantDetailViewModelのユニットテストクラス */
+@RunWith(MockitoJUnitRunner::class)
 class RestaurantDetailViewModelTest {
+    @InjectMocks
     private lateinit var viewModel: RestaurantDetailViewModel
 
-    @Before
-    fun setUp() {
-        viewModel = RestaurantDetailViewModel()
-    }
-
+    /** 地図を開く機能のテスト */
     @Test
-    fun `openMap should encode the address and update searchAddress StateFlow`() {
+    fun testOpenMap() {
         val address = "東京都渋谷区道玄坂1-2-3"
         val encodedAddress = URLEncoder.encode(address, "UTF-8")
 
@@ -23,15 +24,17 @@ class RestaurantDetailViewModelTest {
         assertEquals(encodedAddress, viewModel.searchAddress.value)
     }
 
+    /** 住所をクリアする機能のテスト */
     @Test
-    fun `clearAddress should update searchAddress StateFlow to null`() {
+    fun testClearAddress() {
         viewModel.clearAddress()
 
         assertEquals(null, viewModel.searchAddress.value)
     }
 
+    /** URLを開く機能のテスト */
     @Test
-    fun `openUrl should update url StateFlow with the provided URL`() {
+    fun testOpenUrl() {
         val url = "https://example.com"
 
         viewModel.openUrl(url)
@@ -39,8 +42,9 @@ class RestaurantDetailViewModelTest {
         assertEquals(url, viewModel.url.value)
     }
 
+    /** URLをクリアする機能のテスト */
     @Test
-    fun `clearUrl should update url StateFlow to null`() {
+    fun testClearUrl() {
         viewModel.clearUrl()
 
         assertEquals(null, viewModel.url.value)
