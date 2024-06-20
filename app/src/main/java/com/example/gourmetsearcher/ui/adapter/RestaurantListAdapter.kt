@@ -49,7 +49,7 @@ class RestaurantListAdapter(
         holder.unbind()
     }
 
-    private companion object {
+    companion object {
         /** 更新されたデータを判定する */
         private val shopsDiffCallback =
             object : DiffUtil.ItemCallback<ShopsDomain>() {

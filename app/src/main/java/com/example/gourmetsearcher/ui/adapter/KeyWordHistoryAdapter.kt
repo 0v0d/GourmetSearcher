@@ -41,7 +41,7 @@ class KeyWordHistoryAdapter(
         holder.bind(getItem(position), onKeyWordHistoryItemClick)
     }
 
-    private companion object {
+    companion object {
         /** キーワード履歴のリストのDiffCallback */
         private val keyWordHistoryDiffCallback =
             object : DiffUtil.ItemCallback<String>() {

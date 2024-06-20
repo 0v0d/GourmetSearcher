@@ -41,7 +41,7 @@ class RangeListAdapter(
         holder.bind(getItem(position), onRangeItemClick)
     }
 
-    private companion object {
+    companion object {
         /** 更新されたデータを判定する */
         private val rangeListDiffCallback =
             object : DiffUtil.ItemCallback<Int>() {
