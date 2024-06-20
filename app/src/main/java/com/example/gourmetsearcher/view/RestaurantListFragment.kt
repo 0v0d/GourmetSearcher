@@ -79,7 +79,7 @@ class RestaurantListFragment : Fragment() {
     /** 検索結果のリストを監視する */
     private suspend fun observeResultList() {
         viewModel.shops.collect { shops ->
-            if (shops != null) {
+            shops?.let {
                 binding.networkLoadingProgressBar.isVisible = false
                 restaurantListAdapter.submitList(shops)
             }

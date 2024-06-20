@@ -17,13 +17,13 @@ import javax.inject.Inject
 
 /**
  * レストラン検索画面のViewModel
- * @param useCase ホットペッパーグルメAPIを利用して、レストラン情報を取得するUseCase
+ * @param getHotPepperDataUseCase ホットペッパーグルメAPIを利用して、レストラン情報を取得するUseCase
  */
 @HiltViewModel
 class RestaurantListViewModel
     @Inject
     constructor(
-        private val useCase: GetHotPepperDataUseCase,
+        private val getHotPepperDataUseCase: GetHotPepperDataUseCase,
     ) : ViewModel() {
         private val _shops = MutableStateFlow<List<ShopsDomain>?>(null)
 
@@ -46,7 +46,7 @@ class RestaurantListViewModel
             viewModelScope.launch {
                 try {
                     searchTerm = terms
-                    handleResponse(useCase(terms))
+                    handleResponse(getHotPepperDataUseCase(terms))
                 } catch (e: Exception) {
                     _searchState.value = SearchState.EMPTY_RESULT
                 }

@@ -16,13 +16,13 @@ import javax.inject.Inject
 
 /**
  * 現在地を取得するためのViewModel
- * @param useCase 現在地を取得するためのUseCase
+ * @param getCurrentLocationUseCase 現在地を取得するためのUseCase
  */
 @HiltViewModel
 class SearchLocationViewModel
     @Inject
     constructor(
-        private val useCase: GetCurrentLocationUseCase,
+        private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
     ) : ViewModel() {
         private val _locationData = MutableStateFlow<CurrentLocation?>(null)
 
@@ -63,9 +63,9 @@ class SearchLocationViewModel
 
         /** 現在地を取得するための処理 */
         private suspend fun performSearch() {
-            val location = useCase()
-            if (location != null) {
-                handleLocationSuccess(location)
+            val location = getCurrentLocationUseCase()
+            location?.let {
+                handleLocationSuccess(it)
                 return
             }
             _searchState.value = LocationSearchState.ERROR

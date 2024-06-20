@@ -212,8 +212,14 @@ class SearchLocationFragment : Fragment() {
     /** 位置情報の取得状態を監視 */
     private suspend fun observeLocationData() {
         viewModel.locationData.collect { locationData ->
-            if (locationData != null) {
-                navigateToResultListFragment(SearchTerms(args.inputText, locationData, args.range))
+            locationData?.let {
+                navigateToResultListFragment(
+                    SearchTerms(
+                        args.inputText,
+                        locationData,
+                        args.range,
+                    ),
+                )
             }
         }
     }

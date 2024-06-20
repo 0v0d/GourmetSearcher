@@ -29,7 +29,10 @@ class RestaurantListViewHolder(
 
     /** ViewHolderのバインドを解除する */
     fun unbind() {
-        binding.restaurant = null
-        binding.restaurantListItemLayout.itemRestaurantImageView.setImageDrawable(null)
+        binding.apply {
+            restaurant = null
+            restaurantListItemLayout.itemRestaurantImageView
+                .setImageDrawable(null)
+        }
     }
 }

@@ -61,7 +61,7 @@ class RestaurantDetailFragment : Fragment() {
     /** searchAddressの変更を監視 */
     private suspend fun observeAddress() {
         viewModel.searchAddress.collect {
-            if (it != null) {
+            it?.let {
                 openMap(it)
             }
         }
@@ -70,7 +70,7 @@ class RestaurantDetailFragment : Fragment() {
     /** urlの変更を監視 */
     private suspend fun observeUrl() {
         viewModel.url.collect {
-            if (it != null) {
+            it?.let {
                 openWebBrowser(it)
             }
         }
