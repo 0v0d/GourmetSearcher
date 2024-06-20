@@ -6,7 +6,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** 検索履歴のPreferencesを管理する
+/**
+ * 検索履歴のPreferencesを管理する
  * @param context コンテキスト
  */
 @Singleton

@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 /** レストラン詳細画面 */
 class RestaurantDetailFragment : Fragment() {
     private var fragmentRestaurantDetailBinding: FragmentRestaurantDetailBinding? = null
+
     private val binding get() = fragmentRestaurantDetailBinding!!
 
     private val viewModel: RestaurantDetailViewModel by viewModels()

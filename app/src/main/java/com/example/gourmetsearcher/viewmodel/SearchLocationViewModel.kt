@@ -45,6 +45,7 @@ class SearchLocationViewModel
          * ERROR: 現在地取得失敗
          */
         private val _searchState = MutableStateFlow(LocationSearchState.LOADING)
+
         val searchState = _searchState.asStateFlow()
 
         /** 現在地を取得する */

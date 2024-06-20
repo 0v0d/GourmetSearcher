@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SearchLocationFragment : Fragment() {
     private var fragmentSearchLocationBinding: FragmentSearchLocationBinding? = null
+
     private val binding get() = fragmentSearchLocationBinding!!
 
     private val viewModel: SearchLocationViewModel by viewModels()
