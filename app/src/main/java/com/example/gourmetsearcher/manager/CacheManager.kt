@@ -22,9 +22,7 @@ class CacheManager(
      * @param searchTerms 検索条件
      * @return レストラン情報 or null
      */
-    fun get(searchTerms: SearchTerms): Response<HotPepperResponse>? {
-        return cache[searchTerms]
-    }
+    fun get(searchTerms: SearchTerms): Response<HotPepperResponse>? = cache[searchTerms]
 
     /**
      * キャッシュに結果を保存する

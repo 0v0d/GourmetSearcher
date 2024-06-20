@@ -26,9 +26,11 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class InputKeyWordFragment : Fragment() {
     private var fragmentInputKeyWordBinding: FragmentInputKeyWordBinding? = null
+
     private val binding get() = fragmentInputKeyWordBinding!!
 
     private val viewModel: InputKeyWordViewModel by viewModels()
+
     private var inputText = ""
 
     private val rangeListAdapter by lazy {
@@ -47,7 +49,9 @@ class InputKeyWordFragment : Fragment() {
     /** キーワード履歴のリストのアイテムをクリックしたときの処理 */
     private val inputKeyWordHistoryItemClick = { it: String ->
         binding.searchInputEditText.setText(it)
-        binding.searchInputEditText.setSelection(binding.searchInputEditText.text?.length ?: 0)
+        binding.searchInputEditText.setSelection(
+            binding.searchInputEditText.text?.length ?: 0,
+        )
     }
 
     override fun onCreateView(
@@ -56,9 +60,17 @@ class InputKeyWordFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         fragmentInputKeyWordBinding =
-            FragmentInputKeyWordBinding.inflate(inflater, container, false)
-        binding.searchParameters.viewModel = viewModel
-        binding.searchParameters.lifecycleOwner = viewLifecycleOwner
+            FragmentInputKeyWordBinding.inflate(
+                inflater,
+                container,
+                false,
+            )
+
+        binding.searchParameters.apply {
+            viewModel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -98,8 +110,10 @@ class InputKeyWordFragment : Fragment() {
             if (isNotEmpty) {
                 inputText = inputString
             }
-            binding.searchParameters.keyWordListLayout.isVisible = !isNotEmpty
-            binding.searchParameters.rangeListLayout.isVisible = isNotEmpty
+            binding.searchParameters.apply {
+                keyWordListLayout.isVisible = !isNotEmpty
+                rangeListLayout.isVisible = isNotEmpty
+            }
         }
     }
 
@@ -122,8 +136,13 @@ class InputKeyWordFragment : Fragment() {
     /** キーワード履歴のリストを設定する */
     private fun setUpKeyWordHistoryRecyclerView() {
         val historyLayoutManager = LinearLayoutManager(requireContext())
+
         val historyDividerItemDecoration =
-            DividerItemDecoration(requireContext(), historyLayoutManager.orientation)
+            DividerItemDecoration(
+                requireContext(),
+                historyLayoutManager.orientation,
+            )
+
         binding.searchParameters.keyWordListRecyclerView.apply {
             layoutManager = historyLayoutManager
             addItemDecoration(historyDividerItemDecoration)
@@ -155,8 +174,10 @@ class InputKeyWordFragment : Fragment() {
 
     override fun onDestroyView() {
         /** メモリリークを防ぐためにRecyclerViewのアダプターを解放する */
-        binding.searchParameters.rangeListRecyclerView.adapter = null
-        binding.searchParameters.keyWordListRecyclerView.adapter = null
+        binding.searchParameters.apply {
+            rangeListRecyclerView.adapter = null
+            keyWordListRecyclerView.adapter = null
+        }
         fragmentInputKeyWordBinding = null
         super.onDestroyView()
     }
