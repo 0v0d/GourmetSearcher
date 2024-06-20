@@ -57,7 +57,8 @@ class SearchRestaurantFlowTest {
 
         // RestaurantFragmentに遷移し、リストのアイテムをクリックする
         onView(withId(R.id.result_list_recycler_view))
-            .waitShown(R.id.item_restaurant_image_view).perform(
+            .waitShown(R.id.item_restaurant_image_view)
+            .perform(
                 actionOnItemAtPosition<RestaurantListViewHolder>(
                     1,
                     click(),
@@ -66,9 +67,8 @@ class SearchRestaurantFlowTest {
 
         // RestaurantDetailFragmentに遷移し、画像が表示されることを確認する
         onView(withId(R.id.detail_restaurant_image_view))
-            .check(
-                matches(isDisplayed()),
-            ).waitShown(R.id.detail_restaurant_image_view)
+            .check(matches(isDisplayed()))
+            .waitShown(R.id.detail_restaurant_image_view)
     }
 
     /**
