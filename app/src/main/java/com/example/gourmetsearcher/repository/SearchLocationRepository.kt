@@ -19,6 +19,7 @@ interface SearchLocationRepository {
 
 /**
  * LocationRepositoryの実装クラス
+ * @param locationProvider 位置情報のプロバイダ
  */
 class SearchLocationRepositoryImpl
     @Inject

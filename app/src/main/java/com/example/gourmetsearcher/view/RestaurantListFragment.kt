@@ -26,13 +26,15 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
     private var fragmentResultListBinding: FragmentResultListBinding? = null
+
     private val binding get() = fragmentResultListBinding!!
 
     private val viewModel: RestaurantListViewModel by viewModels()
 
     /** ナビゲーションの引数を取得するための変数 */
     private val args: RestaurantListFragmentArgs by navArgs()
-    private val adapter by lazy {
+
+    private val restaurantListAdapter by lazy {
         RestaurantListAdapter(restaurantItemClick)
     }
 
@@ -79,7 +81,7 @@ class RestaurantListFragment : Fragment() {
         viewModel.shops.collect { shops ->
             if (shops != null) {
                 binding.networkLoadingProgressBar.isVisible = false
-                adapter.submitList(shops)
+                restaurantListAdapter.submitList(shops)
             }
         }
     }
@@ -131,7 +133,7 @@ class RestaurantListFragment : Fragment() {
     private fun setUpResultListRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.resultListRecyclerView.layoutManager = layoutManager
-        binding.resultListRecyclerView.adapter = adapter
+        binding.resultListRecyclerView.adapter = restaurantListAdapter
     }
 
     /**
