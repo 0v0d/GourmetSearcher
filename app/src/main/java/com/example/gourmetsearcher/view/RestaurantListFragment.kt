@@ -78,7 +78,7 @@ class RestaurantListFragment : Fragment() {
     private suspend fun observeResultList() {
         viewModel.shops.collect { shops ->
             if (shops != null) {
-                binding.loadingProgressBar.isVisible = false
+                binding.networkLoadingProgressBar.isVisible = false
                 adapter.submitList(shops)
             }
         }
@@ -107,24 +107,24 @@ class RestaurantListFragment : Fragment() {
         messageResId: Int,
     ) = with(binding) {
         resultListRecyclerView.isVisible = false
-        loadingProgressBar.isVisible = false
-        errorTextView.text = getString(messageResId)
-        errorTextView.isVisible = true
-        retryButton.isVisible = (state == SearchState.NETWORK_ERROR)
+        networkLoadingProgressBar.isVisible = false
+        networkErrorTextView.text = getString(messageResId)
+        networkErrorTextView.isVisible = true
+        networkRetryButton.isVisible = (state == SearchState.NETWORK_ERROR)
     }
 
     /** エラーを非表示にする */
     private fun invisibleError() =
         with(binding) {
             resultListRecyclerView.isVisible = true
-            errorTextView.isVisible = false
-            retryButton.isVisible = false
+            networkErrorTextView.isVisible = false
+            networkRetryButton.isVisible = false
         }
 
     /** ローディングを表示する */
     private fun showLoading() {
         invisibleError()
-        binding.loadingProgressBar.isVisible = true
+        binding.networkLoadingProgressBar.isVisible = true
     }
 
     /** 検索結果のリストを表示する */

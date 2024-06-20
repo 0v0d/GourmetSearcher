@@ -126,6 +126,7 @@ class SearchLocationFragment : Fragment() {
             shouldShowLocationPermissionRationale() -> {
                 showPermissionExplanationDialog()
             }
+
             else -> {
                 // パーミッションが拒否された場合は、viewModelのstateをERRORに設定する
                 viewModel.setSearchState(LocationSearchState.ERROR)
@@ -147,9 +148,9 @@ class SearchLocationFragment : Fragment() {
     /** エラーを表示する */
     private fun showError() =
         with(binding) {
-            loadingProgressBar.isVisible = false
+            locationLoadingProgressBar.isVisible = false
             redirectSettingButton.isVisible = true
-            retryButton.isVisible = true
+            locationRetryButton.isVisible = true
             locationErrorTextView.isVisible = true
             locationErrorTextView.text = errorText()
         }
@@ -198,6 +199,7 @@ class SearchLocationFragment : Fragment() {
                 LocationSearchState.LOADING -> {
                     showLoading()
                 }
+
                 LocationSearchState.ERROR -> {
                     // エラー状態の場合はエラー処理を行う
                     showError()
@@ -234,9 +236,9 @@ class SearchLocationFragment : Fragment() {
     /** 読み込み中のUIを表示する */
     private fun showLoading() =
         with(binding) {
-            loadingProgressBar.isVisible = true
+            locationLoadingProgressBar.isVisible = true
             redirectSettingButton.isVisible = false
-            retryButton.isVisible = false
+            locationRetryButton.isVisible = false
             locationErrorTextView.isVisible = false
         }
 

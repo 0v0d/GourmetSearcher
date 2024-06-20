@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     /** ActionBarの設定 */
     private fun setupActionBar() {
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.toolBar)
 
         val hostFragment = binding.navHostFragment.getFragment<NavHostFragment>()
         navController = hostFragment.navController
