@@ -40,7 +40,7 @@ object RetrofitModule {
     ): Retrofit =
         Retrofit
             .Builder()
-            .baseUrl(context.getString(R.string.hot_pepper_url))
+            .baseUrl(context.getString(R.string.restaurant_list_hot_pepper_url))
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 }

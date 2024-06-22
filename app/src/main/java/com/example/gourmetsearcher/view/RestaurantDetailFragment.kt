@@ -84,8 +84,8 @@ class RestaurantDetailFragment : Fragment() {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         intent.setComponent(
             ComponentName(
-                getString(R.string.chrome),
-                getString(R.string.chrome_activity),
+                getString(R.string.restaurant_detail_chrome),
+                getString(R.string.restaurant_detail_chrome_activity),
             ),
         )
         startActivity(intent)
@@ -97,12 +97,12 @@ class RestaurantDetailFragment : Fragment() {
      * @param address 開く住所
      */
     private fun openMap(address: String) {
-        val mapUrl = getString(R.string.map_url) + address
+        val mapUrl = getString(R.string.restaurant_detail_map_url) + address
         val intent = Intent(Intent.ACTION_VIEW, mapUrl.toUri())
         intent.setComponent(
             ComponentName(
-                getString(R.string.google_map),
-                getString(R.string.google_map_activity),
+                getString(R.string.restaurant_detail_google_map),
+                getString(R.string.restaurant_detail_google_map_activity),
             ),
         )
         startActivity(intent)

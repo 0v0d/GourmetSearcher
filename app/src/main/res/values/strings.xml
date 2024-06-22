@@ -1,46 +1,56 @@
 <resources>
-	<string name="app_name">GourmetSearcher</string>
-	<string name="home">ホーム</string>
+    <string name="app_name">GourmetSearcher</string>
 
-	<string name="search_location">現在地取得</string>
-	<string name="search_input_hint">キーワードを入力</string>
-	<string name="select_range_explanation">検索半径を選択して検索</string>
-	<string name="meter">m</string>
-	<string name="key_word_clear">キーワードをクリア</string>
-	<string-array name="range_array">
-		<item>300</item>
-		<item>500</item>
-		<item>1000</item>
-		<item>2000</item>
-		<item>3000</item>
-	</string-array>
+    <!-- Common -->
+    <string name="common_retry">リトライ</string>
+    <string name="common_ok">OK</string>
 
-	<string name="retry">リトライ</string>
-	<string name="location_permission_required_title">位置情報パーミッションが必要です</string>
-	<string name="location_permission_required_message">このアプリでは、位置情報を取得するために位置情報パーミッションが必要です</string>
-	<string name="location_error_message">位置情報を取得できませんでした</string>
-	<string name="location_permission_denied_message">位置情報が許可されていません</string>
-	<string name="ok_button">OK</string>
-	<string name="hot_pepper_url">https://webservice.recruit.co.jp/hotpepper/</string>
+    <!-- InputKeyWord -->
+    <string name="input_keyword_home">ホーム</string>
+    <string name="input_keyword_search_location">現在地取得</string>
+    <string name="input_keyword_search_input_hint">キーワードを入力</string>
+    <string name="input_keyword_select_range_explanation">検索半径を選択して検索</string>
+    <string name="input_keyword_meter">m</string>
+    <string name="input_keyword_key_word_clear">キーワードをクリア</string>
+    <string-array name="input_keyword_range_array">
+        <item>300</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+    </string-array>
 
-	<string name="search_result">検索結果</string>
-	<string name="network_error_message">ネットワークエラーが発生しました</string>
-	<string name="empty_result_message">検索結果がありませんでした</string>
-	<string name="genre">ジャンル</string>
-	<string name="budget">予算</string>
-	<string name="closed_days">休業日</string>
-	<string name="opening_hours">営業時間</string>
-	<string name="address">住所</string>
-	<string name="access">アクセス</string>
-	<string name="map_button_description">Mapを開く</string>
-	<string name="hot_pepper">HotPepperへ</string>
-    <string name="setting">設定</string>
-	<string name="map_url">geo:0:0?q=</string>
-    <string name="restaurant_name">店舗名</string>
+    <!-- Search Location -->
+    <string name="search_location_permission_required_title">位置情報パーミッションが必要です</string>
+    <string name="search_location_permission_required_message">このアプリでは、位置情報を取得するために位置情報パーミッションが必要です</string>
+    <string name="search_location_error_message">位置情報を取得できませんでした</string>
+    <string name="search_location_permission_denied_message">位置情報が許可されていません</string>
+    <string name="search_location_setting">設定</string>
 
-    <string name="google_map">com.google.android.apps.maps</string>
-    <string name="google_map_activity">com.google.android.maps.MapsActivity</string>
+    <!-- Restaurant List -->
+    <string name="restaurant_list_search_result">検索結果</string>
+    <string name="restaurant_list_network_error_message">ネットワークエラーが発生しました</string>
+    <string name="restaurant_list_empty_result_message">検索結果がありませんでした</string>
+    <string name="restaurant_list_hot_pepper_url">https://webservice.recruit.co.jp/hotpepper/</string>
 
-    <string name="chrome">com.android.chrome</string>
-    <string name="chrome_activity">com.google.android.apps.chrome.Main</string>
+
+    <!-- Restaurant Detail -->
+    <string name="restaurant_detail_google_map">com.google.android.apps.maps</string>
+    <string name="restaurant_detail_google_map_activity">com.google.android.maps.MapsActivity</string>
+
+    <string name="restaurant_detail_chrome">com.android.chrome</string>
+    <string name="restaurant_detail_chrome_activity">com.google.android.apps.chrome.Main</string>
+
+    <string name="restaurant_detail_map_url">geo:0:0?q=</string>
+
+    <string name="restaurant_detail_restaurant_name">店舗名</string>
+    <string name="restaurant_detail_genre">ジャンル</string>
+    <string name="restaurant_detail_budget">予算</string>
+    <string name="restaurant_detail_closed_days">休業日</string>
+    <string name="restaurant_detail_opening_hours">営業時間</string>
+    <string name="restaurant_detail_address">住所</string>
+    <string name="restaurant_detail_access">アクセス</string>
+    <string name="restaurant_detail_map_description">Mapを開く</string>
+    <string name="restaurant_detail_hot_pepper">HotPepperへ</string>
+
 </resources>

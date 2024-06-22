@@ -123,7 +123,7 @@ class InputKeyWordFragment : Fragment() {
         val rangeDividerItemDecoration =
             DividerItemDecoration(requireContext(), rangeLayoutManager.orientation)
 
-        val rangeList = resources.getStringArray(R.array.range_array)
+        val rangeList = resources.getStringArray(R.array.input_keyword_range_array)
         rangeListAdapter.submitList(rangeList.map { it.toInt() })
 
         binding.searchParameters.rangeListRecyclerView.apply {

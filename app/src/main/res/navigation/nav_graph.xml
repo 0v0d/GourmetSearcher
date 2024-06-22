@@ -7,7 +7,7 @@
 	<fragment
 		android:id="@+id/inputKeyWordFragment"
 		android:name="com.example.gourmetsearcher.view.InputKeyWordFragment"
-		android:label="@string/home"
+		android:label="@string/input_keyword_home"
 		android:launchMode="singleTop"
 		tools:layout="@layout/fragment_input_key_word">
 
@@ -23,7 +23,7 @@
 	<fragment
 		android:id="@+id/searchLocationFragment"
 		android:name="com.example.gourmetsearcher.view.SearchLocationFragment"
-		android:label="@string/search_location"
+		android:label="@string/input_keyword_search_location"
 		tools:layout="@layout/fragment_input_key_word">
 		<argument
 			android:name="inputText"
@@ -45,7 +45,7 @@
 	<fragment
 		android:id="@+id/restaurantListFragment"
 		android:name="com.example.gourmetsearcher.view.RestaurantListFragment"
-		android:label="@string/search_result"
+		android:label="@string/restaurant_list_search_result"
 		tools:layout="@layout/fragment_result_list">
 		<argument
 			android:name="searchTerms"

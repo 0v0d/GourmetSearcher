@@ -163,17 +163,17 @@ class SearchLocationFragment : Fragment() {
     private fun errorText() =
         getString(
             when {
-                isLocationPermissionGranted() -> R.string.location_error_message
-                else -> R.string.location_permission_denied_message
+                isLocationPermissionGranted() -> R.string.search_location_error_message
+                else -> R.string.search_location_permission_denied_message
             },
         )
 
     /**  パーミッションの説明ダイアログを表示する */
     private fun showPermissionExplanationDialog() {
         MaterialAlertDialogBuilder(requireContext(), R.style.permissionExplanationDialog)
-            .setTitle(R.string.location_permission_required_title)
-            .setMessage(R.string.location_permission_required_message)
-            .setPositiveButton(R.string.ok_button) { _, _ -> requestLocationPermission() }
+            .setTitle(R.string.search_location_permission_required_title)
+            .setMessage(R.string.search_location_permission_required_message)
+            .setPositiveButton(R.string.common_ok) { _, _ -> requestLocationPermission() }
             .create()
             .show()
     }
