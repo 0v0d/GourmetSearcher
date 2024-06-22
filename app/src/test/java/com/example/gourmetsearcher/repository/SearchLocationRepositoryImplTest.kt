@@ -11,11 +11,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Answers
 import org.mockito.ArgumentMatchers.any
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
@@ -25,14 +24,19 @@ import org.mockito.junit.MockitoJUnitRunner
 /** SearchLocationRepositoryImplのユニットテストクラス */
 @RunWith(MockitoJUnitRunner::class)
 class SearchLocationRepositoryImplTest {
-    @Mock(answer = Answers.RETURNS_DEFAULTS)
+    @Mock
     private lateinit var mockLocationProvider: FusedLocationProviderClient
 
-    @Mock(answer = Answers.RETURNS_DEFAULTS)
+    @Mock
     private lateinit var mockTask: Task<Location>
 
-    @InjectMocks
     private lateinit var searchLocationRepository: SearchLocationRepository
+
+    /** 各テスト前の準備 */
+    @Before
+    fun setUp() {
+        searchLocationRepository = SearchLocationRepositoryImpl(mockLocationProvider)
+    }
 
     /** 位置情報の取得が成功した場合のテスト */
     @Test

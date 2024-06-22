@@ -2,9 +2,9 @@ package com.example.gourmetsearcher.repository
 
 import com.example.gourmetsearcher.manager.PreferencesManager
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -16,8 +16,13 @@ class KeyWordHistoryRepositoryImplTest {
     @Mock
     private lateinit var preferences: PreferencesManager
 
-    @InjectMocks
     private lateinit var keyWordHistoryRepository: KeyWordHistoryRepository
+
+    /** 各テスト前の準備 */
+    @Before
+    fun setUp() {
+        keyWordHistoryRepository = KeyWordHistoryRepositoryImpl(preferences)
+    }
 
     /** saveHistoryItemが正しく呼び出されるかテスト */
     @Test

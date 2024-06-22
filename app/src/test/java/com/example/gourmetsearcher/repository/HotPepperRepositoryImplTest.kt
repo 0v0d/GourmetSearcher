@@ -18,12 +18,12 @@ import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyDouble
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
@@ -40,7 +40,6 @@ class HotPepperRepositoryImplTest {
     @Mock
     private lateinit var mockCacheManager: CacheManager
 
-    @InjectMocks
     private lateinit var hotPepperRepository: HotPepperRepository
 
     private val mockSearchTerms = SearchTerms("keyword", CurrentLocation(35.0, 139.0), 1)
@@ -91,6 +90,12 @@ class HotPepperRepositoryImplTest {
                 )
             assertEquals(mockResponse, result)
         }
+
+    /** 各テスト前の準備 */
+    @Before
+    fun setup() {
+        hotPepperRepository = HotPepperRepositoryImpl(mockService, mockCacheManager)
+    }
 
     /** キャッシュミス時のテスト */
     @Test
