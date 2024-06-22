@@ -47,7 +47,7 @@ class PreferencesManager
             sharedPrefs.edit().remove(HISTORY_KEY).apply()
         }
 
-        companion object {
+        private companion object {
             private const val HISTORY_KEY = "historyList"
             private const val MAX_HISTORY_SIZE = 5
         }
