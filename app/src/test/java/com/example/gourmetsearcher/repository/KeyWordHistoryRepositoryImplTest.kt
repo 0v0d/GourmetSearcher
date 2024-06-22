@@ -6,6 +6,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
@@ -27,7 +28,7 @@ class KeyWordHistoryRepositoryImplTest {
     /** saveHistoryItemが正しく呼び出されるかテスト */
     @Test
     fun testSaveHistoryItem() {
-        val input = "keyword1"
+        val input = "keyword 1"
         keyWordHistoryRepository.saveHistoryItem(input)
         verify(preferences).saveHistoryItem(input)
     }
@@ -47,5 +48,21 @@ class KeyWordHistoryRepositoryImplTest {
     fun testClearHistory() {
         keyWordHistoryRepository.clearHistory()
         verify(preferences).clearHistory()
+    }
+
+    /** 空文字列の入力が無視されるかテスト */
+    @Test
+    fun testEmptyInput() {
+        val input = ""
+        keyWordHistoryRepository.saveHistoryItem(input)
+        verify(preferences, never()).saveHistoryItem(input)
+    }
+
+    /** 空白文字列の入力が無視されるかテスト */
+    @Test
+    fun testBlankInput() {
+        val input = "  "
+        keyWordHistoryRepository.saveHistoryItem(input)
+        verify(preferences, never()).saveHistoryItem(input)
     }
 }

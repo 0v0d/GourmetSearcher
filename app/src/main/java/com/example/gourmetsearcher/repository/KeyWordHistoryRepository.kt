@@ -31,6 +31,9 @@ class KeyWordHistoryRepositoryImpl
          * @param input 入力されたキーワード
          */
         override fun saveHistoryItem(input: String) {
+            if (input.isEmpty() || input.isBlank()) {
+                return
+            }
             preferences.saveHistoryItem(input)
         }
 
