@@ -23,7 +23,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/** レストラン検索のフローをテストする */
+/** レストラン検索のフローをテストするクラス */
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class SearchRestaurantFlowTest {

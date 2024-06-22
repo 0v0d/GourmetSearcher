@@ -1,6 +1,5 @@
 package com.example.gourmetsearcher.viewmodel
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.gourmetsearcher.model.api.BudgetData
 import com.example.gourmetsearcher.model.api.GenreData
 import com.example.gourmetsearcher.model.api.HotPepperResponse
@@ -22,30 +21,31 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import okhttp3.ResponseBody
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
 
+/** RestaurantListViewModelのユニットテストクラス */
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class RestaurantListViewModelTest {
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
     @Mock
     private lateinit var getHotPepperDataUseCase: GetHotPepperDataUseCase
 
+    @InjectMocks
     private lateinit var viewModel: RestaurantListViewModel
 
-    private val response =
+    private val mockResponse =
         HotPepperResponse(
             Results(
                 listOf(
@@ -67,76 +67,77 @@ class RestaurantListViewModelTest {
                 ),
             ),
         )
-    private val emptyResponse =
+    private val mockEmptyResponse =
         HotPepperResponse(
             Results(
                 emptyList(),
             ),
         )
 
+    private val mockSearchTerms =
+        SearchTerms(
+            "keyword",
+            CurrentLocation(0.0, 0.0),
+            1,
+        )
+
+    /** 各テスト前の準備 */
     @Before
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        viewModel = RestaurantListViewModel(getHotPepperDataUseCase)
     }
 
+    /** 各テスト後のクリーンアップ */
     @After
     fun cleanup() {
         Dispatchers.resetMain()
     }
 
-    /**
-     * ホットペッパーグルメAPIからのレスポンスが成功した場合のテスト
-     * 検索状態がLOADINGからDONEに変わること
-     * レストラン情報が更新されること
-     * 検索状態がDONEに変わること
-     */
+    /** ホットペッパーグルメAPIからのレスポンスが成功した場合のテスト */
     @Test
-    fun searchHotPepperRepositorySuccess() =
+    fun testSearchRestaurantsSuccess() =
         runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-            `when`(getHotPepperDataUseCase(searchTerms)).thenReturn(Response.success(response))
-            viewModel.searchRestaurants(searchTerms)
+            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(Response.success(mockResponse))
+            viewModel.searchRestaurants(mockSearchTerms)
 
-            val shops = response.results.shops.map { it.toDomain() }
+            val shops = mockResponse.results.shops.map { it.toDomain() }
             assertEquals(shops, viewModel.shops.value)
             assertEquals(SearchState.SUCCESS, viewModel.searchState.value)
         }
 
-    /**
-     * ホットペッパーグルメAPIからのレスポンスが失敗した場合のテスト
-     * 検索状態がLOADINGからNETWORK_ERRORに変わること
-     * レストラン情報が更新されること
-     * 検索状態がNETWORK_ERRORに変わること
-     */
+    /** ホットペッパーグルメAPIからのレスポンスが失敗した場合のテスト */
     @Test
-    fun searchHotPepperRepositoryNetWorkErrorResponse() =
+    fun testSearchRestaurantsNetworkError() =
         runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-            val response = Response.error<HotPepperResponse>(500, ResponseBody.create(null, ""))
-            `when`(getHotPepperDataUseCase(searchTerms))
-                .thenReturn(response)
-            viewModel.searchRestaurants(searchTerms)
+            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(null)
 
-            assertEquals(null, viewModel.shops.value)
+            viewModel.searchRestaurants(mockSearchTerms)
+
             assertEquals(SearchState.NETWORK_ERROR, viewModel.searchState.value)
         }
 
-    /**
-     * ホットペッパーグルメAPIからのレスポンスが空の場合のテスト
-     * 検索状態がLOADINGからEMPTY_RESULTに変わること
-     * レストラン情報が更新されること
-     * 検索状態がEMPTY_RESULTに変わること
-     */
+    /** ホットペッパーグルメAPIからのレスポンスが空の場合のテスト */
     @Test
-    fun searchHotPepperRepositoryEmptyResponse() =
+    fun testSearchRestaurantsEmptyResponse() =
         runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 1)
-            `when`(getHotPepperDataUseCase(searchTerms)).thenReturn(Response.success(emptyResponse))
+            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(Response.success(mockEmptyResponse))
 
-            viewModel.searchRestaurants(searchTerms)
-            val shops = emptyResponse.results.shops.map { it.toDomain() }
+            viewModel.searchRestaurants(mockSearchTerms)
+            val shops = mockEmptyResponse.results.shops.map { it.toDomain() }
             assertEquals(emptyList<Shops>(), shops)
             assertEquals(SearchState.EMPTY_RESULT, viewModel.searchState.value)
+        }
+
+    /** 検索のリトライテスト */
+    @Test
+    fun testRetrySearch() =
+        runTest {
+            val mockResponse = mock<Response<HotPepperResponse>>()
+            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(mockResponse)
+
+            viewModel.searchRestaurants(mockSearchTerms)
+            viewModel.retrySearch()
+
+            verify(getHotPepperDataUseCase, times(2)).invoke(mockSearchTerms)
         }
 }

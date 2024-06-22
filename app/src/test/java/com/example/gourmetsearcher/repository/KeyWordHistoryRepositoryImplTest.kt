@@ -2,43 +2,47 @@ package com.example.gourmetsearcher.repository
 
 import com.example.gourmetsearcher.manager.PreferencesManager
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
+/** KeyWordHistoryRepositoryImplのユニットテストクラス */
 @RunWith(MockitoJUnitRunner::class)
 class KeyWordHistoryRepositoryImplTest {
     @Mock
     private lateinit var preferences: PreferencesManager
 
-    @InjectMocks
-    private lateinit var keyWordHistoryRepository: KeyWordHistoryRepositoryImpl
+    private lateinit var keyWordHistoryRepository: KeyWordHistoryRepository
 
-    /** saveHistoryItemが呼ばれたときに、PreferencesManagerのsaveHistoryItemが呼ばれることを確認するテスト */
+    /** 各テスト前の準備 */
+    @Before
+    fun setUp() {
+        keyWordHistoryRepository = KeyWordHistoryRepositoryImpl(preferences)
+    }
+
+    /** saveHistoryItemが正しく呼び出されるかテスト */
     @Test
-    fun testSaveHistoryItemWithNewEntry() {
+    fun testSaveHistoryItem() {
         val input = "keyword1"
         keyWordHistoryRepository.saveHistoryItem(input)
         verify(preferences).saveHistoryItem(input)
     }
 
-    /** getHistoryListが呼ばれたときに、PreferencesManagerのgetHistoryListが呼ばれ、期待されるリストが返されることを確認するテスト */
+    /** getHistoryListが期待通りのリストを返すかテスト */
     @Test
     fun testGetHistoryList() {
         val expectedHistoryList = listOf("keyword1", "keyword2", "keyword3")
         `when`(preferences.getHistoryList()).thenReturn(expectedHistoryList)
-
         val actualHistoryList = keyWordHistoryRepository.getHistoryList()
-
         assertEquals(expectedHistoryList, actualHistoryList)
         verify(preferences).getHistoryList()
     }
 
-    /** clearHistoryが呼ばれたときに、PreferencesManagerのclearHistoryが呼ばれることを確認するテスト */
+    /** clearHistoryが正しく呼び出されるかテスト */
     @Test
     fun testClearHistory() {
         keyWordHistoryRepository.clearHistory()
