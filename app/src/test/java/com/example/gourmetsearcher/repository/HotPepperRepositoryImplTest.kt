@@ -78,16 +78,14 @@ class HotPepperRepositoryImplTest {
             val result = hotPepperRepository.execute(mockSearchTerms)
 
             verify(mockCacheManager).get(mockSearchTerms)
-
-            verify(mockService, never())
-                .getRestaurantDatum(
-                    anyString(),
-                    anyString(),
-                    anyDouble(),
-                    anyDouble(),
-                    anyInt(),
-                    anyString(),
-                )
+            verify(mockService, never()).getRestaurantDatum(
+                anyString(),
+                anyString(),
+                anyDouble(),
+                anyDouble(),
+                anyInt(),
+                anyString(),
+            )
             assertEquals(mockResponse, result)
         }
 
@@ -112,13 +110,11 @@ class HotPepperRepositoryImplTest {
                     anyString(),
                 ),
             ).thenReturn(mockResponse)
+
             val result = hotPepperRepository.execute(mockSearchTerms)
 
             verify(mockCacheManager).get(mockSearchTerms)
-
-            verify(
-                mockService,
-            ).getRestaurantDatum(
+            verify(mockService).getRestaurantDatum(
                 BuildConfig.API_KEY,
                 mockSearchTerms.keyword,
                 mockSearchTerms.location.lat,
@@ -134,6 +130,7 @@ class HotPepperRepositoryImplTest {
     @Test
     fun testExecuteWithException() =
         runBlocking {
+            `when`(mockCacheManager.get(mockSearchTerms)).thenReturn(null)
             `when`(
                 mockService.getRestaurantDatum(
                     anyString(),
@@ -144,7 +141,51 @@ class HotPepperRepositoryImplTest {
                     anyString(),
                 ),
             ).thenThrow(RuntimeException::class.java)
+
             val result = hotPepperRepository.execute(mockSearchTerms)
+
+            verify(mockCacheManager).get(mockSearchTerms)
+            verify(mockService).getRestaurantDatum(
+                BuildConfig.API_KEY,
+                mockSearchTerms.keyword,
+                mockSearchTerms.location.lat,
+                mockSearchTerms.location.lng,
+                mockSearchTerms.range,
+                "json",
+            )
+            verify(mockCacheManager, never()).put(mockSearchTerms, mockResponse)
             assertNull(result)
+        }
+
+    /** 空のレスポンスのテスト */
+    @Test
+    fun testExecuteWithEmptyResponse() =
+        runBlocking {
+            val emptyResponse = Response.success(HotPepperResponse(Results(emptyList())))
+            `when`(mockCacheManager.get(mockSearchTerms)).thenReturn(null)
+            `when`(
+                mockService.getRestaurantDatum(
+                    anyString(),
+                    anyString(),
+                    anyDouble(),
+                    anyDouble(),
+                    anyInt(),
+                    anyString(),
+                ),
+            ).thenReturn(emptyResponse)
+
+            val result = hotPepperRepository.execute(mockSearchTerms)
+
+            verify(mockCacheManager).get(mockSearchTerms)
+            verify(mockService).getRestaurantDatum(
+                BuildConfig.API_KEY,
+                mockSearchTerms.keyword,
+                mockSearchTerms.location.lat,
+                mockSearchTerms.location.lng,
+                mockSearchTerms.range,
+                "json",
+            )
+            verify(mockCacheManager).put(mockSearchTerms, emptyResponse)
+            assertEquals(emptyResponse, result)
         }
 }
