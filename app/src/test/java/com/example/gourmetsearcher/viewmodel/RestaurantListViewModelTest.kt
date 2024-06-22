@@ -45,7 +45,7 @@ class RestaurantListViewModelTest {
     @InjectMocks
     private lateinit var viewModel: RestaurantListViewModel
 
-    private val response =
+    private val mockResponse =
         HotPepperResponse(
             Results(
                 listOf(
@@ -67,11 +67,18 @@ class RestaurantListViewModelTest {
                 ),
             ),
         )
-    private val emptyResponse =
+    private val mockEmptyResponse =
         HotPepperResponse(
             Results(
                 emptyList(),
             ),
+        )
+
+    private val mockSearchTerms =
+        SearchTerms(
+            "keyword",
+            CurrentLocation(0.0, 0.0),
+            1,
         )
 
     /** 各テスト前の準備 */
@@ -90,11 +97,10 @@ class RestaurantListViewModelTest {
     @Test
     fun testSearchRestaurantsSuccess() =
         runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 10)
-            `when`(getHotPepperDataUseCase(searchTerms)).thenReturn(Response.success(response))
-            viewModel.searchRestaurants(searchTerms)
+            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(Response.success(mockResponse))
+            viewModel.searchRestaurants(mockSearchTerms)
 
-            val shops = response.results.shops.map { it.toDomain() }
+            val shops = mockResponse.results.shops.map { it.toDomain() }
             assertEquals(shops, viewModel.shops.value)
             assertEquals(SearchState.SUCCESS, viewModel.searchState.value)
         }
@@ -103,10 +109,9 @@ class RestaurantListViewModelTest {
     @Test
     fun testSearchRestaurantsNetworkError() =
         runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 1)
-            `when`(getHotPepperDataUseCase(searchTerms)).thenReturn(null)
+            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(null)
 
-            viewModel.searchRestaurants(searchTerms)
+            viewModel.searchRestaurants(mockSearchTerms)
 
             assertEquals(SearchState.NETWORK_ERROR, viewModel.searchState.value)
         }
@@ -115,11 +120,10 @@ class RestaurantListViewModelTest {
     @Test
     fun testSearchRestaurantsEmptyResponse() =
         runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 1)
-            `when`(getHotPepperDataUseCase(searchTerms)).thenReturn(Response.success(emptyResponse))
+            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(Response.success(mockEmptyResponse))
 
-            viewModel.searchRestaurants(searchTerms)
-            val shops = emptyResponse.results.shops.map { it.toDomain() }
+            viewModel.searchRestaurants(mockSearchTerms)
+            val shops = mockEmptyResponse.results.shops.map { it.toDomain() }
             assertEquals(emptyList<Shops>(), shops)
             assertEquals(SearchState.EMPTY_RESULT, viewModel.searchState.value)
         }
@@ -128,24 +132,22 @@ class RestaurantListViewModelTest {
     @Test
     fun testRetrySearch() =
         runTest {
-            val searchTerms = SearchTerms("keyword", CurrentLocation(0.0, 0.0), 1)
             val mockResponse = mock<Response<HotPepperResponse>>()
-            `when`(getHotPepperDataUseCase(searchTerms)).thenReturn(mockResponse)
+            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(mockResponse)
 
-            viewModel.searchRestaurants(searchTerms)
+            viewModel.searchRestaurants(mockSearchTerms)
             viewModel.retrySearch()
 
-            verify(getHotPepperDataUseCase, times(2)).invoke(searchTerms)
+            verify(getHotPepperDataUseCase, times(2)).invoke(mockSearchTerms)
         }
 
     /** 空のキーワードでの検索リトライテスト */
     @Test
     fun testRetrySearchWithEmptyKeyword() =
         runTest {
-            val searchTerms = SearchTerms("", CurrentLocation(0.0, 0.0), 1)
-            viewModel.searchRestaurants(searchTerms)
+            viewModel.searchRestaurants(mockSearchTerms)
             viewModel.retrySearch()
 
-            verify(getHotPepperDataUseCase, times(1)).invoke(searchTerms)
+            verify(getHotPepperDataUseCase, times(1)).invoke(mockSearchTerms)
         }
 }

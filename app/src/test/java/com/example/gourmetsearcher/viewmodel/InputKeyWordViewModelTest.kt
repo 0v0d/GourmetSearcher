@@ -28,10 +28,11 @@ class InputKeyWordViewModelTest {
     @InjectMocks
     private lateinit var viewModel: InputKeyWordViewModel
 
+    private val initialHistory = listOf("apple", "banana")
+
     /** 初期化時に履歴リストが正しく読み込まれることを確認するテスト */
     @Test
     fun testLoadHistoryOnInit() {
-        val initialHistory = listOf("item1", "item2")
         `when`(getHistoryListUseCase()).thenReturn(initialHistory)
 
         viewModel = InputKeyWordViewModel(getHistoryListUseCase, saveHistoryItemUseCase, clearHistoryUseCase)
@@ -42,9 +43,8 @@ class InputKeyWordViewModelTest {
     /** 新しい項目を保存した後、履歴リストが更新されることを確認するテスト */
     @Test
     fun testSaveHistoryItemUpdatesHistoryList() {
-        val initialHistory = listOf("item1")
-        val newItem = "item2"
-        val updatedHistory = listOf("item2", "item1")
+        val newItem = "cherry"
+        val updatedHistory = listOf("apple", "banana", "cherry")
 
         `when`(getHistoryListUseCase()).thenReturn(initialHistory, updatedHistory)
 

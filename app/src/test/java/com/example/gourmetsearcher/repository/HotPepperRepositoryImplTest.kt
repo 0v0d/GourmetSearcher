@@ -18,12 +18,12 @@ import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyDouble
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
@@ -31,17 +31,19 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
 
+/** HotPepperRepositoryImplのユニットテストクラス */
 @RunWith(MockitoJUnitRunner::class)
 class HotPepperRepositoryImplTest {
-    private lateinit var repository: HotPepperRepositoryImpl
-
     @Mock
     private lateinit var mockService: HotPepperNetworkDataSource
 
     @Mock
     private lateinit var mockCacheManager: CacheManager
 
-    private val searchTerms = SearchTerms("keyword", CurrentLocation(35.0, 139.0), 1)
+    @InjectMocks
+    private lateinit var hotPepperRepository: HotPepperRepository
+
+    private val mockSearchTerms = SearchTerms("keyword", CurrentLocation(35.0, 139.0), 1)
 
     private val mockResponse =
         Response.success(
@@ -68,36 +70,33 @@ class HotPepperRepositoryImplTest {
             ),
         )
 
-    @Before
-    fun setUp() {
-        repository = HotPepperRepositoryImpl(mockService, mockCacheManager)
-    }
-
-    /** キャッシュヒット時にキャッシュされたレスポンスを返すことを確認 */
+    /** キャッシュヒット時のテスト */
     @Test
-    fun testCacheHitReturnsCachedResponse() =
+    fun testExecuteCacheHit() =
         runBlocking {
-            `when`(mockCacheManager.get(searchTerms)).thenReturn(mockResponse)
+            `when`(mockCacheManager.get(mockSearchTerms)).thenReturn(mockResponse)
 
-            val result = repository.execute(searchTerms)
+            val result = hotPepperRepository.execute(mockSearchTerms)
 
-            verify(mockCacheManager).get(searchTerms)
-            verify(mockService, never()).getRestaurantDatum(
-                anyString(),
-                anyString(),
-                anyDouble(),
-                anyDouble(),
-                anyInt(),
-                anyString(),
-            )
+            verify(mockCacheManager).get(mockSearchTerms)
+
+            verify(mockService, never())
+                .getRestaurantDatum(
+                    anyString(),
+                    anyString(),
+                    anyDouble(),
+                    anyDouble(),
+                    anyInt(),
+                    anyString(),
+                )
             assertEquals(mockResponse, result)
         }
 
-    /** キャッシュミス時にAPIからレスポンスを取得し、キャッシュに保存することを確認 */
+    /** キャッシュミス時のテスト */
     @Test
-    fun testRetrieveRestaurantDetails() =
+    fun testExecuteCacheMiss() =
         runBlocking {
-            `when`(mockCacheManager.get(searchTerms)).thenReturn(null)
+            `when`(mockCacheManager.get(mockSearchTerms)).thenReturn(null)
             `when`(
                 mockService.getRestaurantDatum(
                     anyString(),
@@ -108,25 +107,27 @@ class HotPepperRepositoryImplTest {
                     anyString(),
                 ),
             ).thenReturn(mockResponse)
+            val result = hotPepperRepository.execute(mockSearchTerms)
 
-            val result = repository.execute(searchTerms)
+            verify(mockCacheManager).get(mockSearchTerms)
 
-            verify(mockCacheManager).get(searchTerms)
-            verify(mockService).getRestaurantDatum(
+            verify(
+                mockService,
+            ).getRestaurantDatum(
                 BuildConfig.API_KEY,
-                searchTerms.keyword,
-                searchTerms.location.lat,
-                searchTerms.location.lng,
-                searchTerms.range,
+                mockSearchTerms.keyword,
+                mockSearchTerms.location.lat,
+                mockSearchTerms.location.lng,
+                mockSearchTerms.range,
                 "json",
             )
-            verify(mockCacheManager).put(searchTerms, mockResponse)
+            verify(mockCacheManager).put(mockSearchTerms, mockResponse)
             assertEquals(mockResponse, result)
         }
 
-    /** APIからレスポンスを取得できなかった場合、nullを返すことを確認 */
+    /** API例外時のテスト */
     @Test
-    fun testGetRestaurantInfoWithException() =
+    fun testExecuteWithException() =
         runBlocking {
             `when`(
                 mockService.getRestaurantDatum(
@@ -138,9 +139,7 @@ class HotPepperRepositoryImplTest {
                     anyString(),
                 ),
             ).thenThrow(RuntimeException::class.java)
-
-            val result = repository.execute(searchTerms)
-
+            val result = hotPepperRepository.execute(mockSearchTerms)
             assertNull(result)
         }
 }
