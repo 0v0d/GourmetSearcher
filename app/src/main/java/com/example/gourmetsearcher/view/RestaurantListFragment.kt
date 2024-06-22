@@ -92,8 +92,8 @@ class RestaurantListFragment : Fragment() {
      */
     private fun switchSearchState(state: SearchState) {
         when (state) {
-            SearchState.EMPTY_RESULT -> showError(state, R.string.empty_result_message)
-            SearchState.NETWORK_ERROR -> showError(state, R.string.network_error_message)
+            SearchState.EMPTY_RESULT -> showError(state, R.string.restaurant_list_empty_result_message)
+            SearchState.NETWORK_ERROR -> showError(state, R.string.restaurant_list_network_error_message)
             SearchState.SUCCESS -> invisibleError()
             SearchState.LOADING -> showLoading()
         }

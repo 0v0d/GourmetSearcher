@@ -43,7 +43,7 @@
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="10dp"
 			android:onClickListener="@{() -> viewModel.openUrl(restaurant.url.pc)}"
-			android:text="@string/hot_pepper"
+			android:text="@string/restaurant_detail_hot_pepper"
 			android:textSize="15sp"
 			app:icon="@drawable/ic_reservation"
 			app:iconGravity="textStart"

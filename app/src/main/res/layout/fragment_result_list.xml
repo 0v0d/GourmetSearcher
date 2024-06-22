@@ -52,7 +52,7 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
-			tools:text="@string/network_error_message" />
+			tools:text="@string/restaurant_list_network_error_message" />
 
 		<com.google.android.material.button.MaterialButton
 			android:id="@+id/network_retry_button"
@@ -61,7 +61,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginTop="10dp"
 			android:onClickListener="@{() -> viewModel.retrySearch()}"
-			android:text="@string/retry"
+			android:text="@string/common_retry"
 			android:visibility="invisible"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintHorizontal_chainStyle="packed"
