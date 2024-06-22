@@ -46,29 +46,18 @@ class SearchLocationViewModelTest {
         Dispatchers.resetMain()
     }
 
-    /** 位置情報の取得時にエラーが発生した場合のテスト */
-    @Test
-    fun testGetLocationError() =
-        runTest {
-            `when`(getCurrentLocationUseCase()).thenThrow(RuntimeException())
-
-            viewModel.getLocation()
-
-            assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
-        }
-
     /** 位置情報の取得が成功した場合のテスト */
     @Test
-    fun testPerformSearch() =
+    fun testGetLocationSuccess() =
         runTest {
+            val expectedLocation = CurrentLocation(34.7010289, 135.4955003)
             val mockLocation = mock<Location>()
-            `when`(mockLocation.latitude).thenReturn(35.0)
-            `when`(mockLocation.longitude).thenReturn(135.0)
+            `when`(mockLocation.latitude).thenReturn(expectedLocation.lat)
+            `when`(mockLocation.longitude).thenReturn(expectedLocation.lng)
             `when`(getCurrentLocationUseCase()).thenReturn(mockLocation)
 
             viewModel.getLocation()
 
-            val expectedLocation = CurrentLocation(35.0, 135.0)
             assertEquals(expectedLocation, viewModel.locationData.value)
         }
 
@@ -79,29 +68,22 @@ class SearchLocationViewModelTest {
         assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
     }
 
-    /** 位置情報の取得に成功した場合のテスト */
+    /** ランタイムエラーが発生した場合のテスト */
     @Test
-    fun testGetLocationSuccess() =
+    fun testGetLocationError() =
         runTest {
-            val location = CurrentLocation(34.7010289, 135.4955003)
-            val mockLocation = mock(Location::class.java)
-            `when`(mockLocation.latitude).thenReturn(location.lat)
-            `when`(mockLocation.longitude).thenReturn(location.lng)
-            `when`(getCurrentLocationUseCase()).thenReturn(mockLocation)
-
-            val latch = CountDownLatch(1)
+            `when`(getCurrentLocationUseCase()).thenThrow(RuntimeException())
 
             viewModel.getLocation()
 
-            latch.await(1, TimeUnit.SECONDS)
-            assertEquals(location, viewModel.locationData.value)
+            assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
         }
 
-    /** セキュリティ例外が発生した場合のテスト */
+    /** nullポインタ例外が発生した場合のテスト */
     @Test
-    fun testGetLocationSecurityException() =
+    fun testGetLocationNullPointerException() =
         runBlocking {
-            `when`(getCurrentLocationUseCase()).thenThrow(SecurityException())
+            `when`(getCurrentLocationUseCase()).thenThrow(NullPointerException())
 
             val latch = CountDownLatch(1)
 
@@ -111,11 +93,11 @@ class SearchLocationViewModelTest {
             assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
         }
 
-    /** nullポインタ例外が発生した場合のテスト */
+    /** セキュリティ例外が発生した場合のテスト */
     @Test
-    fun testGetLocationNullPointerException() =
+    fun testGetLocationSecurityException() =
         runBlocking {
-            `when`(getCurrentLocationUseCase()).thenThrow(NullPointerException())
+            `when`(getCurrentLocationUseCase()).thenThrow(SecurityException())
 
             val latch = CountDownLatch(1)
 
