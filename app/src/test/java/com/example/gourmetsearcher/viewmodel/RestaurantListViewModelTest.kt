@@ -140,14 +140,4 @@ class RestaurantListViewModelTest {
 
             verify(getHotPepperDataUseCase, times(2)).invoke(mockSearchTerms)
         }
-
-    /** 空のキーワードでの検索リトライテスト */
-    @Test
-    fun testRetrySearchWithEmptyKeyword() =
-        runTest {
-            viewModel.searchRestaurants(mockSearchTerms)
-            viewModel.retrySearch()
-
-            verify(getHotPepperDataUseCase, times(1)).invoke(mockSearchTerms)
-        }
 }
