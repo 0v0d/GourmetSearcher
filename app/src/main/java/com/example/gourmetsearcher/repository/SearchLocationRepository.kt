@@ -10,7 +10,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
-/** 位置情報の取得のリポジトリ*/
+/** 位置情報の取得のリポジトリ */
 interface SearchLocationRepository {
     suspend fun getLocation(): Location?
 }
@@ -48,7 +48,8 @@ class SearchLocationRepositoryImpl
         private suspend fun fetchLocation(): Location? =
             suspendCancellableCoroutine { continuation ->
                 try {
-                    locationProvider.getCurrentLocation(Priority.PRIORITY_LOW_POWER, null)
+                    locationProvider
+                        .getCurrentLocation(Priority.PRIORITY_LOW_POWER, null)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 continuation.resume(task.result)
