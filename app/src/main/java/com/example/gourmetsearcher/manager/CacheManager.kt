@@ -8,15 +8,12 @@ import javax.inject.Singleton
 
 /**
  * キャッシュマネージャ
- * @param cacheSize キャッシュサイズ
+ * @param cache キャッシュ
  */
 @Singleton
 class CacheManager(
-    cacheSize: Int,
+    private val cache: LruCache<SearchTerms, Response<HotPepperResponse>?>,
 ) {
-    /** キャッシュ */
-    private val cache = LruCache<SearchTerms, Response<HotPepperResponse>?>(cacheSize)
-
     /**
      *  キャッシュから結果を取得する
      * @param searchTerms 検索条件
