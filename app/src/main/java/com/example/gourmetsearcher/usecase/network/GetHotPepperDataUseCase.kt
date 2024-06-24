@@ -9,14 +9,14 @@ import javax.inject.Inject
  * @param hotPepperRepository HotPepperRepository
  */
 class GetHotPepperDataUseCase
-    @Inject
-    constructor(
-        private val hotPepperRepository: HotPepperRepository,
-    ) {
-        /**
-         * ホットペッパーAPIからデータを取得する
-         * @param searchTerms 検索条件
-         * @return Response<HotPepperResponse>レストラン情報 or null
-         */
-        suspend operator fun invoke(searchTerms: SearchTerms) = hotPepperRepository.execute(searchTerms)
-    }
+@Inject
+constructor(
+    private val hotPepperRepository: HotPepperRepository,
+) {
+    /**
+     * ホットペッパーAPIからデータを取得する
+     * @param searchTerms 検索条件
+     * @return Response<HotPepperResponse>レストラン情報 or null
+     */
+    suspend operator fun invoke(searchTerms: SearchTerms) = hotPepperRepository.execute(searchTerms)
+}

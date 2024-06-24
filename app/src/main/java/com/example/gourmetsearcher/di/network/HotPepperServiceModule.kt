@@ -17,5 +17,7 @@ object HotPepperServiceModule {
      * @return HotPepperNetworkDataSource
      */
     @Provides
-    fun provideHotPepperService(retrofit: Retrofit): HotPepperNetworkDataSource = retrofit.create(HotPepperNetworkDataSource::class.java)
+    fun provideHotPepperService(
+        retrofit: Retrofit
+    ): HotPepperNetworkDataSource = retrofit.create(HotPepperNetworkDataSource::class.java)
 }

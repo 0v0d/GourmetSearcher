@@ -20,80 +20,83 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SearchLocationViewModel
-    @Inject
-    constructor(
-        private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
-    ) : ViewModel() {
-        private val _locationData = MutableStateFlow<CurrentLocation?>(null)
+@Inject
+constructor(
+    private val getCurrentLocationUseCase: GetCurrentLocationUseCase,
+) : ViewModel() {
+    private val _locationData = MutableStateFlow<CurrentLocation?>(null)
 
-        /** 現在地のデータ */
-        val locationData = _locationData.asStateFlow()
+    /** 現在地のデータ */
+    val locationData = _locationData.asStateFlow()
 
-        private val _openLocationSettingEvent = MutableSharedFlow<Unit>()
+    private val _openLocationSettingEvent = MutableSharedFlow<Unit>()
 
-        /**現在地取得に失敗した場合に設定画面を開くためのイベント */
-        val openLocationSettingEvent = _openLocationSettingEvent.asSharedFlow()
+    /**現在地取得に失敗した場合に設定画面を開くためのイベント */
+    val openLocationSettingEvent = _openLocationSettingEvent.asSharedFlow()
 
-        private val _retryEvent = MutableSharedFlow<Unit>()
+    private val _retryEvent = MutableSharedFlow<Unit>()
 
-        /** 現在地取得に失敗した場合にリトライするためのイベント */
-        val retryEvent = _retryEvent.asSharedFlow()
+    /** 現在地取得に失敗した場合にリトライするためのイベント */
+    val retryEvent = _retryEvent.asSharedFlow()
 
-        /**
-         *現在地取得の状態
-         * LOADING: 現在地取得中
-         * ERROR: 現在地取得失敗
-         */
-        private val _searchState = MutableStateFlow(LocationSearchState.LOADING)
+    /**
+     *現在地取得の状態
+     * LOADING: 現在地取得中
+     * ERROR: 現在地取得失敗
+     */
+    private val _searchState = MutableStateFlow(LocationSearchState.LOADING)
 
-        val searchState = _searchState.asStateFlow()
+    val searchState = _searchState.asStateFlow()
 
-        /** 現在地を取得する */
-        fun getLocation() {
-            viewModelScope.launch {
-                try {
-                    performSearch()
-                } catch (e: SecurityException) {
-                    _searchState.value = LocationSearchState.ERROR
-                } catch (e: Exception) {
-                    _searchState.value = LocationSearchState.ERROR
-                }
+    /** 現在地を取得する */
+    fun getLocation() {
+        viewModelScope.launch {
+            try {
+                performSearch()
+            } catch (e: SecurityException) {
+                _searchState.value = LocationSearchState.ERROR
+            } catch (e: Exception) {
+                _searchState.value = LocationSearchState.ERROR
             }
-        }
-
-        /** 現在地を取得するための処理 */
-        private suspend fun performSearch() {
-            val location = getCurrentLocationUseCase()
-            location?.let {
-                handleLocationSuccess(it)
-                return
-            }
-            _searchState.value = LocationSearchState.ERROR
-        }
-
-        /** 現在地取得に成功した場合の処理
-         * @param location 現在地の緯度経度
-         */
-        private fun handleLocationSuccess(location: Location) {
-            val locationData = CurrentLocation(location.latitude, location.longitude)
-            _locationData.value = locationData
-        }
-
-        /** 現在地取得に失敗した場合に設定画面を開くための処理 */
-        fun onOpenLocationSettingClicked() {
-            viewModelScope.launch {
-                _openLocationSettingEvent.emit(Unit)
-            }
-        }
-
-        /** 現在地取得に失敗した場合のリトライ処理 */
-        fun onRetryClicked() {
-            viewModelScope.launch {
-                _retryEvent.emit(Unit)
-            }
-        }
-
-        fun setSearchState(state: LocationSearchState) {
-            _searchState.value = state
         }
     }
+
+    /** 現在地を取得するための処理 */
+    private suspend fun performSearch() {
+        val location = getCurrentLocationUseCase()
+        location?.let {
+            handleLocationSuccess(it)
+            return
+        }
+        _searchState.value = LocationSearchState.ERROR
+    }
+
+    /** 現在地取得に成功した場合の処理
+     * @param location 現在地の緯度経度
+     */
+    private fun handleLocationSuccess(location: Location) {
+        val locationData = CurrentLocation(location.latitude, location.longitude)
+        _locationData.value = locationData
+    }
+
+    /** 現在地取得に失敗した場合に設定画面を開くための処理 */
+    fun onOpenLocationSettingClicked() {
+        viewModelScope.launch {
+            _openLocationSettingEvent.emit(Unit)
+        }
+    }
+
+    /** 現在地取得に失敗した場合のリトライ処理 */
+    fun onRetryClicked() {
+        viewModelScope.launch {
+            _retryEvent.emit(Unit)
+        }
+    }
+
+    /** 現在地取得の状態を設定する
+     * @param state 現在地取得の状態
+     */
+    fun setSearchState(state: LocationSearchState) {
+        _searchState.value = state
+    }
+}

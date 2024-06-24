@@ -124,8 +124,14 @@ class SearchLocationFragment : Fragment() {
     /** パーミッションが許可されなかった場合の処理 */
     private fun handleLocationPermissionCancel() {
         when {
+            // パーミッションの説明ダイアログを表示する
             shouldShowLocationPermissionRationale() -> {
-                showPermissionExplanationDialog()
+                MaterialAlertDialogBuilder(requireContext(), R.style.permissionExplanationDialog)
+                    .setTitle(R.string.search_location_permission_required_title)
+                    .setMessage(R.string.search_location_permission_required_message)
+                    .setPositiveButton(R.string.common_ok) { _, _ -> requestLocationPermission() }
+                    .create()
+                    .show()
             }
 
             else -> {
@@ -167,16 +173,6 @@ class SearchLocationFragment : Fragment() {
                 else -> R.string.search_location_permission_denied_message
             },
         )
-
-    /**  パーミッションの説明ダイアログを表示する */
-    private fun showPermissionExplanationDialog() {
-        MaterialAlertDialogBuilder(requireContext(), R.style.permissionExplanationDialog)
-            .setTitle(R.string.search_location_permission_required_title)
-            .setMessage(R.string.search_location_permission_required_message)
-            .setPositiveButton(R.string.common_ok) { _, _ -> requestLocationPermission() }
-            .create()
-            .show()
-    }
 
     /** 位置情報の設定画面を開くイベントを監視 */
     private suspend fun observerOpenLocationSettingEvent() {

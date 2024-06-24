@@ -17,5 +17,7 @@ object HotPepperUseCaseModule {
      * @return HotPepperUseCase
      */
     @Provides
-    fun provideHotPepperUseCase(repository: HotPepperRepository): GetHotPepperDataUseCase = GetHotPepperDataUseCase(repository)
+    fun provideHotPepperUseCase(
+        repository: HotPepperRepository
+    ): GetHotPepperDataUseCase = GetHotPepperDataUseCase(repository)
 }

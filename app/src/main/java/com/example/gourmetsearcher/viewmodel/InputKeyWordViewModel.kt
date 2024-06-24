@@ -17,39 +17,39 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class InputKeyWordViewModel
-    @Inject
-    constructor(
-        private val getHistoryListUseCase: GetKeyWordHistoryUseCase,
-        private val saveHistoryItemUseCase: SaveKeyWordHistoryUseCase,
-        private val clearHistoryUseCase: ClearKeyWordHistoryUseCase,
-    ) : ViewModel() {
-        private val _historyListData = MutableStateFlow<List<String>>(emptyList())
+@Inject
+constructor(
+    private val getHistoryListUseCase: GetKeyWordHistoryUseCase,
+    private val saveHistoryItemUseCase: SaveKeyWordHistoryUseCase,
+    private val clearHistoryUseCase: ClearKeyWordHistoryUseCase,
+) : ViewModel() {
+    private val _historyListData = MutableStateFlow<List<String>>(emptyList())
 
-        /** キーワード履歴リストデータ */
-        val historyListData = _historyListData.asStateFlow()
+    /** キーワード履歴リストデータ */
+    val historyListData = _historyListData.asStateFlow()
 
-        /** 初期化でキーワード履歴リストを取得する */
-        init {
-            loadHistory()
-        }
-
-        /** 履歴リストを取得する */
-        private fun loadHistory() {
-            _historyListData.value = getHistoryListUseCase()
-        }
-
-        /**
-         *  入力されたキーワードを保存する
-         *  @param input 入力されたキーワード
-         */
-        fun saveHistoryItem(input: String) {
-            saveHistoryItemUseCase(input)
-            loadHistory()
-        }
-
-        /** 履歴リストをクリアする */
-        fun clearHistory() {
-            clearHistoryUseCase()
-            loadHistory()
-        }
+    /** 初期化でキーワード履歴リストを取得する */
+    init {
+        loadHistory()
     }
+
+    /** 履歴リストを取得する */
+    private fun loadHistory() {
+        _historyListData.value = getHistoryListUseCase()
+    }
+
+    /**
+     *  入力されたキーワードを保存する
+     *  @param input 入力されたキーワード
+     */
+    fun saveHistoryItem(input: String) {
+        saveHistoryItemUseCase(input)
+        loadHistory()
+    }
+
+    /** 履歴リストをクリアする */
+    fun clearHistory() {
+        clearHistoryUseCase()
+        loadHistory()
+    }
+}
