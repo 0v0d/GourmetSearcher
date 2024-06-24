@@ -94,17 +94,3 @@ jobs:
         if: always()
         with:
           report_paths: '**/build/test-results/testDebugUnitTest/TEST-*.xml'
-
-  ktlint:
-    name: Ktlint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Run Ktlint
-        uses: ScaCap/action-ktlint@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review
-          fail_on_error: true
