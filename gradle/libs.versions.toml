@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.0"
+coil = "2.6.0"
 coreTesting = "2.2.0"
 detektFormatting = "1.23.1"
 kotlin = "2.0.0"
@@ -16,7 +17,6 @@ navigation = "2.7.7"
 junit = "4.13.2"
 leakcanary = "2.14"
 dagger = "2.51.1"
-picasso = "2.71828"
 playServicesLocation = "21.3.0"
 retrofit = "2.11.0"
 moshi = "1.15.1"
@@ -29,6 +29,7 @@ detekt = "1.23.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormatting" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -50,9 +51,6 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 #JsonParser
 retrofit-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
-
-#Image Loading
-picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 
 #Location
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }

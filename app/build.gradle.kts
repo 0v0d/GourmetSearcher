@@ -84,7 +84,7 @@ dependencies {
     // Jsonパーサライブラリ
     implementation(libs.moshi.kotlin)
     // 画像表示ライブラリ
-    implementation(libs.picasso)
+    implementation(libs.coil)
 
     // Dagger-Hilt
     implementation(libs.dagger.hilt.android)
@@ -120,7 +120,9 @@ kapt {
     correctErrorTypes = true
 }
 detekt {
+    parallel = true
     config.setFrom("${rootProject.projectDir}/config/detekt/detekt.yml")
     buildUponDefaultConfig = true
     autoCorrect = true // 自動でフォーマット
+    basePath = rootDir.absolutePath
 }

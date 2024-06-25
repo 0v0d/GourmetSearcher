@@ -3,7 +3,6 @@ package com.example.gourmetsearcher.repository
 import com.example.gourmetsearcher.BuildConfig
 import com.example.gourmetsearcher.manager.CacheManager
 import com.example.gourmetsearcher.model.api.HotPepperResponse
-import com.example.gourmetsearcher.model.data.RestaurantQueryParams
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
 import kotlinx.coroutines.Dispatchers
@@ -60,21 +59,24 @@ constructor(
             cacheManager.get(searchTerms)?.let { return@withContext it }
 
             return@withContext try {
-                val params = RestaurantQueryParams(key, searchTerms, format)
-                val response = service.getRestaurantDataWithObject(params)
+                val response =
+                    service.getRestaurantDatum(
+                        key = key,
+                        keyword = searchTerms.keyword,
+                        lat = searchTerms.location.lat,
+                        lng = searchTerms.location.lng,
+                        range = searchTerms.range,
+                        format = format,
+                    )
                 cacheManager.put(searchTerms, response)
                 response
             } catch (e: IOException) {
-                // ネットワーク関連の例外処理
                 null
             } catch (e: HttpException) {
-                // HTTP例外の処理
                 null
             } catch (e: ParseException) {
-                // パース例外の処理
                 null
             } catch (e: Exception) {
-                // その他の予期せぬ例外の処理
                 null
             }
         }
