@@ -59,8 +59,8 @@ jobs:
 
       - name: Run Reviewdog for Lint
         uses: reviewdog/action-setup@v1
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
+        with:
+          reviewdog_github_api_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           find . -regex '^.*/build/reports/lint-results.*\.sarif$' -type f | while read file_path; do
             reviewdog -f=sarif -reporter=github-pr-review < "$file_path"
@@ -83,7 +83,8 @@ jobs:
 
       - name: Run Reviewdog for Detekt
         if: failure()
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_github_api_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cat ./build/reports/detekt/detekt.xml | reviewdog -f=checkstyle -name="detekt" -reporter="github-pr-review"
