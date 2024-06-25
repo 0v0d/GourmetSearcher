@@ -57,10 +57,12 @@ jobs:
         run: ./gradlew app:lintDebug --continue
         continue-on-error: true
 
-      - name: Run Reviewdog for Lint
+      - name: Setup Reviewdog
         uses: reviewdog/action-setup@v1
-        with:
-          reviewdog_github_api_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Reviewdog for Lint
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           find . -regex '^.*/build/reports/lint-results.*\.sarif$' -type f | while read file_path; do
             reviewdog -f=sarif -reporter=github-pr-review < "$file_path"
@@ -83,8 +85,7 @@ jobs:
 
       - name: Run Reviewdog for Detekt
         if: failure()
-        uses: reviewdog/action-setup@v1
-        with:
-          reviewdog_github_api_token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cat ./build/reports/detekt/detekt.xml | reviewdog -f=checkstyle -name="detekt" -reporter="github-pr-review"
