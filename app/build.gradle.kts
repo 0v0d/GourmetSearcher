@@ -60,6 +60,9 @@ android {
         // テスト時のアニメーションを無効化
         animationsDisabled = true
     }
+    lint {
+        sarifReport = true
+    }
 }
 
 dependencies {
