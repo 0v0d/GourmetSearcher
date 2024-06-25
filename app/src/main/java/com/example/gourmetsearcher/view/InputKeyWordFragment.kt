@@ -47,8 +47,8 @@ class InputKeyWordFragment : Fragment() {
     }
 
     /** キーワード履歴のリストのアイテムをクリックしたときの処理 */
-    private val inputKeyWordHistoryItemClick = { it: String ->
-        binding.searchInputEditText.setText(it)
+    private val inputKeyWordHistoryItemClick = { text: String ->
+        binding.searchInputEditText.setText(text)
         binding.searchInputEditText.setSelection(
             binding.searchInputEditText.text?.length ?: 0,
         )

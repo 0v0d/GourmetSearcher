@@ -1,5 +1,3 @@
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -9,7 +7,8 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -61,6 +60,9 @@ android {
         // テスト時のアニメーションを無効化
         animationsDisabled = true
     }
+    lint {
+        sarifReport = true
+    }
 }
 
 dependencies {
@@ -91,6 +93,12 @@ dependencies {
     // メモリリーク検出ライブラリ
     debugImplementation(libs.leakcanary)
 
+    // detektフォーマット
+    detektPlugins(libs.detekt.formatting)
+
+    // Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
+
     // MockitoJUnitRunner
     testImplementation(libs.mockito.core)
     testImplementation(libs.junit)
@@ -111,13 +119,8 @@ kapt {
     // エラータイプの修正を有効化
     correctErrorTypes = true
 }
-ktlint {
-    android = true
-    outputToConsole = true
-    verbose = true
-    debug = true
-    ignoreFailures = true
-    reporters {
-        reporter(ReporterType.CHECKSTYLE)
-    }
+detekt {
+    config.setFrom("${rootProject.projectDir}/config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
+    autoCorrect = true // 自動でフォーマット
 }

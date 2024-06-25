@@ -39,8 +39,8 @@ class RestaurantListFragment : Fragment() {
     }
 
     /** レストランリストをクリックした時の処理 */
-    private val restaurantItemClick = { it: ShopsDomain ->
-        navigateToRestaurantDetailFragment(it)
+    private val restaurantItemClick = { shopsDomain: ShopsDomain ->
+        navigateToRestaurantDetailFragment(shopsDomain)
     }
 
     override fun onCreateView(
@@ -71,8 +71,8 @@ class RestaurantListFragment : Fragment() {
 
     /** searchStateの変化を監視する */
     private suspend fun observeSearchState() {
-        viewModel.searchState.collect {
-            switchSearchState(it)
+        viewModel.searchState.collect { state ->
+            switchSearchState(state)
         }
     }
 
