@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.0"
+coil = "2.6.0"
 coreTesting = "2.2.0"
 detektFormatting = "1.23.1"
 kotlin = "2.0.0"
@@ -29,6 +30,7 @@ detekt = "1.23.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormatting" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
