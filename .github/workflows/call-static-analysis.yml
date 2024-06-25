@@ -38,17 +38,15 @@ jobs:
           chmod +x ./gradlew
           echo "API_KEY=${{ secrets.API_KEY }}" > local.properties
 
-      - name: Cache Dependencies
+      - name: Cache Gradle
         uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-            ~/.android/avd
-            ~/.android/build-cache
-          key: ${{ runner.os }}-deps-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/avd-manager.json') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-deps-
+            ${{ runner.os }}-gradle-
 
       - name: Run Gradle Build
         run: ./gradlew build --parallel --configure-on-demand
@@ -59,6 +57,8 @@ jobs:
 
       - name: Setup Reviewdog
         uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
 
       - name: Run Reviewdog for Lint
         env:
@@ -72,7 +72,7 @@ jobs:
         run: ./gradlew testDebugUnitTest --parallel
 
       - name: Publish Test Report
-        if: cancelled() != true
+        if: cancelled() != true || failure()
         uses: dorny/test-reporter@v1
         with:
           name: "JUnit Test Report"
@@ -88,4 +88,4 @@ jobs:
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat ./build/reports/detekt/detekt.xml | reviewdog -f=checkstyle -name="detekt" -reporter="github-pr-review"
+          cat ./build/reports/detekt.xml | reviewdog -f=checkstyle -name="detekt" -reporter="github-pr-review"
