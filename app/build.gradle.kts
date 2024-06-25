@@ -84,7 +84,7 @@ dependencies {
     // Jsonパーサライブラリ
     implementation(libs.moshi.kotlin)
     // 画像表示ライブラリ
-    implementation(libs.picasso)
+    implementation(libs.coil)
 
     // Dagger-Hilt
     implementation(libs.dagger.hilt.android)
