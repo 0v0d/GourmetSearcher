@@ -14,4 +14,9 @@ data class SearchTerms(
     val keyword: String,
     val location: CurrentLocation,
     val range: Int,
-) : Serializable
+) : Serializable {
+    companion object {
+        @Suppress("ConstPropertyName")
+        private const val serialVersionUID = 1L
+    }
+}

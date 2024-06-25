@@ -11,4 +11,9 @@ import java.io.Serializable
 data class CurrentLocation(
     val lat: Double,
     val lng: Double,
-) : Serializable
+) : Serializable {
+    private companion object {
+        @Suppress("ConstPropertyName")
+        private const val serialVersionUID = 1L
+    }
+}
