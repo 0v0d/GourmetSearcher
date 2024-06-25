@@ -57,7 +57,8 @@ jobs:
         run: ./gradlew app:lintDebug --continue
         continue-on-error: true
 
-      - uses: reviewdog/action-setup@v1
+      - name: Run Reviewdog for Lint
+        uses: reviewdog/action-setup@v1
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         run: |
@@ -85,5 +86,4 @@ jobs:
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat ./build/reports/detekt/detekt.xml | 
-          reviewdog -f=checkstyle -name="detekt" -reporter="github-pr-review"
+          cat ./build/reports/detekt/detekt.xml | reviewdog -f=checkstyle -name="detekt" -reporter="github-pr-review"

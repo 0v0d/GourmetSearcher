@@ -20,7 +20,7 @@ jobs:
     secrets:
       API_KEY: ${{ secrets.API_KEY }}
 
-  AutoMarge:
+  AutoMerge:
     needs: StaticAnalysis
     runs-on: ubuntu-latest
     permissions:
@@ -31,5 +31,3 @@ jobs:
         uses: pascalgn/automerge-action@v0.16.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
