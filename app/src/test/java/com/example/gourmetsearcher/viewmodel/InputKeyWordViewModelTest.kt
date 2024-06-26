@@ -3,17 +3,26 @@ package com.example.gourmetsearcher.viewmodel
 import com.example.gourmetsearcher.usecase.keywordhistory.ClearKeyWordHistoryUseCase
 import com.example.gourmetsearcher.usecase.keywordhistory.GetKeyWordHistoryUseCase
 import com.example.gourmetsearcher.usecase.keywordhistory.SaveKeyWordHistoryUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 /** InputKeyWordViewModelのユニットテストクラス */
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class InputKeyWordViewModelTest {
     @Mock
@@ -25,54 +34,100 @@ class InputKeyWordViewModelTest {
     @Mock
     private lateinit var clearHistoryUseCase: ClearKeyWordHistoryUseCase
 
-    @InjectMocks
     private lateinit var viewModel: InputKeyWordViewModel
 
-    private val initialHistory = listOf("apple", "banana")
+    private val testDispatcher = UnconfinedTestDispatcher()
+
+    @Before
+    fun setup() {
+        Dispatchers.setMain(testDispatcher)
+        viewModel =
+            InputKeyWordViewModel(
+                getHistoryListUseCase,
+                saveHistoryItemUseCase,
+                clearHistoryUseCase,
+            )
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
 
     /** 初期化時に履歴リストが正しく読み込まれることを確認するテスト */
     @Test
-    fun testLoadHistoryOnInit() {
-        `when`(getHistoryListUseCase()).thenReturn(initialHistory)
+    fun testLoadHistoryOnInit() =
+        runBlocking {
+            val initialHistory = listOf("apple", "banana")
+            `when`(getHistoryListUseCase()).thenReturn(flowOf(initialHistory))
 
-        viewModel = InputKeyWordViewModel(getHistoryListUseCase, saveHistoryItemUseCase, clearHistoryUseCase)
+            viewModel =
+                InputKeyWordViewModel(
+                    getHistoryListUseCase,
+                    saveHistoryItemUseCase,
+                    clearHistoryUseCase,
+                )
 
-        assertEquals(initialHistory, viewModel.historyListData.value)
-    }
+            assertEquals(viewModel.historyListData.value, initialHistory)
+        }
 
     /** 新しい項目を保存した後、履歴リストが更新されることを確認するテスト */
     @Test
-    fun testSaveHistoryItemUpdatesHistoryList() {
-        val newItem = "cherry"
-        val updatedHistory = listOf("apple", "banana", "cherry")
+    fun testSaveHistoryItemUpdatesHistoryList() =
+        runTest {
+            val initialHistory = listOf("apple", "banana")
+            val newItem = "cherry"
+            val updatedHistory = listOf("apple", "banana", "cherry")
 
-        `when`(getHistoryListUseCase()).thenReturn(initialHistory, updatedHistory)
+            `when`(getHistoryListUseCase()).thenReturn(flowOf(initialHistory, updatedHistory))
 
-        viewModel = InputKeyWordViewModel(getHistoryListUseCase, saveHistoryItemUseCase, clearHistoryUseCase)
-        viewModel.saveHistoryItem(newItem)
+            viewModel =
+                InputKeyWordViewModel(
+                    getHistoryListUseCase,
+                    saveHistoryItemUseCase,
+                    clearHistoryUseCase,
+                )
+            viewModel.saveHistoryItem(newItem)
 
-        verify(saveHistoryItemUseCase).invoke(newItem)
-        assertEquals(updatedHistory, viewModel.historyListData.value)
-    }
+            verify(saveHistoryItemUseCase).invoke(newItem)
+            assertEquals(viewModel.historyListData.value, updatedHistory)
+        }
 
     /** 履歴リストの保存と取得を確認するテスト */
     @Test
-    fun testSaveAndGetHistoryItem() {
-        val keyword = "test"
-        `when`(getHistoryListUseCase()).thenReturn(listOf(keyword))
+    fun testSaveAndGetHistoryItem() =
+        runBlocking {
+            val keyword = "test"
+            `when`(getHistoryListUseCase()).thenReturn(flowOf(listOf(keyword)))
 
-        viewModel.saveHistoryItem(keyword)
+            viewModel =
+                InputKeyWordViewModel(
+                    getHistoryListUseCase,
+                    saveHistoryItemUseCase,
+                    clearHistoryUseCase,
+                )
+            viewModel.saveHistoryItem(keyword)
 
-        verify(saveHistoryItemUseCase, times(1)).invoke(keyword)
-        assertEquals(listOf(keyword), viewModel.historyListData.value)
-    }
+            verify(saveHistoryItemUseCase).invoke(keyword)
+            val historyList = viewModel.historyListData.value
+            assertEquals(listOf(keyword), historyList)
+        }
 
     /** 履歴リストのクリアを確認するテスト */
     @Test
-    fun testClearHistory() {
-        viewModel.clearHistory()
+    fun testClearHistory() =
+        runBlocking {
+            `when`(getHistoryListUseCase()).thenReturn(flowOf(emptyList()))
 
-        verify(clearHistoryUseCase, times(1)).invoke()
-        assertEquals(emptyList<String>(), viewModel.historyListData.value)
-    }
+            viewModel =
+                InputKeyWordViewModel(
+                    getHistoryListUseCase,
+                    saveHistoryItemUseCase,
+                    clearHistoryUseCase,
+                )
+            viewModel.clearHistory()
+
+            verify(clearHistoryUseCase).invoke()
+            assertEquals(viewModel.historyListData.value, emptyList<String>())
+        }
 }

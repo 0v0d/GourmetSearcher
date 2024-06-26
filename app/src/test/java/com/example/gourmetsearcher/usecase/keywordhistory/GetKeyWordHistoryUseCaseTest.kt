@@ -1,7 +1,16 @@
 package com.example.gourmetsearcher.usecase.keywordhistory
 
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -10,6 +19,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 /** GetKeyWordHistoryUseCaseのユニットテストクラス */
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class GetKeyWordHistoryUseCaseTest {
     @Mock
@@ -18,14 +28,26 @@ class GetKeyWordHistoryUseCaseTest {
     @InjectMocks
     private lateinit var getKeyWordHistoryUseCase: GetKeyWordHistoryUseCase
 
+    private val testDispatcher = UnconfinedTestDispatcher()
+
+    @Before
+    fun setup() {
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
     /** invokeが履歴リストを返すかテスト */
     @Test
-    fun testInvokeReturnsHistoryList() {
-        val expectedHistoryList = listOf("keyword1", "keyword2", "keyword3")
-        `when`(keyWordHistoryRepository.getHistoryList()).thenReturn(expectedHistoryList)
+    fun testInvokeReturnsHistoryList() =
+        runTest {
+            val expectedHistoryList = listOf("keyword1", "keyword2", "keyword3")
+            `when`(keyWordHistoryRepository.getHistoryList()).thenReturn(flowOf(expectedHistoryList))
 
-        val result = getKeyWordHistoryUseCase()
-
-        assertEquals(expectedHistoryList, result)
-    }
+            val result = getKeyWordHistoryUseCase()
+            result.collect { assertEquals(expectedHistoryList, it) }
+        }
 }
