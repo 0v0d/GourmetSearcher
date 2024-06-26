@@ -19,45 +19,45 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class InputKeyWordViewModel
-    @Inject
-    constructor(
-        private val getHistoryListUseCase: GetKeyWordHistoryUseCase,
-        private val saveHistoryItemUseCase: SaveKeyWordHistoryUseCase,
-        private val clearHistoryUseCase: ClearKeyWordHistoryUseCase,
-    ) : ViewModel() {
-        private val _historyListData = MutableStateFlow<List<String>>(emptyList())
+@Inject
+constructor(
+    private val getHistoryListUseCase: GetKeyWordHistoryUseCase,
+    private val saveHistoryItemUseCase: SaveKeyWordHistoryUseCase,
+    private val clearHistoryUseCase: ClearKeyWordHistoryUseCase,
+) : ViewModel() {
+    private val _historyListData = MutableStateFlow<List<String>>(emptyList())
 
-        /** キーワード履歴リストデータ */
-        val historyListData = _historyListData.asStateFlow()
+    /** キーワード履歴リストデータ */
+    val historyListData = _historyListData.asStateFlow()
 
-        /** 初期化でキーワード履歴リストを取得する */
-        init {
-            loadHistory()
-        }
+    /** 初期化でキーワード履歴リストを取得する */
+    init {
+        loadHistory()
+    }
 
-        /** 履歴リストを取得する */
-        private fun loadHistory() {
-            viewModelScope.launch {
-                getHistoryListUseCase().collect { historyList ->
-                    _historyListData.value = historyList
-                }
-            }
-        }
-
-        /**
-         *  入力されたキーワードを保存する
-         *  @param input 入力されたキーワード
-         */
-        fun saveHistoryItem(input: String) {
-            viewModelScope.launch {
-                saveHistoryItemUseCase(input)
-            }
-        }
-
-        /** 履歴リストをクリアする */
-        fun clearHistory() {
-            viewModelScope.launch {
-                clearHistoryUseCase()
+    /** 履歴リストを取得する */
+    private fun loadHistory() {
+        viewModelScope.launch {
+            getHistoryListUseCase().collect { historyList ->
+                _historyListData.value = historyList
             }
         }
     }
+
+    /**
+     *  入力されたキーワードを保存する
+     *  @param input 入力されたキーワード
+     */
+    fun saveHistoryItem(input: String) {
+        viewModelScope.launch {
+            saveHistoryItemUseCase(input)
+        }
+    }
+
+    /** 履歴リストをクリアする */
+    fun clearHistory() {
+        viewModelScope.launch {
+            clearHistoryUseCase()
+        }
+    }
+}

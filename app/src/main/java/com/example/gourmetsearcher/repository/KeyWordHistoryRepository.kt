@@ -25,33 +25,33 @@ interface KeyWordHistoryRepository {
  */
 @Singleton
 class KeyWordHistoryRepositoryImpl
-    @Inject
-    constructor(
-        private val preferences: PreferencesManager,
-    ) : KeyWordHistoryRepository {
-        /**
-         * 直近の5件の入力されたキーワードを保存する
-         * @param input 入力されたキーワード
-         */
-        override suspend fun saveHistoryItem(input: String) {
-            input.takeIf { it.isNotBlank() }?.let {
-                preferences.saveHistoryItem(it)
-            }
-        }
-
-        /**
-         * 検索履歴を取得する
-         * @return 検索履歴のFlow
-         */
-        override fun getHistoryList(): Flow<List<String>> =
-            preferences
-                .getHistoryList()
-                .flowOn(Dispatchers.IO)
-
-        /**
-         * 検索履歴をクリアする
-         */
-        override suspend fun clearHistory() {
-            preferences.clearHistory()
+@Inject
+constructor(
+    private val preferences: PreferencesManager,
+) : KeyWordHistoryRepository {
+    /**
+     * 直近の5件の入力されたキーワードを保存する
+     * @param input 入力されたキーワード
+     */
+    override suspend fun saveHistoryItem(input: String) {
+        input.takeIf { it.isNotBlank() }?.let {
+            preferences.saveHistoryItem(it)
         }
     }
+
+    /**
+     * 検索履歴を取得する
+     * @return 検索履歴のFlow
+     */
+    override fun getHistoryList(): Flow<List<String>> =
+        preferences
+            .getHistoryList()
+            .flowOn(Dispatchers.IO)
+
+    /**
+     * 検索履歴をクリアする
+     */
+    override suspend fun clearHistory() {
+        preferences.clearHistory()
+    }
+}
