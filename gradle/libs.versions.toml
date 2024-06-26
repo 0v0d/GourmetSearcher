@@ -5,8 +5,8 @@ coreTesting = "2.2.0"
 detektFormatting = "1.23.1"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
+junitVersion = "1.2.0"
+espressoCore = "3.6.0"
 appcompat = "1.7.0"
 kotlinxCoroutinesTest = "1.8.1"
 kotlinxSerializationJson = "1.6.1"
@@ -20,12 +20,13 @@ dagger = "2.51.1"
 playServicesLocation = "21.3.0"
 retrofit = "2.11.0"
 moshi = "1.15.1"
-runnerVersion = "1.5.2"
+runnerVersion = "1.6.0"
 secretsGradlePlugin = "2.0.1"
-rules = "1.5.0"
-espressoContrib = "3.5.1"
+rules = "1.6.0"
+espressoContrib = "3.6.0"
 uiautomatorV18 = "2.2.0-alpha1"
-detekt = "1.23.3"
+detekt = "1.23.6"
+serialization = "1.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -82,4 +83,4 @@ dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "da
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
