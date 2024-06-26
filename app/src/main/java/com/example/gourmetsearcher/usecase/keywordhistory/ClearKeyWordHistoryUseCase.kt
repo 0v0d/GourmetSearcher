@@ -8,10 +8,10 @@ import javax.inject.Inject
  * @param repository KeyWordHistoryRepository
  */
 class ClearKeyWordHistoryUseCase
-@Inject
-constructor(
-    private val repository: KeyWordHistoryRepository,
-) {
-    /** 検索履歴をクリアする */
-    operator fun invoke() = repository.clearHistory()
-}
+    @Inject
+    constructor(
+        private val repository: KeyWordHistoryRepository,
+    ) {
+        /** 検索履歴をクリアする */
+        suspend operator fun invoke() = repository.clearHistory()
+    }

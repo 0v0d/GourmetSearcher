@@ -99,6 +99,9 @@ dependencies {
     // Kotlin Serialization
     implementation(libs.kotlinx.serialization.json)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
     // MockitoJUnitRunner
     testImplementation(libs.mockito.core)
     testImplementation(libs.junit)
