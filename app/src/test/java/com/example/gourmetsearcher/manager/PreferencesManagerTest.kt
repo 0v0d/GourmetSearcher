@@ -40,10 +40,11 @@ class PreferencesManagerTest {
 
     /** テスト終了時にデータをクリアする */
     @After
-    fun tearDown() =
+    fun tearDown() {
         runBlocking {
             dataStore.edit { it.clear() }
         }
+    }
 
     /** 空の履歴に新しいアイテムを追加するテスト */
     @Test
