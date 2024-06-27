@@ -16,5 +16,5 @@ constructor(
      * 検索履歴を保存する
      * @param keyword 検索キーワード
      */
-    operator fun invoke(keyword: String) = repository.saveHistoryItem(keyword)
+    suspend operator fun invoke(keyword: String) = repository.saveHistoryItem(keyword)
 }

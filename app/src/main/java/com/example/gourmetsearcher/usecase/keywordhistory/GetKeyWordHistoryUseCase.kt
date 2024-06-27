@@ -1,6 +1,7 @@
 package com.example.gourmetsearcher.usecase.keywordhistory
 
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -16,5 +17,5 @@ constructor(
      * 検索履歴を取得する
      * @return 検索履歴
      */
-    operator fun invoke(): List<String> = repository.getHistoryList()
+    operator fun invoke(): Flow<List<String>> = repository.getHistoryList()
 }

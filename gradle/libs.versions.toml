@@ -2,11 +2,12 @@
 agp = "8.5.0"
 coil = "2.6.0"
 coreTesting = "2.2.0"
+datastorePreferences = "1.1.1"
 detektFormatting = "1.23.1"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
-junitVersion = "1.2.0"
-espressoCore = "3.6.0"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
 appcompat = "1.7.0"
 kotlinxCoroutinesTest = "1.8.1"
 kotlinxSerializationJson = "1.7.1"
@@ -20,16 +21,17 @@ dagger = "2.51.1"
 playServicesLocation = "21.3.0"
 retrofit = "2.11.0"
 moshi = "1.15.1"
-runnerVersion = "1.6.0"
+runnerVersion = "1.6.1"
 secretsGradlePlugin = "2.0.1"
-rules = "1.6.0"
-espressoContrib = "3.6.0"
+rules = "1.6.1"
+espressoContrib = "3.6.1"
 uiautomatorV18 = "2.2.0-alpha1"
 detekt = "1.23.6"
 serialization = "2.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormatting" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }

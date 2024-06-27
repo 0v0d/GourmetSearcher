@@ -66,10 +66,8 @@ class InputKeyWordFragment : Fragment() {
                 false,
             )
 
-        binding.searchParameters.apply {
-            viewModel = viewModel
-            lifecycleOwner = viewLifecycleOwner
-        }
+        binding.searchParameters.viewModel = viewModel
+        binding.searchParameters.lifecycleOwner = viewLifecycleOwner
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

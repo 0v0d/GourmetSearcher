@@ -1,12 +1,14 @@
 package com.example.gourmetsearcher.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.gourmetsearcher.usecase.keywordhistory.ClearKeyWordHistoryUseCase
 import com.example.gourmetsearcher.usecase.keywordhistory.GetKeyWordHistoryUseCase
 import com.example.gourmetsearcher.usecase.keywordhistory.SaveKeyWordHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -35,7 +37,11 @@ constructor(
 
     /** 履歴リストを取得する */
     private fun loadHistory() {
-        _historyListData.value = getHistoryListUseCase()
+        viewModelScope.launch {
+            getHistoryListUseCase().collect { historyList ->
+                _historyListData.value = historyList
+            }
+        }
     }
 
     /**
@@ -43,13 +49,15 @@ constructor(
      *  @param input 入力されたキーワード
      */
     fun saveHistoryItem(input: String) {
-        saveHistoryItemUseCase(input)
-        loadHistory()
+        viewModelScope.launch {
+            saveHistoryItemUseCase(input)
+        }
     }
 
     /** 履歴リストをクリアする */
     fun clearHistory() {
-        clearHistoryUseCase()
-        loadHistory()
+        viewModelScope.launch {
+            clearHistoryUseCase()
+        }
     }
 }

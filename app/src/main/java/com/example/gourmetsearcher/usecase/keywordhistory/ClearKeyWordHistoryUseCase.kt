@@ -13,5 +13,5 @@ constructor(
     private val repository: KeyWordHistoryRepository,
 ) {
     /** 検索履歴をクリアする */
-    operator fun invoke() = repository.clearHistory()
+    suspend operator fun invoke() = repository.clearHistory()
 }
