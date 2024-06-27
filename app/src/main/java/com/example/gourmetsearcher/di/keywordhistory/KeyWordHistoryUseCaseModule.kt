@@ -1,8 +1,6 @@
 package com.example.gourmetsearcher.di.keywordhistory
 
-import com.example.gourmetsearcher.manager.PreferencesManager
 import com.example.gourmetsearcher.repository.KeyWordHistoryRepository
-import com.example.gourmetsearcher.repository.KeyWordHistoryRepositoryImpl
 import com.example.gourmetsearcher.usecase.keywordhistory.ClearKeyWordHistoryUseCase
 import com.example.gourmetsearcher.usecase.keywordhistory.GetKeyWordHistoryUseCase
 import com.example.gourmetsearcher.usecase.keywordhistory.SaveKeyWordHistoryUseCase
@@ -11,19 +9,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 
-/** 検索履歴のモジュール */
+/** 検索履歴のユースケースのモジュール */
 @Module
 @InstallIn(ViewModelComponent::class)
-object KeyWordHistoryModule {
-    /**
-     * 検索履歴のリポジトリを提供する
-     * @param preferencesManager プリファレンスマネージャ
-     * @return 検索履歴のリポジトリ
-     */
-    @Provides
-    fun provideKeyWordHistory(preferencesManager: PreferencesManager): KeyWordHistoryRepository =
-        KeyWordHistoryRepositoryImpl(preferencesManager)
-
+object KeyWordHistoryUseCaseModule {
     /**
      * 検索履歴のユースケースを提供する
      * @param repository 検索履歴のリポジトリ

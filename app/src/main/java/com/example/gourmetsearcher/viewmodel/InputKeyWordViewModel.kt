@@ -32,15 +32,19 @@ constructor(
 
     /** 初期化でキーワード履歴リストを取得する */
     init {
-        loadHistory()
+        viewModelScope.launch {
+            loadHistory()
+        }
     }
 
     /** 履歴リストを取得する */
-    private fun loadHistory() {
-        viewModelScope.launch {
+    private suspend fun loadHistory() {
+        try {
             getHistoryListUseCase().collect { historyList ->
                 _historyListData.value = historyList
             }
+        } catch (e: Exception) {
+            _historyListData.value = emptyList()
         }
     }
 
