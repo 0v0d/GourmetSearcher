@@ -27,11 +27,13 @@ class SaveKeyWordHistoryUseCaseTest {
     private lateinit var saveKeyWordHistoryUseCase: SaveKeyWordHistoryUseCase
     private val testDispatcher = UnconfinedTestDispatcher()
 
+    /** 各テスト前の準備 */
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
     }
 
+    /** 各テスト後のCleanup */
     @After
     fun tearDown() {
         Dispatchers.resetMain()

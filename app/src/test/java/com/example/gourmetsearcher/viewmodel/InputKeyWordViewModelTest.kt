@@ -38,6 +38,7 @@ class InputKeyWordViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
+    /** 各テスト前の準備 */
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
@@ -49,6 +50,7 @@ class InputKeyWordViewModelTest {
             )
     }
 
+    /** 各テスト後のCleanup */
     @After
     fun tearDown() {
         Dispatchers.resetMain()
