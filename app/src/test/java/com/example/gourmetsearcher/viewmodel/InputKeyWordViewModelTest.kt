@@ -48,6 +48,70 @@ class InputKeyWordViewModelTest {
         Dispatchers.resetMain()
     }
 
+    /** テキストの更新が正しく行われることを確認するテスト */
+    @Test
+    fun testUpdateWithNewValue() = runTest {
+        val newText = "Hello, World!"
+
+        viewModel =
+            InputKeyWordViewModel(
+                getHistoryListUseCase,
+                saveHistoryItemUseCase,
+                clearHistoryUseCase,
+            )
+
+        viewModel.updateInputText(newText)
+        assertEquals(newText, viewModel.inputText.value)
+    }
+
+    /** 空文字列での更新が正しく行われることを確認するテスト */
+    @Test
+    fun testUpdateWithEmptyString() = runTest {
+        val emptyText = ""
+
+        viewModel =
+            InputKeyWordViewModel(
+                getHistoryListUseCase,
+                saveHistoryItemUseCase,
+                clearHistoryUseCase,
+            )
+
+        viewModel.updateInputText(emptyText)
+        assertEquals(emptyText, viewModel.inputText.value)
+    }
+
+    /** 複数回の更新が正しく行われることを確認するテスト */
+    @Test
+    fun testMultipleUpdates() = runTest {
+        val firstText = "First"
+        val secondText = "Second"
+
+        viewModel =
+            InputKeyWordViewModel(
+                getHistoryListUseCase,
+                saveHistoryItemUseCase,
+                clearHistoryUseCase,
+            )
+
+        viewModel.updateInputText(firstText)
+        assertEquals(firstText, viewModel.inputText.value)
+
+        viewModel.updateInputText(secondText)
+        assertEquals(secondText, viewModel.inputText.value)
+    }
+
+    /** 初期値が正しく設定されていることを確認するテスト */
+    @Test
+    fun testInitialValue() {
+        viewModel =
+            InputKeyWordViewModel(
+                getHistoryListUseCase,
+                saveHistoryItemUseCase,
+                clearHistoryUseCase,
+            )
+        assertEquals("", viewModel.inputText.value)
+    }
+
     /** 初期化時に履歴リストが正しく読み込まれることを確認するテスト */
     @Test
     fun testLoadHistoryOnInit() =
@@ -62,7 +126,7 @@ class InputKeyWordViewModelTest {
                     clearHistoryUseCase,
                 )
 
-            assertEquals(testHistory, viewModel.historyListData.value)
+            assertEquals(testHistory.reversed(), viewModel.historyListData.value)
         }
 
     /** 新しい項目を保存した後、履歴リストが更新されることを確認するテスト */
@@ -86,14 +150,13 @@ class InputKeyWordViewModelTest {
             viewModel.saveHistoryItem("test3")
 
             verify(saveHistoryItemUseCase).invoke("test3")
-            assertEquals(updatedHistory, viewModel.historyListData.value)
+            assertEquals(updatedHistory.reversed(), viewModel.historyListData.value)
         }
 
     /** 履歴リストの保存と取得を確認するテスト */
     @Test
     fun testSaveAndGetHistoryItem() =
         runTest {
-            // Given
             val testHistory = listOf("test1", "test2")
             `when`(getHistoryListUseCase()).thenReturn(flowOf(testHistory))
             `when`(saveHistoryItemUseCase(anyString())).thenReturn(Unit)
@@ -108,14 +171,13 @@ class InputKeyWordViewModelTest {
             viewModel.saveHistoryItem("test3")
 
             verify(saveHistoryItemUseCase).invoke("test3")
-            assertEquals(testHistory, viewModel.historyListData.value)
+            assertEquals(testHistory.reversed(), viewModel.historyListData.value)
         }
 
     /** 履歴リストのクリアを確認するテスト */
     @Test
     fun testClearHistory() =
         runTest {
-            // Given
             `when`(clearHistoryUseCase()).thenReturn(Unit)
             `when`(getHistoryListUseCase.invoke()).thenReturn(flowOf(emptyList()))
 

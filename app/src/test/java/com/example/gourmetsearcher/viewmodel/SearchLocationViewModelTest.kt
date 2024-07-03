@@ -56,17 +56,10 @@ class SearchLocationViewModelTest {
             `when`(mockLocation.longitude).thenReturn(expectedLocation.lng)
             `when`(getCurrentLocationUseCase()).thenReturn(mockLocation)
 
-            viewModel.getLocation()
+            viewModel.handlePermissionGranted()
 
             assertEquals(expectedLocation, viewModel.locationData.value)
         }
-
-    /** 検索状態の設定テスト */
-    @Test
-    fun testSetSearchState() {
-        viewModel.setSearchState(LocationSearchState.ERROR)
-        assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
-    }
 
     /** ランタイムエラーが発生した場合のテスト */
     @Test
@@ -74,9 +67,9 @@ class SearchLocationViewModelTest {
         runTest {
             `when`(getCurrentLocationUseCase()).thenThrow(RuntimeException())
 
-            viewModel.getLocation()
+            viewModel.handlePermissionGranted()
 
-            assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
+            assertEquals(LocationSearchState.Error, viewModel.locationSearchState.value)
         }
 
     /** nullポインタ例外が発生した場合のテスト */
@@ -87,10 +80,10 @@ class SearchLocationViewModelTest {
 
             val latch = CountDownLatch(1)
 
-            viewModel.getLocation()
+            viewModel.handlePermissionGranted()
 
             latch.await(2, TimeUnit.SECONDS)
-            assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
+            assertEquals(LocationSearchState.Error, viewModel.locationSearchState.value)
         }
 
     /** セキュリティ例外が発生した場合のテスト */
@@ -101,23 +94,23 @@ class SearchLocationViewModelTest {
 
             val latch = CountDownLatch(1)
 
-            viewModel.getLocation()
+            viewModel.handlePermissionGranted()
 
             latch.await(2, TimeUnit.SECONDS)
-            assertEquals(LocationSearchState.ERROR, viewModel.searchState.value)
+            assertEquals(LocationSearchState.Error, viewModel.locationSearchState.value)
         }
 
-    /** 設定ボタンを押した時のテスト */
+    /** 拒否された場合のテスト */
     @Test
-    fun testOnOpenLocationSettingClicked() =
-        runTest {
-            viewModel.onOpenLocationSettingClicked()
-        }
+    fun testHandlePermissionDenied() {
+        viewModel.handlePermissionDenied()
+        assertEquals(LocationSearchState.Error, viewModel.locationSearchState.value)
+    }
 
-    /** リトライボタンを押した時のテスト */
+    /** パーミッションの許可が必要な場合のテスト */
     @Test
-    fun testOnRetryClicked() =
-        runTest {
-            viewModel.onRetryClicked()
-        }
+    fun testHandleRationaleRequired() {
+        viewModel.handleRationaleRequired()
+        assertEquals(LocationSearchState.RationalRequired, viewModel.locationSearchState.value)
+    }
 }

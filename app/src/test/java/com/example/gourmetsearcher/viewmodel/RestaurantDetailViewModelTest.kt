@@ -21,7 +21,7 @@ class RestaurantDetailViewModelTest {
 
         viewModel.openMap(address)
 
-        assertEquals(encodedAddress, viewModel.searchAddress.value)
+        assertEquals(encodedAddress, viewModel.address.value)
     }
 
     /** 住所をクリアする機能のテスト */
@@ -29,7 +29,7 @@ class RestaurantDetailViewModelTest {
     fun testClearAddress() {
         viewModel.clearAddress()
 
-        assertEquals(null, viewModel.searchAddress.value)
+        assertEquals(null, viewModel.address.value)
     }
 
     /** URLを開く機能のテスト */
