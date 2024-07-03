@@ -7,9 +7,7 @@ import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.state.LocationSearchState
 import com.example.gourmetsearcher.usecase.location.GetCurrentLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,34 +27,50 @@ constructor(
     /** 現在地のデータ */
     val locationData = _locationData.asStateFlow()
 
-    private val _openLocationSettingEvent = MutableSharedFlow<Unit>()
-
-    /**現在地取得に失敗した場合に設定画面を開くためのイベント */
-    val openLocationSettingEvent = _openLocationSettingEvent.asSharedFlow()
-
-    private val _retryEvent = MutableSharedFlow<Unit>()
-
-    /** 現在地取得に失敗した場合にリトライするためのイベント */
-    val retryEvent = _retryEvent.asSharedFlow()
-
     /**
      *現在地取得の状態
      * LOADING: 現在地取得中
      * ERROR: 現在地取得失敗
      */
-    private val _searchState = MutableStateFlow(LocationSearchState.LOADING)
+    private val _locationSearchState = MutableStateFlow(LocationSearchState.Loading)
 
-    val searchState = _searchState.asStateFlow()
+    val locationSearchState = _locationSearchState.asStateFlow()
+
+    /** パーミッションの許可がされた場合の処理 */
+    fun handlePermissionGranted() {
+        getLocation()
+    }
+
+    /** パーミッションの許可が拒否された場合の処理 */
+    fun handlePermissionDenied() {
+        _locationSearchState.value = LocationSearchState.Error
+    }
+
+    /** パーミッションの許可が必要な場合の処理 */
+    fun handleRationaleRequired() {
+        _locationSearchState.value = LocationSearchState.RationalRequired
+    }
+
+    /** 現在地取得に失敗した場合の処理 */
+    private fun handleLocationError() {
+        _locationSearchState.value = LocationSearchState.Error
+    }
+
+    /** 現在地取得を再試行する */
+    fun retryLocationRequest() {
+        getLocation()
+    }
 
     /** 現在地を取得する */
-    fun getLocation() {
+    private fun getLocation() {
+        _locationSearchState.value = LocationSearchState.Loading
         viewModelScope.launch {
             try {
                 performSearch()
             } catch (e: SecurityException) {
-                _searchState.value = LocationSearchState.ERROR
+                handleLocationError()
             } catch (e: Exception) {
-                _searchState.value = LocationSearchState.ERROR
+                handleLocationError()
             }
         }
     }
@@ -68,7 +82,7 @@ constructor(
             handleLocationSuccess(it)
             return
         }
-        _searchState.value = LocationSearchState.ERROR
+        handleLocationError()
     }
 
     /** 現在地取得に成功した場合の処理
@@ -77,26 +91,5 @@ constructor(
     private fun handleLocationSuccess(location: Location) {
         val locationData = CurrentLocation(location.latitude, location.longitude)
         _locationData.value = locationData
-    }
-
-    /** 現在地取得に失敗した場合に設定画面を開くための処理 */
-    fun onOpenLocationSettingClicked() {
-        viewModelScope.launch {
-            _openLocationSettingEvent.emit(Unit)
-        }
-    }
-
-    /** 現在地取得に失敗した場合のリトライ処理 */
-    fun onRetryClicked() {
-        viewModelScope.launch {
-            _retryEvent.emit(Unit)
-        }
-    }
-
-    /** 現在地取得の状態を設定する
-     * @param state 現在地取得の状態
-     */
-    fun setSearchState(state: LocationSearchState) {
-        _searchState.value = state
     }
 }
