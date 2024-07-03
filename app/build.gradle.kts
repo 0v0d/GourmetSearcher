@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.androidx.navigation.safeargs)
     // APIキーを隠すためのプラグイン
     alias(libs.plugins.secrets.gradle.plugin)
     alias(libs.plugins.kotlin.parcelize)
@@ -9,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.detekt)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -23,6 +23,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -47,11 +50,16 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
     }
     buildFeatures {
+        compose = true
         buildConfig = true
-        dataBinding = true
-        viewBinding = true
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
     hilt {
         enableAggregatingTask = true
@@ -63,18 +71,37 @@ android {
     lint {
         sarifReport = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
+composeCompiler {
+    enableStrongSkippingMode = true
 
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+}
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.runtime.ktx)
-    // NavHostFragmentのために
-    implementation(libs.androidx.navigation.fragment.ktx)
-    // Toolbarのために
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.accompanist.permissions)
+
+    implementation(libs.kotlinx.collections.immutable)
+
     // 位置情報取得ライブラリ
     implementation(libs.play.services.location)
     // retrofit
@@ -88,6 +115,7 @@ dependencies {
 
     // Dagger-Hilt
     implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
     kapt(libs.dagger.hilt.android.compiler)
 
     // メモリリーク検出ライブラリ
@@ -95,12 +123,19 @@ dependencies {
 
     // detektフォーマット
     detektPlugins(libs.detekt.formatting)
+    detektPlugins(libs.detekt.rules)
+    detektPlugins(libs.detekt.rules.twitter)
 
     // Kotlin Serialization
     implementation(libs.kotlinx.serialization.json)
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.androidx.compose.material.iconsExtended)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
     // MockitoJUnitRunner
     testImplementation(libs.mockito.core)
@@ -114,14 +149,16 @@ dependencies {
     // Espresso
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.rules)
-    androidTestImplementation(libs.androidx.espresso.contrib)
-    androidTestImplementation(libs.androidx.uiautomator.v18)
+    androidTestImplementation(libs.androidx.ui.test.junit4.android)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.uiautomator)
 }
+
 kapt {
     // エラータイプの修正を有効化
     correctErrorTypes = true
 }
+
 detekt {
     parallel = true
     config.setFrom("${rootProject.projectDir}/config/detekt/detekt.yml")
