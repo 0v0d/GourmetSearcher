@@ -13,7 +13,7 @@ data class CurrentLocation(
     val lng: Double,
 ) : Serializable {
     private companion object {
-        @Suppress("ConstPropertyName")
+        @Suppress("ConstPropertyName", "ObjectPropertyNaming")
         private const val serialVersionUID = 1L
     }
 }

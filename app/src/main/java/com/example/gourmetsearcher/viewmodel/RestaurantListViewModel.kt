@@ -9,6 +9,8 @@ import com.example.gourmetsearcher.model.domain.toDomain
 import com.example.gourmetsearcher.state.SearchState
 import com.example.gourmetsearcher.usecase.network.GetHotPepperDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -25,12 +27,12 @@ class RestaurantListViewModel
 constructor(
     private val getHotPepperDataUseCase: GetHotPepperDataUseCase,
 ) : ViewModel() {
-    private val _shops = MutableStateFlow<List<ShopsDomain>?>(null)
+    private val _shops = MutableStateFlow<ImmutableList<ShopsDomain>?>(null)
 
     /** レストラン情報 */
     val shops = _shops.asStateFlow()
 
-    private val _searchState = MutableStateFlow(SearchState.LOADING)
+    private val _searchState = MutableStateFlow(SearchState.Loading)
 
     /** 検索状態 */
     val searchState = _searchState.asStateFlow()
@@ -42,34 +44,14 @@ constructor(
      * @param terms 検索条件
      */
     fun searchRestaurants(terms: SearchTerms) {
-        _searchState.value = SearchState.LOADING
+        _searchState.value = SearchState.Loading
         viewModelScope.launch {
             try {
                 searchTerm = terms
                 handleResponse(getHotPepperDataUseCase(terms))
             } catch (e: Exception) {
-                _searchState.value = SearchState.EMPTY_RESULT
+                _searchState.value = SearchState.EmptyResult
             }
-        }
-    }
-
-    /**
-     * レスポンスの処理
-     * @param response HotPepperResponseAPIからのレスポンス
-     */
-    private fun handleResponse(response: Response<HotPepperResponse>?) {
-        if (response?.body() == null) {
-            _searchState.value = SearchState.NETWORK_ERROR
-            return
-        }
-        val repositories = response.body()?.results?.shops?.map { it.toDomain() }
-        val isResultEmpty = repositories.isNullOrEmpty()
-
-        if (response.isSuccessful && !isResultEmpty) {
-            _searchState.value = SearchState.SUCCESS
-            _shops.value = repositories
-        } else {
-            _searchState.value = SearchState.EMPTY_RESULT
         }
     }
 
@@ -82,5 +64,24 @@ constructor(
             return
         }
         searchRestaurants(searchTerm)
+    }
+
+    /**
+     * レスポンスの処理
+     * @param response HotPepperResponseAPIからのレスポンス
+     */
+    private fun handleResponse(response: Response<HotPepperResponse>?) {
+        if (response?.body() == null) {
+            _searchState.value = SearchState.NetworkError
+            return
+        }
+        val repositories = response.body()?.results?.shops?.map { it.toDomain() }
+
+        if (response.isSuccessful && !repositories.isNullOrEmpty()) {
+            _searchState.value = SearchState.Success
+            _shops.value = repositories.toImmutableList()
+        } else {
+            _searchState.value = SearchState.EmptyResult
+        }
     }
 }

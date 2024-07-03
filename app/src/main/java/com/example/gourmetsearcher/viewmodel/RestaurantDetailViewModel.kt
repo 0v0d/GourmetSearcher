@@ -12,19 +12,19 @@ class RestaurantDetailViewModel : ViewModel() {
     /** URLを開くためのStateFlow */
     val url = _url.asStateFlow()
 
-    private val _searchAddress = MutableStateFlow<String?>(null)
+    private val _address = MutableStateFlow<String?>(null)
 
     /** 住所を検索するためのStateFlow */
-    val searchAddress = _searchAddress.asStateFlow()
+    val address = _address.asStateFlow()
 
     /** ボタンクリック時に住所をエンコードしてURLを開く */
     fun openMap(address: String) {
-        _searchAddress.value = URLEncoder.encode(address, "UTF-8")
+        _address.value = URLEncoder.encode(address, "UTF-8")
     }
 
     /** 住所をクリアする */
     fun clearAddress() {
-        _searchAddress.value = null
+        _address.value = null
     }
 
     /** ボタンクリック時にURLを開く */

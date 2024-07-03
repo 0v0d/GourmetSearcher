@@ -12,11 +12,10 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 
 /** 位置情報の取得のリポジトリ */
+@Suppress("MagicNumber")
 interface SearchLocationRepository {
     suspend fun getLocation(): Location?
 }
-
-private const val TIMEOUT = 20000L
 
 /**
  * LocationRepositoryの実装クラス
@@ -27,6 +26,9 @@ class SearchLocationRepositoryImpl
 constructor(
     private val locationProvider: FusedLocationProviderClient,
 ) : SearchLocationRepository {
+    /** タイムアウト時間 */
+    private val timeout = 20000L
+
     /**
      * 位置情報を取得
      * @return 位置情報 or null
@@ -35,7 +37,7 @@ constructor(
         withContext(Dispatchers.IO) {
             try {
                 // 20秒以内に取得できなかった場合はnullを返す
-                withTimeoutOrNull(TIMEOUT) {
+                withTimeoutOrNull(timeout) {
                     fetchLocation()
                 }
             } catch (e: SecurityException) {

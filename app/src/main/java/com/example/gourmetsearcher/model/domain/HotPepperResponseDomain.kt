@@ -1,6 +1,5 @@
 package com.example.gourmetsearcher.model.domain
 
-import android.os.Parcelable
 import com.example.gourmetsearcher.model.api.BudgetData
 import com.example.gourmetsearcher.model.api.GenreData
 import com.example.gourmetsearcher.model.api.LargeAreaData
@@ -9,25 +8,11 @@ import com.example.gourmetsearcher.model.api.PhotoData
 import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.model.api.SmallAreaData
 import com.example.gourmetsearcher.model.api.Urls
-import kotlinx.parcelize.Parcelize
-
-/**
- * ホットペッパーグルメAPIのレスポンスデータクラス
- * @param results レストラン情報
- */
-@Parcelize
-data class HotPepperResponseDomain(
-    val results: ResultsDomain,
-) : Parcelable
-
-/**
- * レストラン情報を保持するデータクラス
- * @param shops レストラン情報
- */
-@Parcelize
-data class ResultsDomain(
-    val shops: List<ShopsDomain>,
-) : Parcelable
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 /**
  * レストラン情報を保持するデータクラス
@@ -45,7 +30,7 @@ data class ResultsDomain(
  * @param open 営業時間（開店）
  * @param close 営業時間（閉店）
  */
-@Parcelize
+@Serializable
 data class ShopsDomain(
     val id: String,
     val name: String,
@@ -60,70 +45,70 @@ data class ShopsDomain(
     val photo: PhotoDomain,
     val open: String,
     val close: String,
-) : Parcelable
+) : java.io.Serializable
 
 /**
  * 大エリアデータクラス
  * @param name 大エリア
  */
-@Parcelize
+@Serializable
 data class LargeAreaDomain(
     val name: String,
-) : Parcelable
+) : java.io.Serializable
 
 /**
  * 小エリアデータクラス
  * @param name 小エリア
  */
-@Parcelize
+@Serializable
 data class SmallAreaDomain(
     val name: String,
-) : Parcelable
+) : java.io.Serializable
 
 /**
  * ジャンルデータクラス
  * @param name ジャンル
  */
-@Parcelize
+@Serializable
 data class GenreDomain(
     val name: String,
-) : Parcelable
+) : java.io.Serializable
 
 /**
  *  予算データクラス
  * @param name 予算
  */
-@Parcelize
+@Serializable
 data class BudgetDomain(
     val name: String,
-) : Parcelable
+) : java.io.Serializable
 
 /**
  *  URLデータクラス
  * @param pc URL
  */
-@Parcelize
+@Serializable
 data class UrlDomain(
     val pc: String,
-) : Parcelable
+) : java.io.Serializable
 
 /**
  * 写真クラス
  * @param pc 写真URL
  */
-@Parcelize
+@Serializable
 data class PhotoDomain(
     val pc: PCDomain,
-) : Parcelable
+) : java.io.Serializable
 
 /**
  * 写真データクラス
  * @param l 写真URL
  */
-@Parcelize
+@Serializable
 data class PCDomain(
     val l: String,
-) : Parcelable
+) : java.io.Serializable
 
 /** APIレスポンスデータからドメインモデルへの変換関数
  * @return ドメインモデル
@@ -158,3 +143,23 @@ fun Urls.toDomain() = UrlDomain(pc)
 fun PhotoData.toDomain() = PhotoDomain(pc.toDomain())
 
 fun PCData.toDomain() = PCDomain(l)
+
+/**
+ * レストランデータをエンコードする
+ * @param restaurantData レストランデータ
+ * @return エンコードされた文字列
+ */
+fun encodeRestaurantData(restaurantData: ShopsDomain): String {
+    val json = Json.encodeToString(restaurantData)
+    return URLEncoder.encode(json, "UTF-8")
+}
+
+/**
+ * エンコードされたレストランデータをデコードする
+ * @param encoded エンコードされた文字列
+ * @return デコードされたレストランデータ
+ */
+fun decodeRestaurantData(encoded: String): ShopsDomain {
+    val json = URLDecoder.decode(encoded, "UTF-8")
+    return Json.decodeFromString<ShopsDomain>(json)
+}
