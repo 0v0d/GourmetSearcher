@@ -90,7 +90,7 @@ data class GenreDomain(
 ) : Parcelable
 
 /**
- *  予算データクラス
+ * 予算データクラス
  * @param name 予算
  */
 @Parcelize
@@ -99,7 +99,7 @@ data class BudgetDomain(
 ) : Parcelable
 
 /**
- *  URLデータクラス
+ * URLデータクラス
  * @param pc URL
  */
 @Parcelize
@@ -125,7 +125,8 @@ data class PCDomain(
     val l: String,
 ) : Parcelable
 
-/** APIレスポンスデータからドメインモデルへの変換関数
+/**
+ * APIレスポンスデータからドメインモデルへの変換関数
  * @return ドメインモデル
  */
 fun Shops.toDomain() =

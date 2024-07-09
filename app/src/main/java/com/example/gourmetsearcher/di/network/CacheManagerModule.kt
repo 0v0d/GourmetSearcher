@@ -2,7 +2,7 @@ package com.example.gourmetsearcher.di.network
 
 import android.util.LruCache
 import com.example.gourmetsearcher.manager.CacheManager
-import com.example.gourmetsearcher.model.api.HotPepperResponse
+import com.example.gourmetsearcher.model.api.RestaurantList
 import com.example.gourmetsearcher.model.data.SearchTerms
 import dagger.Module
 import dagger.Provides
@@ -20,15 +20,15 @@ object CacheManagerModule {
     /**
      * LruCacheを提供する
      * Size: 5
-     * @return LruCache
+     * @return LruCache キャッシュ
      */
     @Provides
-    fun provideLruCache(): LruCache<SearchTerms, Response<HotPepperResponse>?> = LruCache(CACHE_SIZE)
+    fun provideLruCache(): LruCache<SearchTerms, Response<RestaurantList>?> = LruCache(CACHE_SIZE)
 
     /**
      * キャッシュマネージャを提供する
      * @return キャッシュマネージャ
      */
     @Provides
-    fun provideCacheManager(lruCache: LruCache<SearchTerms, Response<HotPepperResponse>?>) = CacheManager(lruCache)
+    fun provideCacheManager(lruCache: LruCache<SearchTerms, Response<RestaurantList>?>) = CacheManager(lruCache)
 }

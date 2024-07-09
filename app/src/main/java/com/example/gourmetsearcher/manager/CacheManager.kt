@@ -1,7 +1,7 @@
 package com.example.gourmetsearcher.manager
 
 import android.util.LruCache
-import com.example.gourmetsearcher.model.api.HotPepperResponse
+import com.example.gourmetsearcher.model.api.RestaurantList
 import com.example.gourmetsearcher.model.data.SearchTerms
 import retrofit2.Response
 import javax.inject.Singleton
@@ -12,14 +12,14 @@ import javax.inject.Singleton
  */
 @Singleton
 class CacheManager(
-    private val cache: LruCache<SearchTerms, Response<HotPepperResponse>?>,
+    private val cache: LruCache<SearchTerms, Response<RestaurantList>?>,
 ) {
     /**
      *  キャッシュから結果を取得する
      * @param searchTerms 検索条件
      * @return レストラン情報 or null
      */
-    fun get(searchTerms: SearchTerms): Response<HotPepperResponse>? = cache[searchTerms]
+    fun get(searchTerms: SearchTerms): Response<RestaurantList>? = cache[searchTerms]
 
     /**
      * キャッシュに結果を保存する
@@ -28,7 +28,7 @@ class CacheManager(
      */
     fun put(
         searchTerms: SearchTerms,
-        response: Response<HotPepperResponse>?,
+        response: Response<RestaurantList>?,
     ) {
         cache.put(searchTerms, response)
     }
