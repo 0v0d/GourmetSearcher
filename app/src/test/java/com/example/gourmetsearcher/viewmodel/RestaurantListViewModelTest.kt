@@ -2,10 +2,10 @@ package com.example.gourmetsearcher.viewmodel
 
 import com.example.gourmetsearcher.model.api.BudgetData
 import com.example.gourmetsearcher.model.api.GenreData
-import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.api.LargeAreaData
 import com.example.gourmetsearcher.model.api.PCData
 import com.example.gourmetsearcher.model.api.PhotoData
+import com.example.gourmetsearcher.model.api.RestaurantList
 import com.example.gourmetsearcher.model.api.Results
 import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.model.api.SmallAreaData
@@ -14,7 +14,7 @@ import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.model.domain.toDomain
 import com.example.gourmetsearcher.state.SearchState
-import com.example.gourmetsearcher.usecase.network.GetHotPepperDataUseCase
+import com.example.gourmetsearcher.usecase.network.GetRestaurantUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -40,13 +40,13 @@ import retrofit2.Response
 @RunWith(MockitoJUnitRunner::class)
 class RestaurantListViewModelTest {
     @Mock
-    private lateinit var getHotPepperDataUseCase: GetHotPepperDataUseCase
+    private lateinit var getRestaurantUseCase: GetRestaurantUseCase
 
     @InjectMocks
     private lateinit var viewModel: RestaurantListViewModel
 
     private val mockResponse =
-        HotPepperResponse(
+        RestaurantList(
             Results(
                 listOf(
                     Shops(
@@ -68,7 +68,7 @@ class RestaurantListViewModelTest {
             ),
         )
     private val mockEmptyResponse =
-        HotPepperResponse(
+        RestaurantList(
             Results(
                 emptyList(),
             ),
@@ -97,7 +97,7 @@ class RestaurantListViewModelTest {
     @Test
     fun testSearchRestaurantsSuccess() =
         runTest {
-            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(Response.success(mockResponse))
+            `when`(getRestaurantUseCase(mockSearchTerms)).thenReturn(Response.success(mockResponse))
             viewModel.searchRestaurants(mockSearchTerms)
 
             val shops = mockResponse.results.shops.map { it.toDomain() }
@@ -109,7 +109,7 @@ class RestaurantListViewModelTest {
     @Test
     fun testSearchRestaurantsNetworkError() =
         runTest {
-            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(null)
+            `when`(getRestaurantUseCase(mockSearchTerms)).thenReturn(null)
 
             viewModel.searchRestaurants(mockSearchTerms)
 
@@ -120,7 +120,11 @@ class RestaurantListViewModelTest {
     @Test
     fun testSearchRestaurantsEmptyResponse() =
         runTest {
-            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(Response.success(mockEmptyResponse))
+            `when`(getRestaurantUseCase(mockSearchTerms)).thenReturn(
+                Response.success(
+                    mockEmptyResponse
+                )
+            )
 
             viewModel.searchRestaurants(mockSearchTerms)
             val shops = mockEmptyResponse.results.shops.map { it.toDomain() }
@@ -132,12 +136,12 @@ class RestaurantListViewModelTest {
     @Test
     fun testRetrySearch() =
         runTest {
-            val mockResponse = mock<Response<HotPepperResponse>>()
-            `when`(getHotPepperDataUseCase(mockSearchTerms)).thenReturn(mockResponse)
+            val mockResponse = mock<Response<RestaurantList>>()
+            `when`(getRestaurantUseCase(mockSearchTerms)).thenReturn(mockResponse)
 
             viewModel.searchRestaurants(mockSearchTerms)
             viewModel.retrySearch()
 
-            verify(getHotPepperDataUseCase, times(2)).invoke(mockSearchTerms)
+            verify(getRestaurantUseCase, times(2)).invoke(mockSearchTerms)
         }
 }

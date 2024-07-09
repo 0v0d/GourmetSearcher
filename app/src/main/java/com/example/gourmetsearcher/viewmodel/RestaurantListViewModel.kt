@@ -2,12 +2,12 @@ package com.example.gourmetsearcher.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gourmetsearcher.model.api.HotPepperResponse
+import com.example.gourmetsearcher.model.api.RestaurantList
 import com.example.gourmetsearcher.model.data.SearchTerms
 import com.example.gourmetsearcher.model.domain.ShopsDomain
 import com.example.gourmetsearcher.model.domain.toDomain
 import com.example.gourmetsearcher.state.SearchState
-import com.example.gourmetsearcher.usecase.network.GetHotPepperDataUseCase
+import com.example.gourmetsearcher.usecase.network.GetRestaurantUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,13 +17,13 @@ import javax.inject.Inject
 
 /**
  * レストラン検索画面のViewModel
- * @param getHotPepperDataUseCase ホットペッパーグルメAPIを利用して、レストラン情報を取得するUseCase
+ * @param getRestaurantUseCase ホットペッパーグルメAPIを利用して、レストラン情報を取得するUseCase
  */
 @HiltViewModel
 class RestaurantListViewModel
 @Inject
 constructor(
-    private val getHotPepperDataUseCase: GetHotPepperDataUseCase,
+    private val getRestaurantUseCase: GetRestaurantUseCase,
 ) : ViewModel() {
     private val _shops = MutableStateFlow<List<ShopsDomain>?>(null)
 
@@ -46,7 +46,7 @@ constructor(
         viewModelScope.launch {
             try {
                 searchTerm = terms
-                handleResponse(getHotPepperDataUseCase(terms))
+                handleResponse(getRestaurantUseCase(terms))
             } catch (e: Exception) {
                 _searchState.value = SearchState.EMPTY_RESULT
             }
@@ -55,9 +55,9 @@ constructor(
 
     /**
      * レスポンスの処理
-     * @param response HotPepperResponseAPIからのレスポンス
+     * @param response HotPepperAPIからのレスポンス
      */
-    private fun handleResponse(response: Response<HotPepperResponse>?) {
+    private fun handleResponse(response: Response<RestaurantList>?) {
         if (response?.body() == null) {
             _searchState.value = SearchState.NETWORK_ERROR
             return

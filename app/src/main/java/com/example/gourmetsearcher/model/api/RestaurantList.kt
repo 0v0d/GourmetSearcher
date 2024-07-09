@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
  * @param results レストラン情報
  */
 @Parcelize
-data class HotPepperResponse(
+data class RestaurantList(
     @Json(name = "results")
     val results: Results,
 ) : Parcelable

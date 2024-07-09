@@ -2,17 +2,17 @@ package com.example.gourmetsearcher.usecase.network
 
 import com.example.gourmetsearcher.model.api.BudgetData
 import com.example.gourmetsearcher.model.api.GenreData
-import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.api.LargeAreaData
 import com.example.gourmetsearcher.model.api.PCData
 import com.example.gourmetsearcher.model.api.PhotoData
+import com.example.gourmetsearcher.model.api.RestaurantList
 import com.example.gourmetsearcher.model.api.Results
 import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.model.api.SmallAreaData
 import com.example.gourmetsearcher.model.api.Urls
 import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.model.data.SearchTerms
-import com.example.gourmetsearcher.repository.HotPepperRepository
+import com.example.gourmetsearcher.repository.RestaurantRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -24,18 +24,18 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
 
-/** GetHotPepperDataUseCaseのユニットテストクラス */
+/** GetRestaurantUseCaseのユニットテストクラス */
 @RunWith(MockitoJUnitRunner::class)
-class GetHotPepperDataUseCaseTest {
+class GetRestaurantListUseCaseTest {
     @Mock
-    private lateinit var hotPepperRepository: HotPepperRepository
+    private lateinit var restaurantRepository: RestaurantRepository
 
     @InjectMocks
-    private lateinit var getHotPepperDataUseCase: GetHotPepperDataUseCase
+    private lateinit var getRestaurantUseCase: GetRestaurantUseCase
 
     private val mockResponse =
         Response.success(
-            HotPepperResponse(
+            RestaurantList(
                 Results(
                     listOf(
                         Shops(
@@ -64,10 +64,10 @@ class GetHotPepperDataUseCaseTest {
     @Test
     fun testInvokeReturnsSuccessful() =
         runBlocking {
-            `when`(hotPepperRepository.execute(mockSearchTerms))
+            `when`(restaurantRepository.searchRestaurants(mockSearchTerms))
                 .thenReturn(mockResponse)
 
-            val result = getHotPepperDataUseCase(mockSearchTerms)
+            val result = getRestaurantUseCase(mockSearchTerms)
 
             assertEquals(mockResponse, result)
         }
@@ -76,10 +76,10 @@ class GetHotPepperDataUseCaseTest {
     @Test
     fun testInvokeReturnsNull() =
         runBlocking {
-            `when`(hotPepperRepository.execute(mockSearchTerms))
+            `when`(restaurantRepository.searchRestaurants(mockSearchTerms))
                 .thenReturn(null)
 
-            val result = getHotPepperDataUseCase(mockSearchTerms)
+            val result = getRestaurantUseCase(mockSearchTerms)
 
             assertNull(result)
         }
@@ -88,11 +88,11 @@ class GetHotPepperDataUseCaseTest {
     @Test
     fun testInvokeReturnsError() =
         runBlocking {
-            `when`(hotPepperRepository.execute(mockSearchTerms))
+            `when`(restaurantRepository.searchRestaurants(mockSearchTerms))
                 .thenThrow(RuntimeException("API Error"))
 
             try {
-                getHotPepperDataUseCase(mockSearchTerms)
+                getRestaurantUseCase(mockSearchTerms)
                 assert(false)
             } catch (e: RuntimeException) {
                 assert(e.message == "API Error")

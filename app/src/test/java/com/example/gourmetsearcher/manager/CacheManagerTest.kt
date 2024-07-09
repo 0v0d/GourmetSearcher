@@ -3,10 +3,10 @@ package com.example.gourmetsearcher.manager
 import android.util.LruCache
 import com.example.gourmetsearcher.model.api.BudgetData
 import com.example.gourmetsearcher.model.api.GenreData
-import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.api.LargeAreaData
 import com.example.gourmetsearcher.model.api.PCData
 import com.example.gourmetsearcher.model.api.PhotoData
+import com.example.gourmetsearcher.model.api.RestaurantList
 import com.example.gourmetsearcher.model.api.Results
 import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.model.api.SmallAreaData
@@ -28,14 +28,14 @@ import retrofit2.Response
 @RunWith(MockitoJUnitRunner::class)
 class CacheManagerTest {
     @Mock
-    private lateinit var mockCache: LruCache<SearchTerms, Response<HotPepperResponse>?>
+    private lateinit var mockCache: LruCache<SearchTerms, Response<RestaurantList>?>
 
     private lateinit var cacheManager: CacheManager
 
     private val mockSearchTerms = SearchTerms("keyword", CurrentLocation(35.0, 139.0), 1)
 
-    private val mockHotPepperResponse =
-        HotPepperResponse(
+    private val mockRestaurantList =
+        RestaurantList(
             Results(
                 listOf(
                     Shops(
@@ -66,7 +66,7 @@ class CacheManagerTest {
     /** キャッシュにレスポンスが存在する場合のgetメソッドのテスト */
     @Test
     fun testGetCachedResponse() {
-        val mockResponse = Response.success(mockHotPepperResponse)
+        val mockResponse = Response.success(mockRestaurantList)
         `when`(mockCache[mockSearchTerms]).thenReturn(mockResponse)
 
         val result = cacheManager.get(mockSearchTerms)
@@ -87,7 +87,7 @@ class CacheManagerTest {
     /** putメソッドのテスト */
     @Test
     fun testPutResponse() {
-        val mockResponse = Response.success(mockHotPepperResponse)
+        val mockResponse = Response.success(mockRestaurantList)
 
         cacheManager.put(mockSearchTerms, mockResponse)
 
@@ -111,11 +111,11 @@ class CacheManagerTest {
 
         repeat(maxSize) { i ->
             val terms = SearchTerms("keyword$i", CurrentLocation(35.0, 139.0), i)
-            fullCacheManager.put(terms, Response.success(mockHotPepperResponse))
+            fullCacheManager.put(terms, Response.success(mockRestaurantList))
         }
 
         val newTerms = SearchTerms("newKeyword", CurrentLocation(35.0, 139.0), maxSize)
-        fullCacheManager.put(newTerms, Response.success(mockHotPepperResponse))
+        fullCacheManager.put(newTerms, Response.success(mockRestaurantList))
 
         assertNull(fullCacheManager.get(SearchTerms("keyword0", CurrentLocation(35.0, 139.0), 0)))
     }

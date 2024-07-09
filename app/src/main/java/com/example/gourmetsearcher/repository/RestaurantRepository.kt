@@ -2,9 +2,9 @@ package com.example.gourmetsearcher.repository
 
 import com.example.gourmetsearcher.BuildConfig
 import com.example.gourmetsearcher.manager.CacheManager
-import com.example.gourmetsearcher.model.api.HotPepperResponse
+import com.example.gourmetsearcher.model.api.RestaurantList
 import com.example.gourmetsearcher.model.data.SearchTerms
-import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
+import com.example.gourmetsearcher.service.HotPepperGourmetApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -15,25 +15,25 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /** ホットペッパーグルメAPIを利用して、レストラン情報を取得する */
-interface HotPepperRepository {
+interface RestaurantRepository {
     /** リポジトリ情報を取得
      * @param searchTerms 検索条件
-     * @return Response<HotPepperResponse>レストラン情報 or null
+     * @return Response<RestaurantList>レストラン情報 or null
      */
-    suspend fun execute(searchTerms: SearchTerms): Response<HotPepperResponse>?
+    suspend fun searchRestaurants(searchTerms: SearchTerms): Response<RestaurantList>?
 }
 
 /**
- *  HotPepperRepositoryの実装クラス
+ *  RestaurantRepositoryの実装クラス
  * @param service ホットペッパーグルメAPIのインターフェース
  */
 @Singleton
-class HotPepperRepositoryImpl
+class RestaurantRepositoryImpl
 @Inject
 constructor(
-    private val service: HotPepperNetworkDataSource,
+    private val service: HotPepperGourmetApiService,
     private val cacheManager: CacheManager,
-) : HotPepperRepository {
+) : RestaurantRepository {
     /** APIキー */
     private val key = BuildConfig.API_KEY
 
@@ -44,8 +44,8 @@ constructor(
      * @param searchTerms 検索条件
      * @return レストラン情報 or null
      */
-    override suspend fun execute(searchTerms: SearchTerms): Response<HotPepperResponse>? {
-        return searchHotPepperRepository(searchTerms)
+    override suspend fun searchRestaurants(searchTerms: SearchTerms): Response<RestaurantList>? {
+        return searchRestaurantRepository(searchTerms)
     }
 
     /**
@@ -53,20 +53,20 @@ constructor(
      * @param searchTerms 検索条件
      * @return レストラン情報 or null
      */
-    private suspend fun searchHotPepperRepository(searchTerms: SearchTerms): Response<HotPepperResponse>? =
+    private suspend fun searchRestaurantRepository(searchTerms: SearchTerms): Response<RestaurantList>? =
         withContext(Dispatchers.IO) {
             // キャッシュから結果を取得
             cacheManager.get(searchTerms)?.let { return@withContext it }
 
             return@withContext try {
                 val response =
-                    service.getRestaurantDatum(
-                        key = key,
+                    service.searchRestaurants(
+                        apiKey = key,
                         keyword = searchTerms.keyword,
                         lat = searchTerms.location.lat,
                         lng = searchTerms.location.lng,
                         range = searchTerms.range,
-                        format = format,
+                        responseFormat = format,
                     )
                 cacheManager.put(searchTerms, response)
                 response

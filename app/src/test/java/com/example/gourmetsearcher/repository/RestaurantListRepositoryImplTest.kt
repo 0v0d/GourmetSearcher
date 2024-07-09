@@ -4,17 +4,17 @@ import com.example.gourmetsearcher.BuildConfig
 import com.example.gourmetsearcher.manager.CacheManager
 import com.example.gourmetsearcher.model.api.BudgetData
 import com.example.gourmetsearcher.model.api.GenreData
-import com.example.gourmetsearcher.model.api.HotPepperResponse
 import com.example.gourmetsearcher.model.api.LargeAreaData
 import com.example.gourmetsearcher.model.api.PCData
 import com.example.gourmetsearcher.model.api.PhotoData
+import com.example.gourmetsearcher.model.api.RestaurantList
 import com.example.gourmetsearcher.model.api.Results
 import com.example.gourmetsearcher.model.api.Shops
 import com.example.gourmetsearcher.model.api.SmallAreaData
 import com.example.gourmetsearcher.model.api.Urls
 import com.example.gourmetsearcher.model.data.CurrentLocation
 import com.example.gourmetsearcher.model.data.SearchTerms
-import com.example.gourmetsearcher.source.HotPepperNetworkDataSource
+import com.example.gourmetsearcher.service.HotPepperGourmetApiService
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -31,22 +31,22 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
 
-/** HotPepperRepositoryImplのユニットテストクラス */
+/** RestaurantRepositoryImplのユニットテストクラス */
 @RunWith(MockitoJUnitRunner::class)
-class HotPepperRepositoryImplTest {
+class RestaurantListRepositoryImplTest {
     @Mock
-    private lateinit var mockService: HotPepperNetworkDataSource
+    private lateinit var mockService: HotPepperGourmetApiService
 
     @Mock
     private lateinit var mockCacheManager: CacheManager
 
-    private lateinit var hotPepperRepository: HotPepperRepository
+    private lateinit var restaurantRepository: RestaurantRepository
 
     private val mockSearchTerms = SearchTerms("keyword", CurrentLocation(35.0, 139.0), 1)
 
     private val mockResponse =
         Response.success(
-            HotPepperResponse(
+            RestaurantList(
                 Results(
                     listOf(
                         Shops(
@@ -72,7 +72,7 @@ class HotPepperRepositoryImplTest {
     /** 各テスト前の準備 */
     @Before
     fun setup() {
-        hotPepperRepository = HotPepperRepositoryImpl(mockService, mockCacheManager)
+        restaurantRepository = RestaurantRepositoryImpl(mockService, mockCacheManager)
     }
 
     /** キャッシュヒット時のテスト */
@@ -81,10 +81,10 @@ class HotPepperRepositoryImplTest {
         runBlocking {
             `when`(mockCacheManager.get(mockSearchTerms)).thenReturn(mockResponse)
 
-            val result = hotPepperRepository.execute(mockSearchTerms)
+            val result = restaurantRepository.searchRestaurants(mockSearchTerms)
 
             verify(mockCacheManager).get(mockSearchTerms)
-            verify(mockService, never()).getRestaurantDatum(
+            verify(mockService, never()).searchRestaurants(
                 anyString(),
                 anyString(),
                 anyDouble(),
@@ -101,7 +101,7 @@ class HotPepperRepositoryImplTest {
         runBlocking {
             `when`(mockCacheManager.get(mockSearchTerms)).thenReturn(null)
             `when`(
-                mockService.getRestaurantDatum(
+                mockService.searchRestaurants(
                     anyString(),
                     anyString(),
                     anyDouble(),
@@ -111,10 +111,10 @@ class HotPepperRepositoryImplTest {
                 ),
             ).thenReturn(mockResponse)
 
-            val result = hotPepperRepository.execute(mockSearchTerms)
+            val result = restaurantRepository.searchRestaurants(mockSearchTerms)
 
             verify(mockCacheManager).get(mockSearchTerms)
-            verify(mockService).getRestaurantDatum(
+            verify(mockService).searchRestaurants(
                 BuildConfig.API_KEY,
                 mockSearchTerms.keyword,
                 mockSearchTerms.location.lat,
@@ -132,7 +132,7 @@ class HotPepperRepositoryImplTest {
         runBlocking {
             `when`(mockCacheManager.get(mockSearchTerms)).thenReturn(null)
             `when`(
-                mockService.getRestaurantDatum(
+                mockService.searchRestaurants(
                     anyString(),
                     anyString(),
                     anyDouble(),
@@ -142,10 +142,10 @@ class HotPepperRepositoryImplTest {
                 ),
             ).thenThrow(RuntimeException::class.java)
 
-            val result = hotPepperRepository.execute(mockSearchTerms)
+            val result = restaurantRepository.searchRestaurants(mockSearchTerms)
 
             verify(mockCacheManager).get(mockSearchTerms)
-            verify(mockService).getRestaurantDatum(
+            verify(mockService).searchRestaurants(
                 BuildConfig.API_KEY,
                 mockSearchTerms.keyword,
                 mockSearchTerms.location.lat,
@@ -161,10 +161,10 @@ class HotPepperRepositoryImplTest {
     @Test
     fun testExecuteWithEmptyResponse() =
         runBlocking {
-            val emptyResponse = Response.success(HotPepperResponse(Results(emptyList())))
+            val emptyResponse = Response.success(RestaurantList(Results(emptyList())))
             `when`(mockCacheManager.get(mockSearchTerms)).thenReturn(null)
             `when`(
-                mockService.getRestaurantDatum(
+                mockService.searchRestaurants(
                     anyString(),
                     anyString(),
                     anyDouble(),
@@ -174,10 +174,10 @@ class HotPepperRepositoryImplTest {
                 ),
             ).thenReturn(emptyResponse)
 
-            val result = hotPepperRepository.execute(mockSearchTerms)
+            val result = restaurantRepository.searchRestaurants(mockSearchTerms)
 
             verify(mockCacheManager).get(mockSearchTerms)
-            verify(mockService).getRestaurantDatum(
+            verify(mockService).searchRestaurants(
                 BuildConfig.API_KEY,
                 mockSearchTerms.keyword,
                 mockSearchTerms.location.lat,
