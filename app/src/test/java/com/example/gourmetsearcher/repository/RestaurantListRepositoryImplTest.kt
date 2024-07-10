@@ -50,7 +50,7 @@ class RestaurantListRepositoryImplTest {
                 Results(
                     listOf(
                         Shops(
-                            "1",
+
                             "Restaurant",
                             "Address",
                             "Station",

@@ -26,7 +26,6 @@ data class Results(
 
 /**
  * レストラン情報を保持するデータクラス
- * @param id レストランID
  * @param name レストラン名
  * @param address 住所
  * @param station 最寄り駅
@@ -42,8 +41,6 @@ data class Results(
  */
 @Parcelize
 data class Shops(
-    @Json(name = "id")
-    val id: String,
     @Json(name = "name")
     val name: String,
     @Json(name = "address")
