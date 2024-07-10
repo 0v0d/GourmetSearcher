@@ -52,8 +52,8 @@ class SearchLocationViewModelTest {
         runTest {
             val expectedLocation = CurrentLocation(34.7010289, 135.4955003)
             val mockLocation = mock<Location>()
-            `when`(mockLocation.latitude).thenReturn(expectedLocation.lat)
-            `when`(mockLocation.longitude).thenReturn(expectedLocation.lng)
+            `when`(mockLocation.latitude).thenReturn(expectedLocation.latitude)
+            `when`(mockLocation.longitude).thenReturn(expectedLocation.longitude)
             `when`(getCurrentLocationUseCase()).thenReturn(mockLocation)
 
             viewModel.getLocation()

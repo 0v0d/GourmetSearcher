@@ -63,8 +63,8 @@ constructor(
                     service.searchRestaurants(
                         apiKey = key,
                         keyword = searchTerms.keyword,
-                        lat = searchTerms.location.lat,
-                        lng = searchTerms.location.lng,
+                        lat = searchTerms.location.latitude,
+                        lng = searchTerms.location.longitude,
                         range = searchTerms.range,
                         responseFormat = format,
                     )

@@ -39,7 +39,6 @@ class CacheManagerTest {
             Results(
                 listOf(
                     Shops(
-                        "1",
                         "Restaurant",
                         "Address",
                         "Station",
