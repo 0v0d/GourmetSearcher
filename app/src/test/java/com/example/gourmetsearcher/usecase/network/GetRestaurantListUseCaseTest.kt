@@ -39,7 +39,6 @@ class GetRestaurantListUseCaseTest {
                 Results(
                     listOf(
                         Shops(
-                            "1",
                             "Restaurant",
                             "Address",
                             "Station",

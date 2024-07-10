@@ -12,26 +12,7 @@ import com.example.gourmetsearcher.model.api.Urls
 import kotlinx.parcelize.Parcelize
 
 /**
- * ホットペッパーグルメAPIのレスポンスデータクラス
- * @param results レストラン情報
- */
-@Parcelize
-data class HotPepperResponseDomain(
-    val results: ResultsDomain,
-) : Parcelable
-
-/**
  * レストラン情報を保持するデータクラス
- * @param shops レストラン情報
- */
-@Parcelize
-data class ResultsDomain(
-    val shops: List<ShopsDomain>,
-) : Parcelable
-
-/**
- * レストラン情報を保持するデータクラス
- * @param id レストランID
  * @param name レストラン名
  * @param address 住所
  * @param station 最寄り駅
@@ -47,7 +28,6 @@ data class ResultsDomain(
  */
 @Parcelize
 data class ShopsDomain(
-    val id: String,
     val name: String,
     val address: String,
     val station: String,
@@ -131,7 +111,6 @@ data class PCDomain(
  */
 fun Shops.toDomain() =
     ShopsDomain(
-        id,
         name,
         address,
         station,
