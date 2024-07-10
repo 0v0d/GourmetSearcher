@@ -31,6 +31,7 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
 				app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+				tools:ignore="ImageContrastCheck"
 				tools:src="@tools:sample/avatars" />
 
 			<TextView
@@ -53,7 +54,6 @@
 				android:layout_marginTop="4dp"
 				android:text='@{restaurant.smallArea.name +"[" +restaurant.largeArea.name +"]"}'
 				android:textAppearance="?attr/textAppearanceBody2"
-				app:drawablePadding="4dp"
 				app:drawableStartCompat="@drawable/ic_address"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="@+id/item_restaurant_name_text_view"
@@ -75,8 +75,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:drawablePadding="4dp"
-					android:padding="8dp"
+					android:padding="4dp"
 					android:text="@{restaurant.genre.name}"
 					android:textAppearance="?attr/textAppearanceBody2"
 					app:drawableStartCompat="@drawable/ic_restaurant_name"
@@ -99,8 +98,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:drawablePadding="4dp"
-					android:padding="8dp"
+					android:padding="4dp"
 					android:text="@{restaurant.budget.name}"
 					android:textAppearance="?attr/textAppearanceBody2"
 					app:drawableStartCompat="@drawable/ic_budget"
@@ -115,7 +113,6 @@
 				android:layout_marginTop="8dp"
 				android:text='@{restaurant.access}'
 				android:textAppearance="?attr/textAppearanceBody2"
-				app:drawablePadding="4dp"
 				app:drawableStartCompat="@drawable/ic_access"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
