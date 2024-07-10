@@ -44,8 +44,8 @@ class SearchLocationRepositoryImplTest {
         runTest {
             val expectedLocation = CurrentLocation(35.6895, 139.6917)
             val mockLocation = mock<Location>()
-            `when`(mockLocation.latitude).thenReturn(expectedLocation.lat)
-            `when`(mockLocation.longitude).thenReturn(expectedLocation.lng)
+            `when`(mockLocation.latitude).thenReturn(expectedLocation.latitude)
+            `when`(mockLocation.longitude).thenReturn(expectedLocation.longitude)
             `when`(mockLocationProvider.getCurrentLocation(Priority.PRIORITY_LOW_POWER, null))
                 .thenReturn(mockTask)
 

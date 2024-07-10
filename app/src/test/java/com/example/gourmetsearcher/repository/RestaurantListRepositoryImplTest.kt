@@ -117,8 +117,8 @@ class RestaurantListRepositoryImplTest {
             verify(mockService).searchRestaurants(
                 BuildConfig.API_KEY,
                 mockSearchTerms.keyword,
-                mockSearchTerms.location.lat,
-                mockSearchTerms.location.lng,
+                mockSearchTerms.location.latitude,
+                mockSearchTerms.location.longitude,
                 mockSearchTerms.range,
                 "json",
             )
@@ -148,8 +148,8 @@ class RestaurantListRepositoryImplTest {
             verify(mockService).searchRestaurants(
                 BuildConfig.API_KEY,
                 mockSearchTerms.keyword,
-                mockSearchTerms.location.lat,
-                mockSearchTerms.location.lng,
+                mockSearchTerms.location.latitude,
+                mockSearchTerms.location.longitude,
                 mockSearchTerms.range,
                 "json",
             )
@@ -180,8 +180,8 @@ class RestaurantListRepositoryImplTest {
             verify(mockService).searchRestaurants(
                 BuildConfig.API_KEY,
                 mockSearchTerms.keyword,
-                mockSearchTerms.location.lat,
-                mockSearchTerms.location.lng,
+                mockSearchTerms.location.latitude,
+                mockSearchTerms.location.longitude,
                 mockSearchTerms.range,
                 "json",
             )
