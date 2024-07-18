@@ -1,5 +1,4 @@
-[English README is here](https://github.com/0v0d/GourmetSearcher/blob/master/docs/README-en.md
-)
+[English README is here](README-en.md)
 ## アプリ名
 
 GourmetSearcher
@@ -10,7 +9,7 @@ GourmetSearcher
 
 現在位置付近のレストランをキーワードで検索できるAndroidアプリです。
 
-<img src="docs/app.gif" width="314" alt="アプリのデモ動画">
+<img src="app.gif" width="314" alt="アプリのデモ動画">
 
 ### APIKeyについて
 
@@ -45,15 +44,13 @@ Android Studio Koala Feature Drop 2024.1.2 Canary 5
 - コンパイルSDKバージョン: 34
 - 最小SDKバージョン: 32
 - ターゲットSDKバージョン: 34
-- Java：VERSION_1_8
-- Gradle：8.6
-- Gradle Plugin 7.0.4
-- minSdk：32
-- targetSdk：34
+- Java：VERSION_17
+- Gradle：8.8
+- Gradle Plugin 8.5.0
 
 ### 開発言語
 
-- Kotlin 1.9.22
+- Kotlin 2.0.0
 
 ### 実機端末環境
 
@@ -76,27 +73,59 @@ Android Studio Koala Feature Drop 2024.1.2 Canary 5
 - レストラン詳細画面 (RestaurantDetailFragment) : 店舗の詳細を表示し、Mapボタンを押された時にはマップアプリへ遷移
   する。「Hot Pepperへ」ボタンを押されたときにWebページを表示する。
 
-### 使用しているAPI,SDK,ライブラリなど
-
+### 使用しているAPI, SDK, ライブラリなど
 - ホットペッパーグルメサーチAPI
-- dagger.hilt
-- Retrofit
-- Moshi
-- safeargs
-- secrets-gradle-plugin
-- parcelize
-- ViewModel
-- ViewBinding
-- picasso
-- navigation-ui
+- androidx-core-ktx
+- androidx-datastore-preferences
+- coil
+- detekt-formatting
+- kotlinx-serialization-json
+- material
+- androidx-constraintlayout
+- androidx-appcompat
+
+#### Navigation
+- androidx-navigation-fragment-ktx
+- androidx-navigation-ui-ktx
+- androidx-navigation-runtime-ktx
+
+#### Dependency Injection
+- dagger-hilt-android-compiler
+- dagger-hilt-android
+
+#### Networking
+- retrofit
+- retrofit-converter-moshi
+- moshi-kotlin
+
+#### Location
 - play-services-location
-- DataBinding
-- Fragment
-- RecyclerView
-- BuildConfig
+
+#### Debug Tools
 - leakcanary
-Test
+
+#### Unit Test
 - junit
-- mockito
-- espresso
-- uiautomator
+- dagger-hilt-android-testing
+- mockito-core
+- androidx-runner
+- kotlinx-coroutines-test
+- androidx-core-testing
+
+#### Android Test
+- androidx-junit
+- androidx-espresso-core
+- androidx-rules
+- androidx-espresso-contrib
+- androidx-uiautomator-v18
+
+### Plugins
+- android-application
+- jetbrains-kotlin-android
+- androidx-navigation-safeargs
+- kotlin-kapt
+- dagger-hilt-android
+- kotlin-parcelize
+- secrets-gradle-plugin
+- detekt
+- serialization
