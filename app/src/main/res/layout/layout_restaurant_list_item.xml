@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
 
@@ -8,22 +10,116 @@
 			type="com.example.gourmetsearcher.model.domain.ShopsDomain" />
 	</data>
 
-	<androidx.cardview.widget.CardView
+	<com.google.android.material.card.MaterialCardView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginStart="5dp"
-		android:layout_marginTop="5dp"
-		android:layout_marginEnd="5dp"
-		android:layout_marginBottom="5dp"
-		app:cardCornerRadius="8dp">
+		android:layout_margin="8dp"
+		app:cardCornerRadius="8dp"
+		app:cardElevation="4dp">
 
-		<include
-			android:id="@+id/restaurant_list_item_layout"
-			layout="@layout/layout_restaurant_item"
+		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_margin="5dp"
-			app:restaurant="@{restaurant}" />
+			android:padding="16dp">
 
-	</androidx.cardview.widget.CardView>
+			<com.google.android.material.imageview.ShapeableImageView
+				android:id="@+id/item_restaurant_image_view"
+				android:layout_width="80dp"
+				android:layout_height="80dp"
+				android:importantForAccessibility="no"
+				app:imageUrl="@{restaurant.photo.pc.l}"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+				tools:ignore="ImageContrastCheck"
+				tools:src="@tools:sample/avatars" />
+
+			<TextView
+				android:id="@+id/item_restaurant_name_text_view"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="16dp"
+				android:text="@{restaurant.name}"
+				android:textAppearance="?attr/textAppearanceSubtitle1"
+				android:textStyle="bold"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@+id/item_restaurant_image_view"
+				app:layout_constraintTop_toTopOf="parent"
+				tools:text="丸亀製麺 あべのキューズモール店" />
+
+			<TextView
+				android:id="@+id/item_area_text_view"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="4dp"
+				android:text='@{restaurant.smallArea.name +"[" +restaurant.largeArea.name +"]"}'
+				android:textAppearance="?attr/textAppearanceBody2"
+				app:drawableStartCompat="@drawable/ic_address"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="@+id/item_restaurant_name_text_view"
+				app:layout_constraintTop_toBottomOf="@+id/item_restaurant_name_text_view"
+				tools:text="天王寺[大阪]" />
+
+			<com.google.android.material.card.MaterialCardView
+				android:id="@+id/genre_card"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				app:cardCornerRadius="4dp"
+				app:cardElevation="0dp"
+				app:layout_constraintStart_toStartOf="@+id/item_restaurant_name_text_view"
+				app:layout_constraintTop_toBottomOf="@+id/item_area_text_view"
+				app:strokeColor="?attr/colorPrimary"
+				app:strokeWidth="1dp">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:padding="4dp"
+					android:text="@{restaurant.genre.name}"
+					android:textAppearance="?attr/textAppearanceBody2"
+					app:drawableStartCompat="@drawable/ic_restaurant_name"
+					tools:text="和食" />
+
+			</com.google.android.material.card.MaterialCardView>
+
+			<com.google.android.material.card.MaterialCardView
+				android:id="@+id/budget_card"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				app:cardCornerRadius="4dp"
+				app:cardElevation="0dp"
+				app:layout_constraintStart_toEndOf="@+id/genre_card"
+				app:layout_constraintTop_toTopOf="@+id/genre_card"
+				app:strokeColor="?attr/colorPrimary"
+				app:strokeWidth="1dp">
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:padding="4dp"
+					android:text="@{restaurant.budget.name}"
+					android:textAppearance="?attr/textAppearanceBody2"
+					app:drawableStartCompat="@drawable/ic_budget"
+					tools:text="1501～2000円" />
+
+			</com.google.android.material.card.MaterialCardView>
+
+			<TextView
+				android:id="@+id/item_access_text_view"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:text='@{restaurant.access}'
+				android:textAppearance="?attr/textAppearanceBody2"
+				app:drawableStartCompat="@drawable/ic_access"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/genre_card"
+				tools:text="天王寺駅12号出口より直結｡あべのｷｭｰｽﾞﾓｰﾙ3F" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</com.google.android.material.card.MaterialCardView>
 </layout>

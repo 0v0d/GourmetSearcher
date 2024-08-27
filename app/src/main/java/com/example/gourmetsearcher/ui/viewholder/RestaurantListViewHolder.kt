@@ -31,7 +31,7 @@ class RestaurantListViewHolder(
     fun unbind() {
         binding.apply {
             restaurant = null
-            restaurantListItemLayout.itemRestaurantImageView
+            binding.itemRestaurantImageView
                 .setImageDrawable(null)
         }
     }
