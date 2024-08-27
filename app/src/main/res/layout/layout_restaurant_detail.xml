@@ -1,193 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-	<data>
+    <data>
 
-		<variable
-			name="restaurant"
-			type="com.example.gourmetsearcher.model.domain.ShopsDomain" />
+        <variable
+                name="restaurant"
+                type="com.example.gourmetsearcher.model.domain.ShopsDomain" />
 
-		<variable
-			name="viewModel"
-			type="com.example.gourmetsearcher.viewmodel.RestaurantDetailViewModel" />
-	</data>
+        <variable
+                name="viewModel"
+                type="com.example.gourmetsearcher.viewmodel.RestaurantDetailViewModel" />
+    </data>
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
 
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-		<ImageView
-			android:id="@+id/detail_restaurant_image_view"
-			android:layout_width="0dp"
-			android:layout_height="200dp"
-			android:importantForAccessibility="no"
-			android:scaleType="centerCrop"
-			app:imageUrl="@{restaurant.photo.pc.l}"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="1.0"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			tools:src="@tools:sample/avatars" />
+        <ImageView
+                android:id="@+id/detail_restaurant_image_view"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{restaurant.photo.pc.l}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
 
-		<androidx.constraintlayout.widget.ConstraintLayout
-			android:id="@+id/constraintLayout"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="@+id/detail_restaurant_image_view"
-			app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_image_view">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/detail_restaurant_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_image_view">
 
-			<TextView
-				android:id="@+id/detail_restaurant_name_text_view"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_marginStart="8dp"
-				android:layout_marginTop="8dp"
-				android:text="@{restaurant.name}"
-				android:textAppearance="?attr/textAppearanceHeadline5"
-				android:textSize="25sp"
-				android:textStyle="bold"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				tools:text="丸亀製麺 あべのキューズモール店" />
+            <TextView
+                    android:id="@+id/detail_restaurant_name_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{restaurant.name}"
+                    android:textAppearance="?attr/textAppearanceHeadline5"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="丸亀製麺 あべのキューズモール店" />
 
-			<androidx.cardview.widget.CardView
-				android:id="@+id/detail_restaurant_genre_card_view"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="8dp"
-				app:cardCornerRadius="10dp"
-				app:layout_constraintStart_toStartOf="@+id/detail_restaurant_name_text_view"
-				app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_name_text_view">
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/detail_restaurant_genre_card_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/detail_restaurant_name_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_name_text_view">
 
-				<TextView
-					style="@style/restaurantDetailTextStyle"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_margin="8dp"
-					android:text="@{restaurant.genre.name}"
-					android:textSize="15sp"
-					app:drawableStartCompat="@drawable/ic_restaurant_name"
-					tools:text="居酒屋" />
+                <TextView
+                        style="@style/restaurantDetailTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@{restaurant.genre.name}"
+                        android:textSize="15sp"
+                        app:drawableStartCompat="@drawable/ic_restaurant_name"
+                        tools:text="居酒屋" />
 
-			</androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-			<androidx.cardview.widget.CardView
-				android:id="@+id/detail_restaurant_budget_card_view"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_marginStart="20dp"
-				app:cardCornerRadius="10dp"
-				app:layout_constraintBottom_toBottomOf="@+id/detail_restaurant_genre_card_view"
-				app:layout_constraintStart_toEndOf="@+id/detail_restaurant_genre_card_view"
-				app:layout_constraintTop_toTopOf="@+id/detail_restaurant_genre_card_view">
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/detail_restaurant_budget_card_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/detail_restaurant_genre_card_view"
+                    app:layout_constraintStart_toEndOf="@+id/detail_restaurant_genre_card_view"
+                    app:layout_constraintTop_toTopOf="@+id/detail_restaurant_genre_card_view">
 
-				<TextView
-					style="@style/restaurantDetailTextStyle"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_margin="8dp"
-					android:text="@{restaurant.budget.name}"
-					android:textSize="15sp"
-					app:drawableStartCompat="@drawable/ic_budget"
-					tools:text="2000~4400円" />
+                <TextView
+                        style="@style/restaurantDetailTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@{restaurant.budget.name}"
+                        android:textSize="15sp"
+                        app:drawableStartCompat="@drawable/ic_budget"
+                        tools:text="2000~4400円" />
 
-			</androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-			<androidx.cardview.widget.CardView
-				android:id="@+id/detail_restaurant_open_card_view"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="8dp"
-				android:layout_marginBottom="8dp"
-				app:cardCornerRadius="10dp"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintEnd_toEndOf="@+id/detail_restaurant_budget_card_view"
-				app:layout_constraintStart_toStartOf="@+id/detail_restaurant_genre_card_view"
-				app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_genre_card_view">
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/detail_restaurant_open_card_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/detail_restaurant_genre_card_view"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_restaurant_genre_card_view"
+                    app:layout_constraintEnd_toEndOf="parent">
 
-				<TextView
-					style="@style/restaurantDetailTextStyle"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginStart="8dp"
-					android:layout_marginTop="8dp"
-					android:layout_marginEnd="8dp"
-					android:layout_marginBottom="8dp"
-					android:drawablePadding="8dp"
-					android:text="@{restaurant.open}"
-					android:textSize="15sp"
-					app:drawableStartCompat="@drawable/ic_opening_hours"
-					tools:text="月～金、祝前日: O～23:00 0" />
-			</androidx.cardview.widget.CardView>
-
-
-		</androidx.constraintlayout.widget.ConstraintLayout>
-
-		<com.google.android.material.card.MaterialCardView
-			android:id="@+id/restaurant_detail_card_view"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="4dp"
-			android:layout_marginEnd="8dp"
-			app:cardElevation="2dp"
-			app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-			app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-			app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				android:padding="6dp">
-
-				<include
-					layout="@layout/layout_detail_item_address"
-					app:address="@{restaurant.address}" />
-
-				<View
-					android:layout_width="match_parent"
-					android:layout_height="1dp"
-					android:layout_marginVertical="2dp"
-					android:background="?android:attr/listDivider" />
-
-				<include
-					layout="@layout/layout_detail_item_access"
-					app:access="@{restaurant.access}" />
-
-				<View
-					android:layout_width="match_parent"
-					android:layout_height="1dp"
-					android:layout_marginVertical="2dp"
-					android:background="?android:attr/listDivider" />
-
-				<include
-					layout="@layout/layout_detail_item_closed_days"
-					app:closedDays="@{restaurant.close}" />
-
-			</LinearLayout>
-		</com.google.android.material.card.MaterialCardView>
+                <TextView
+                        style="@style/restaurantDetailTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:drawablePadding="8dp"
+                        android:text="@{restaurant.open}"
+                        android:textSize="15sp"
+                        app:drawableStartCompat="@drawable/ic_opening_hours"
+                        tools:text="月～金、祝前日: O～23:00 0" />
+            </androidx.cardview.widget.CardView>
 
 
-		<com.google.android.material.button.MaterialButton
-			android:id="@+id/hot_pepper_button"
-			style="@style/outlinedButtonStyle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="8dp"
-			android:text="@string/restaurant_detail_hot_pepper"
-			android:textColor="@color/blue"
-			app:icon="@drawable/ic_reservation"
-			app:iconGravity="textStart"
-			app:iconSize="20dp"
-			app:iconTint="@color/blue"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_card_view"
-			tools:ignore="VisualLintButtonSize" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.card.MaterialCardView
+                android:id="@+id/restaurant_detail_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                <include
+                        android:id="@+id/detail_item_address"
+                        layout="@layout/layout_detail_item_common"
+                        app:icon="@{@drawable/ic_address}"
+                        app:title="@{@string/restaurant_detail_address}"
+                        app:content="@{restaurant.address}" />
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="2dp"
+                        android:background="?android:attr/listDivider" />
+
+                <include
+                        android:id="@+id/detail_item_access"
+                        layout="@layout/layout_detail_item_common"
+                        app:icon="@{@drawable/ic_access}"
+                        app:title="@{@string/restaurant_detail_access}"
+                        app:content="@{restaurant.access}" />
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="2dp"
+                        android:background="?android:attr/listDivider" />
+
+                <include
+                        android:id="@+id/detail_item_closed_days"
+                        layout="@layout/layout_detail_item_common"
+                        app:icon="@{@drawable/ic_closed_days}"
+                        app:title="@{@string/restaurant_detail_closed_days}"
+                        app:content="@{restaurant.close}" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/hot_pepper_button"
+                style="@style/outlinedButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/restaurant_detail_hot_pepper"
+                android:textColor="@color/blue"
+                app:icon="@drawable/ic_reservation"
+                app:iconGravity="textStart"
+                app:iconSize="20dp"
+                app:iconTint="@color/blue"
+                android:onClickListener="@{() -> viewModel.openUrl(restaurant.url.pc)}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/restaurant_detail_card_view"
+                tools:ignore="VisualLintButtonSize" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
