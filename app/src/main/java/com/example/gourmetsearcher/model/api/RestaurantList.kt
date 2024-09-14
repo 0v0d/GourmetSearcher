@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 data class RestaurantList(
     @Json(name = "results")
     val results: Results,
-) 
+)
 
 /**
  * レストラン情報を保持するデータクラス
@@ -21,7 +21,7 @@ data class RestaurantList(
 data class Results(
     @Json(name = "shop")
     val shops: List<Shops>,
-) 
+)
 
 /**
  * レストラン情報を保持するデータクラス
@@ -64,7 +64,7 @@ data class Shops(
     val open: String,
     @Json(name = "close")
     val close: String,
-) 
+)
 
 /**
  * 大エリア情報を保持するデータクラス
@@ -74,7 +74,7 @@ data class Shops(
 data class LargeAreaData(
     @Json(name = "name")
     val name: String,
-) 
+)
 
 /**
  * 小エリア情報を保持するデータクラス
@@ -84,7 +84,7 @@ data class LargeAreaData(
 data class SmallAreaData(
     @Json(name = "name")
     val name: String,
-) 
+)
 
 /**
  * ジャンル情報を保持するデータクラス
@@ -94,7 +94,7 @@ data class SmallAreaData(
 data class GenreData(
     @Json(name = "name")
     val name: String,
-) 
+)
 
 /**
  * 予算情報を保持するデータクラス
@@ -104,7 +104,7 @@ data class GenreData(
 data class BudgetData(
     @Json(name = "name")
     val name: String,
-) 
+)
 
 /**
  * 店舗URL情報を保持するデータクラス
@@ -114,7 +114,7 @@ data class BudgetData(
 data class Urls(
     @Json(name = "pc")
     val pc: String,
-) 
+)
 
 /**
  * 写真情報を保持するデータクラス
@@ -124,7 +124,7 @@ data class Urls(
 data class PhotoData(
     @Json(name = "pc")
     val pc: PCData,
-) 
+)
 
 /**
  * 店舗トップ写真URL情報を保持するデータクラス
@@ -134,4 +134,4 @@ data class PhotoData(
 data class PCData(
     @Json(name = "l")
     val l: String,
-) 
+)
