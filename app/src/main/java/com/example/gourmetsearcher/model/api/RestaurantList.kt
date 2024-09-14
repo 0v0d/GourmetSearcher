@@ -1,28 +1,27 @@
 package com.example.gourmetsearcher.model.api
 
-import android.os.Parcelable
 import com.squareup.moshi.Json
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 /**
  * ホットペッパーグルメAPIのレスポンスデータクラス
  * @param results レストラン情報
  */
-@Parcelize
+@Serializable
 data class RestaurantList(
     @Json(name = "results")
     val results: Results,
-) : Parcelable
+)
 
 /**
  * レストラン情報を保持するデータクラス
  * @param shops レストラン情報
  */
-@Parcelize
+@Serializable
 data class Results(
     @Json(name = "shop")
     val shops: List<Shops>,
-) : Parcelable
+)
 
 /**
  * レストラン情報を保持するデータクラス
@@ -39,7 +38,7 @@ data class Results(
  * @param open 営業時間（開店）
  * @param close 営業時間（閉店）
  */
-@Parcelize
+@Serializable
 data class Shops(
     @Json(name = "name")
     val name: String,
@@ -65,74 +64,74 @@ data class Shops(
     val open: String,
     @Json(name = "close")
     val close: String,
-) : Parcelable
+)
 
 /**
  * 大エリア情報を保持するデータクラス
  * @param name 大エリア名
  */
-@Parcelize
+@Serializable
 data class LargeAreaData(
     @Json(name = "name")
     val name: String,
-) : Parcelable
+)
 
 /**
  * 小エリア情報を保持するデータクラス
  * @param name 小エリア名
  */
-@Parcelize
+@Serializable
 data class SmallAreaData(
     @Json(name = "name")
     val name: String,
-) : Parcelable
+)
 
 /**
  * ジャンル情報を保持するデータクラス
  * @param name ジャンル名
  */
-@Parcelize
+@Serializable
 data class GenreData(
     @Json(name = "name")
     val name: String,
-) : Parcelable
+)
 
 /**
  * 予算情報を保持するデータクラス
  * @param name 予算
  */
-@Parcelize
+@Serializable
 data class BudgetData(
     @Json(name = "name")
     val name: String,
-) : Parcelable
+)
 
 /**
  * 店舗URL情報を保持するデータクラス
  * @param pc PCサイトURL
  */
-@Parcelize
+@Serializable
 data class Urls(
     @Json(name = "pc")
     val pc: String,
-) : Parcelable
+)
 
 /**
  * 写真情報を保持するデータクラス
  * @param pc
  */
-@Parcelize
+@Serializable
 data class PhotoData(
     @Json(name = "pc")
     val pc: PCData,
-) : Parcelable
+)
 
 /**
  * 店舗トップ写真URL情報を保持するデータクラス
  * @param l 店舗トップ写真(大）画像URL
  */
-@Parcelize
+@Serializable
 data class PCData(
     @Json(name = "l")
     val l: String,
-) : Parcelable
+)
