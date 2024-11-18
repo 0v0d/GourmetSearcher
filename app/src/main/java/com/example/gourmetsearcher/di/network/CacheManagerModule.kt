@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Response
+import javax.inject.Singleton
 
 /** キャッシュマネージャのモジュール */
 @Module
@@ -23,6 +24,7 @@ object CacheManagerModule {
      * @return LruCache キャッシュ
      */
     @Provides
+    @Singleton
     fun provideLruCache(): LruCache<SearchTerms, Response<RestaurantList>?> = LruCache(CACHE_SIZE)
 
     /**
@@ -30,5 +32,6 @@ object CacheManagerModule {
      * @return キャッシュマネージャ
      */
     @Provides
+    @Singleton
     fun provideCacheManager(lruCache: LruCache<SearchTerms, Response<RestaurantList>?>) = CacheManager(lruCache)
 }

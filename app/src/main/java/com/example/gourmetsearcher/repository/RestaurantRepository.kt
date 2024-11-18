@@ -12,7 +12,6 @@ import retrofit2.Response
 import java.io.IOException
 import java.text.ParseException
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /** ホットペッパーグルメAPIを利用して、レストラン情報を取得する */
 interface RestaurantRepository {
@@ -27,7 +26,6 @@ interface RestaurantRepository {
  *  RestaurantRepositoryの実装クラス
  * @param service ホットペッパーグルメAPIのインターフェース
  */
-@Singleton
 class RestaurantRepositoryImpl
 @Inject
 constructor(

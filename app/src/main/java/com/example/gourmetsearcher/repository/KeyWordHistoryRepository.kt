@@ -5,7 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /** 検索履歴のリポジトリ */
 interface KeyWordHistoryRepository {
@@ -23,7 +22,6 @@ interface KeyWordHistoryRepository {
  *  KeyWordHistoryRepositoryの実装クラス
  * @param preferences PreferencesManger
  */
-@Singleton
 class KeyWordHistoryRepositoryImpl
 @Inject
 constructor(
