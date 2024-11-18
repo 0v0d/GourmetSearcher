@@ -20,7 +20,7 @@ import javax.inject.Singleton
 object KeyWordHistoryModule {
     /** データストアを提供する */
     private val Context.dataStore: DataStore<Preferences>
-    by preferencesDataStore(name = "HistoryPrefs")
+        by preferencesDataStore(name = "HistoryPrefs")
 
     /**
      * データストアを提供する
@@ -40,8 +40,8 @@ object KeyWordHistoryModule {
      */
     @Provides
     @Singleton
-    fun providePreferencesManger(dataStore: DataStore<Preferences>): PreferencesManager
-    = PreferencesManager(dataStore)
+    fun providePreferencesManger(dataStore: DataStore<Preferences>): PreferencesManager =
+        PreferencesManager(dataStore)
 
     /**
      * 検索履歴のリポジトリを提供する
