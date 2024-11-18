@@ -19,7 +19,7 @@ object KeyWordHistoryUseCaseModule {
      * @return 検索履歴を得るためのユースケース
      */
     @Provides
-    fun provideGetKeyWordHistoryUseCase(repository: KeyWordHistoryRepository): GetKeyWordHistoryUseCase =
+    fun provideGetKeyWordHistoryUseCase(repository: KeyWordHistoryRepository) =
         GetKeyWordHistoryUseCase(repository)
 
     /**
@@ -28,7 +28,8 @@ object KeyWordHistoryUseCaseModule {
      * @return 検索履歴保存のためのユースケース
      */
     @Provides
-    fun provideSaveKeyWordHistoryUseCase(repository: KeyWordHistoryRepository) = SaveKeyWordHistoryUseCase(repository)
+    fun provideSaveKeyWordHistoryUseCase(repository: KeyWordHistoryRepository) =
+        SaveKeyWordHistoryUseCase(repository)
 
     /**
      * 検索履歴のユースケースを提供する
@@ -36,5 +37,6 @@ object KeyWordHistoryUseCaseModule {
      * @return 検索履歴クリアするのためのユースケース
      */
     @Provides
-    fun provideClearKeyWordHistoryUseCase(repository: KeyWordHistoryRepository) = ClearKeyWordHistoryUseCase(repository)
+    fun provideClearKeyWordHistoryUseCase(repository: KeyWordHistoryRepository) =
+        ClearKeyWordHistoryUseCase(repository)
 }
