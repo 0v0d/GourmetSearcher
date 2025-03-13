@@ -73,7 +73,7 @@ jobs:
 
       - name: Publish Test Report
         if: cancelled() != true || failure()
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         with:
           name: "JUnit Test Report"
           path: '**/build/test-results/*/TEST-*.xml'
