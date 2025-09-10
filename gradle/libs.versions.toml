@@ -27,7 +27,7 @@ rules = "1.7.0"
 espressoContrib = "3.7.0"
 uiautomatorV18 = "2.2.0-alpha1"
 detekt = "1.23.8"
-serialization = "2.2.10"
+serialization = "2.2.20"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
